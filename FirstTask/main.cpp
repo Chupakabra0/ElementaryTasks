@@ -11,9 +11,13 @@ int main(int argc, char* argv[]) {
         }
         else {
             std::cout << "Enter count of rows and columns:" << std::endl;
-            std::cin >> rows >> columns;
+            std::cin >> rows;
+            std::cin >> columns;
         }
 
+        if (!std::cin) {
+            throw std::exception("Bad input...");
+        }
         if (rows < 0 || columns < 0) {
             throw std::exception("Rows or columns can't be lesser than 0...");
         }
