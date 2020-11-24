@@ -1,3 +1,0 @@
-C:/Projects/SoftServe/ElementaryTasks/FirstTask/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Projects/SoftServe/ElementaryTasks/FirstTask/cmake-build-debug/CMakeFiles/FirstTask.dir
-C:/Projects/SoftServe/ElementaryTasks/FirstTask/cmake-build-debug/CMakeFiles/rebuild_cache.dir
