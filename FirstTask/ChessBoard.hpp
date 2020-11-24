@@ -18,6 +18,26 @@ namespace task {
 
         ChessBoard(unsigned rows, unsigned columns) : rows_(rows), columns_(columns) {}
 
+        unsigned GetRows() const {
+            return this->rows_;
+        }
+        void SetRows(unsigned rows) {
+            if (this->rows_ == rows) {
+                return;
+            }
+            this->rows_ = rows;
+        }
+
+        unsigned GetColumns() const {
+            return this->columns_;
+        }
+        void SetColumns(unsigned columns) {
+            if (this->columns_ == columns) {
+                return;
+            }
+            this->columns_ = columns;
+        }
+
         template<class Type>
         friend std::basic_ostream<Type> &operator<<(std::basic_ostream<Type>& out, const ChessBoard& chessBoard) {
             if (chessBoard.rows_ == 0 || chessBoard.columns_ == 0) {
