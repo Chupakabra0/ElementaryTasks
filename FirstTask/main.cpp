@@ -2,6 +2,20 @@
 
 #include "ChessBoard.hpp"
 
+namespace task {
+    class MainClass {
+    public:
+        MainClass() = delete;
+
+        ~MainClass() = delete;
+
+        static void Main(unsigned rows, unsigned columns) {
+            ChessBoard chessBoard(rows, columns);
+            std::cout << chessBoard << std::endl;
+        }
+    };
+}
+
 int main(int argc, char* argv[]) {
     try {
         int rows, columns;
@@ -22,8 +36,7 @@ int main(int argc, char* argv[]) {
             throw std::exception("Rows or columns can't be lesser than 0...");
         }
 
-        task::ChessBoard chessBoard(rows, columns);
-        std::cout << chessBoard << std::endl;
+        task::MainClass::Main(rows, columns);
     }
     catch (std::exception exception) {
         std::cerr << exception.what() << std::endl;
