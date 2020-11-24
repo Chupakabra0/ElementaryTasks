@@ -51,9 +51,6 @@
 .idea/gradle.xml
 .idea/libraries
 
-# Debug
-cmake-build-debug
-
 # Mongo Explorer plugin:
 .idea/mongoSettings.xml
 
