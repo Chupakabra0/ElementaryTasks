@@ -14,14 +14,13 @@ namespace task {
         class View {
         public:
             View() = delete;
-
             ~View() = default;
 
             View(const Board &chessBoard) : chessBoard_(chessBoard) {
 
             }
 
-            void Out() {
+            void Out() const {
                 std::cout << this->chessBoard_ << std::endl;
             }
 

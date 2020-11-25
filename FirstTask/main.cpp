@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
         if (rows < 0 || columns < 0) {
             throw std::runtime_error("Rows or columns can't be lesser than 0...");
         }
-        if (rows > std::numeric_limits<unsigned short>::max() || columns > std::numeric_limits<unsigned short>::max() ) {
+        if (rows > std::numeric_limits<unsigned short>::max() || columns > std::numeric_limits<unsigned short>::max()) {
             throw std::runtime_error("Rows or columns can't be greater than 65535...");
         }
 
