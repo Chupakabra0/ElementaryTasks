@@ -10,14 +10,16 @@ namespace task {
         class Envelope {
         public:
             Envelope() = delete;
-
             Envelope(const Envelope &) = default;
-
             Envelope(Envelope &&) = default;
 
-            Envelope(double heightAndWidth) : Envelope(heightAndWidth, heightAndWidth) {}
+            Envelope(double heightAndWidth) : Envelope(heightAndWidth, heightAndWidth) {
 
-            Envelope(double height, double width) : height_(height), width_(width) {}
+            }
+
+            Envelope(double height, double width) : height_(height), width_(width) {
+
+            }
 
             ~Envelope() = default;
 

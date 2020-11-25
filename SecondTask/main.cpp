@@ -25,8 +25,6 @@ int main(int argc, char* argv[]) {
 //                }
 
 //                ss.clear();
-
-
             }
             else {
                 std::cout << "Creating first envelope." << std::endl << "Enter height:" << std::endl;

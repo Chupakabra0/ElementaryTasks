@@ -14,19 +14,19 @@ namespace task {
         class View {
         public:
             View()  = delete;
-            View(const task::second::Envelope& firstEnvelope, const task::second::Envelope& secondEnvelope)
+            View(const Envelope& firstEnvelope, const Envelope& secondEnvelope)
                 : firstEnvelope_(firstEnvelope), secondEnvelope_(secondEnvelope) {
 
             }
 
             void Out() const {
-                if (task::second::CanPutIn(this->firstEnvelope_, this->secondEnvelope_)) {
+                if (CanPutIn(this->firstEnvelope_, this->secondEnvelope_)) {
                     std::cout << "First envelope can be put in second envelope" << std::endl;
                 } else {
                     std::cout << "First envelope can NOT be put in second envelope" << std::endl;
                 }
 
-                if (task::second::CanPutIn(this->secondEnvelope_, this->firstEnvelope_)) {
+                if (CanPutIn(this->secondEnvelope_, this->firstEnvelope_)) {
                     std::cout << "Second envelope can be put in first envelope" << std::endl;
                 } else {
                     std::cout << "Second envelope can NOT be put in first envelope" << std::endl;
@@ -35,8 +35,8 @@ namespace task {
 
             ~View() = default;
         private:
-            task::second::Envelope firstEnvelope_;
-            task::second::Envelope secondEnvelope_;
+            Envelope firstEnvelope_;
+            Envelope secondEnvelope_;
         };
     }
 }
