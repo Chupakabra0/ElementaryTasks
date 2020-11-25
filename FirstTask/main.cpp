@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
             throw std::runtime_error("Rows or columns can't be greater than 65535...");
         }
 
-        auto* view = new task::View(task::Board(rows, columns));
+        auto* view = new task::first::View(task::first::Board(rows, columns));
         view->Out();
         delete view;
     }

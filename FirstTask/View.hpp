@@ -10,22 +10,25 @@
 #include "ChessBoard.hpp"
 
 namespace task {
-    class View {
-    public:
-        View()  = delete;
-        ~View() = default;
+    namespace first {
+        class View {
+        public:
+            View() = delete;
 
-        View(const Board& chessBoard) : chessBoard_(chessBoard) {
+            ~View() = default;
 
-        }
+            View(const Board &chessBoard) : chessBoard_(chessBoard) {
 
-        void Out() {
-            std::cout << this->chessBoard_ << std::endl;
-        }
+            }
 
-    private:
-        Board chessBoard_;
-    };
+            void Out() {
+                std::cout << this->chessBoard_ << std::endl;
+            }
+
+        private:
+            Board chessBoard_;
+        };
+    }
 }
 
 #endif //FIRSTTASK_TASK_H
