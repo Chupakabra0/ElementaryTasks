@@ -20,8 +20,8 @@ int main(int argc, char* argv[]) {
     try {
         int rows, columns;
         if (argc >= 3) {
-            rows = atoi(argv[1]);
-            columns = atoi(argv[2]);
+            rows = strtol(argv[1], nullptr, 10u);
+            columns = strtol(argv[2], nullptr, 10u);
         }
         else {
             std::cout << "Enter count of rows and columns:" << std::endl;
