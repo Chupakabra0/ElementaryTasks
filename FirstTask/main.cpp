@@ -10,7 +10,7 @@ namespace task {
         ~MainClass() = delete;
 
         static void Main(unsigned rows, unsigned columns) {
-            ChessBoard chessBoard(rows, columns);
+            const ChessBoard chessBoard(rows, columns);
             std::cout << chessBoard << std::endl;
         }
     };

@@ -18,7 +18,7 @@ namespace task {
 
         ChessBoard(unsigned rows, unsigned columns) : rows_(rows), columns_(columns) {}
 
-        unsigned GetRows() const {
+        [[nodiscard]] unsigned GetRows() const {
             return this->rows_;
         }
         void SetRows(unsigned rows) {
@@ -28,7 +28,7 @@ namespace task {
             this->rows_ = rows;
         }
 
-        unsigned GetColumns() const {
+        [[nodiscard]] unsigned GetColumns() const {
             return this->columns_;
         }
         void SetColumns(unsigned columns) {
