@@ -6,70 +6,97 @@
 #define FIRSTTASK_CHESSBOARD_HPP
 
 #include <ostream>
+#include <map>
+#include <cstring>
 
 namespace task {
-    class ChessBoard {
+    class Board {
+        using value_type = char;
     public:
-        ChessBoard()                  = delete;
-        ChessBoard(const ChessBoard&) = default;
-        ChessBoard(ChessBoard&&)      = default;
+        Board()                 = delete;
+        Board(const Board&)     = default;
+        Board(Board&&) noexcept = default;
 
-        ChessBoard(unsigned rowsAndColumns) : ChessBoard(rowsAndColumns, rowsAndColumns) {}
+        Board(unsigned short rowsAndColumns) : Board(rowsAndColumns, rowsAndColumns) {
 
-        ChessBoard(unsigned rows, unsigned columns) : rows_(rows), columns_(columns) {}
-
-        [[nodiscard]] unsigned GetRows() const {
-            return this->rows_;
         }
-        void SetRows(unsigned rows) {
-            if (this->rows_ == rows) {
+
+        Board(unsigned short rows, unsigned short columns)
+            : Board(rows, columns, value_type('*'), value_type(' ')) {
+
+        }
+
+        Board(unsigned short rows, unsigned short columns, value_type blackSymbol, value_type whiteSymbol)
+            : blackSymbol_(blackSymbol), whiteSymbol_(whiteSymbol), rowsCount_(rows), columnsCount_(columns), board_() {
+            if (this->rowsCount_ == 0 || this->columnsCount_ == 0) {
                 return;
             }
-            this->rows_ = rows;
-        }
 
-        [[nodiscard]] unsigned GetColumns() const {
-            return this->columns_;
-        }
-        void SetColumns(unsigned columns) {
-            if (this->columns_ == columns) {
-                return;
-            }
-            this->columns_ = columns;
-        }
-
-        template<class Type>
-        friend std::basic_ostream<Type> &operator<<(std::basic_ostream<Type>& out, const ChessBoard& chessBoard) {
-            if (chessBoard.rows_ == 0 || chessBoard.columns_ == 0) {
-                return out;
-            }
-
-            auto outStarOrBlink = [](std::basic_ostream<Type>& out, unsigned first, unsigned second, auto predicate) -> std::basic_ostream<Type>& {
+            auto outStarOrBlink = [this](unsigned short first, unsigned short second,
+                                         auto predicate) -> value_type {
                 if (predicate(first, second)) {
-                    return out << '*';
+                    return this->blackSymbol_;
                 }
-                return out << ' ';
+                return this->whiteSymbol_;
             };
 
-            for (auto i = 0u; i < chessBoard.rows_; ++i) {
-                for (auto j = 0u; j < chessBoard.columns_; ++j) {
+            for (unsigned short i = 0u; i < this->rowsCount_; ++i) {
+                for (unsigned short j = 0u; j < this->columnsCount_; ++j) {
+                    value_type temp;
                     if (i % 2 == 0) {
-                        outStarOrBlink(out, j % 2, 0u,  std::equal_to<>());
+                        temp = outStarOrBlink(j % 2, 0u,  std::equal_to<>());
                     }
                     else {
-                        outStarOrBlink(out, j % 2, 0u, std::not_equal_to<>());
+                        temp = outStarOrBlink(j % 2, 0u, std::not_equal_to<>());
                     }
+                    std::string letterIndex(1u, 'A' + i);
+                    std::string numberIndex(1u, j + 1 + '0');
+                    this->board_.insert(std::pair<std::string, value_type>(letterIndex + numberIndex, temp));
                 }
-                out << '\n';
+            }
+        }
+
+        [[nodiscard]] unsigned short GetRowsCount() const {
+            return this->rowsCount_;
+        }
+        void SetRowsCount(unsigned short rows) {
+            if (this->rowsCount_ == rows) {
+                return;
+            }
+            this->rowsCount_ = rows;
+        }
+
+        [[nodiscard]] unsigned short GetColumnsCount() const {
+            return this->columnsCount_;
+        }
+        void SetColumnsCount(unsigned short columns) {
+            if (this->columnsCount_ == columns) {
+                return;
+            }
+            this->columnsCount_ = columns;
+        }
+
+        template<class OstreamType>
+        friend std::basic_ostream<OstreamType> &operator<<(std::basic_ostream<OstreamType>& out, const Board& chessBoard) {
+            auto i = 0u;
+            for (const auto& element : chessBoard.board_) {
+                out << element.second;
+                if (++i >= chessBoard.columnsCount_) {
+                    out << '\n';
+                    i = 0u;
+                }
             }
             return out;
         }
 
-        ~ChessBoard() = default;
+        ~Board() = default;
 
     private:
-        unsigned rows_;
-        unsigned columns_;
+        value_type whiteSymbol_;
+        value_type blackSymbol_;
+        unsigned short rowsCount_;
+        unsigned short columnsCount_;
+        std::map<std::string, value_type> board_;
     };
 }
 

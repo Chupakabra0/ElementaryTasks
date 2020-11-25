@@ -1,32 +1,31 @@
 #include <iostream>
+#include <sstream>
 
 #include "ChessBoard.hpp"
-
-namespace task {
-    class MainClass {
-    public:
-        MainClass() = delete;
-
-        ~MainClass() = delete;
-
-        static void Main(unsigned rows, unsigned columns) {
-            const ChessBoard chessBoard(rows, columns);
-            std::cout << chessBoard << std::endl;
-        }
-    };
-}
+#include "View.hpp"
 
 int main(int argc, char* argv[]) {
     try {
         int rows, columns;
+
         if (argc >= 3) {
-            rows = strtol(argv[1], nullptr, 10u);
-            columns = strtol(argv[2], nullptr, 10u);
+            std::stringstream ss;
+            ss << argv[1];
+            ss >> rows;
+            if (ss.fail()) {
+                throw std::runtime_error("Bad arguments...");
+            }
+            ss.clear();
+
+            ss << argv[2];
+            ss >> columns;
+            if (ss.fail()) {
+                throw std::runtime_error("Bad arguments...");
+            }
         }
         else {
             std::cout << "Enter count of rows and columns:" << std::endl;
-            std::cin >> rows;
-            std::cin >> columns;
+            std::cin >> rows >> columns;
         }
 
         if (!std::cin) {
@@ -35,8 +34,13 @@ int main(int argc, char* argv[]) {
         if (rows < 0 || columns < 0) {
             throw std::runtime_error("Rows or columns can't be lesser than 0...");
         }
+        if (rows > std::numeric_limits<unsigned short>::max() || columns > std::numeric_limits<unsigned short>::max() ) {
+            throw std::runtime_error("Rows or columns can't be greater than 65535...");
+        }
 
-        task::MainClass::Main(rows, columns);
+        auto* view = new task::View(task::Board(rows, columns));
+        view->Out();
+        delete view;
     }
     catch (std::exception& exception) {
         std::cerr << exception.what() << std::endl;
