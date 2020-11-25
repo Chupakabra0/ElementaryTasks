@@ -30,15 +30,15 @@ int main(int argc, char* argv[]) {
         }
 
         if (!std::cin) {
-            throw std::exception("Bad input...");
+            throw std::runtime_error("Bad input...");
         }
         if (rows < 0 || columns < 0) {
-            throw std::exception("Rows or columns can't be lesser than 0...");
+            throw std::runtime_error("Rows or columns can't be lesser than 0...");
         }
 
         task::MainClass::Main(rows, columns);
     }
-    catch (std::exception exception) {
+    catch (std::exception& exception) {
         std::cerr << exception.what() << std::endl;
         return 1;
     }
