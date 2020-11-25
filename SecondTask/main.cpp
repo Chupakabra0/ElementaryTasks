@@ -1,8 +1,10 @@
 #include <algorithm>
 #include <iostream>
+//#include <sstream>
 #include <string>
 
 #include "Envelope.hpp"
+#include "View.hpp"
 
 int main(int argc, char* argv[]) {
     std::string flag;
@@ -15,6 +17,16 @@ int main(int argc, char* argv[]) {
                 firstWidth = strtod(argv[2], nullptr);
                 secondHeight = strtod(argv[3], nullptr);
                 secondWidth = strtod(argv[4], nullptr);
+//                std::stringstream ss;
+//                ss << argv[1];
+//                ss >> firstHeight;
+//                if (ss.fail()) {
+//                    throw std::runtime_error("Bad arguments...");
+//                }
+
+//                ss.clear();
+
+
             }
             else {
                 std::cout << "Creating first envelope." << std::endl << "Enter height:" << std::endl;
@@ -35,20 +47,12 @@ int main(int argc, char* argv[]) {
                 throw std::runtime_error("Heights and widths must be greater than 0...");
             }
 
-            const task::Envelope firstEnvelope(firstHeight, firstWidth);
-            const task::Envelope secondEnvelope(secondHeight, secondWidth);
+            const task::second::Envelope firstEnvelope(firstHeight, firstWidth);
+            const task::second::Envelope secondEnvelope(secondHeight, secondWidth);
 
-            if (task::CanPutIn(firstEnvelope, secondEnvelope)) {
-                std::cout << "First envelope can be put in second envelope" << std::endl;
-            } else {
-                std::cout << "First envelope can NOT be put in second envelope" << std::endl;
-            }
-
-            if (task::CanPutIn(secondEnvelope, firstEnvelope)) {
-                std::cout << "Second envelope can be put in first envelope" << std::endl;
-            } else {
-                std::cout << "Second envelope can NOT be put in first envelope" << std::endl;
-            }
+            const auto* view = new task::second::View(firstEnvelope, secondEnvelope);
+            view->Out();
+            delete view;
 
             std::cout << "Continue? [y/Yes]:";
             std::cin >> flag;
