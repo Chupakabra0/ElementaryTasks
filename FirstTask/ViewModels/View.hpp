@@ -5,9 +5,9 @@
 #ifndef FIRSTTASK_VIEW_HPP
 #define FIRSTTASK_VIEW_HPP
 
-#include <ostream>
+#include <iostream>
 
-#include "ChessBoard.hpp"
+#include "../Models/Board/Board.hpp"
 
 namespace task::first {
         class View {
@@ -15,9 +15,7 @@ namespace task::first {
             View()  = delete;
             ~View() = default;
 
-            explicit View(const Board& chessBoard) : chessBoard_(chessBoard) {
-
-            }
+            explicit View(const Board& chessBoard) : chessBoard_(chessBoard) {}
 
             void Out() const {
                 std::cout << this->chessBoard_ << std::endl;

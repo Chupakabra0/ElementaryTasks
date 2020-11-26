@@ -1,40 +1,37 @@
 #include <iostream>
 
-#include "ChessBoard.hpp"
-#include "View.hpp"
-#include "Helpers.hpp"
+#include "Models/Board/Board.hpp"
+#include "ViewModels/View.hpp"
+#include "Services/ErrorHandler.hpp"
+#include "Services/Converter.hpp"
+#include "Models/Board/BoardFactory.hpp"
 
 int main(int argc, char* argv[]) {
-    try {
-        int rows, columns;
+    int rows, columns;
 
-        if (argc >= 3) {
-            rows    = task::helpers::ConvertString<int>(argv[1]);
-            columns = task::helpers::ConvertString<int>(argv[2]);
-        }
-        else {
-            std::cout << "Enter count of rows and columns:" << std::endl;
-            std::cin >> rows >> columns;
-        }
-
-        if (!std::cin) {
-            throw std::runtime_error("Bad input...");
-        }
-        if (rows < std::numeric_limits<unsigned short>::min() || columns < std::numeric_limits<unsigned short>::min()) {
-            throw std::runtime_error("Rows or columns can't be lesser than 0...");
-        }
-        if (rows > std::numeric_limits<unsigned short>::max() || columns > std::numeric_limits<unsigned short>::max()) {
-            throw std::runtime_error("Rows or columns can't be greater than 65535...");
-        }
-
-        auto* view = new task::first::View(task::first::Board(rows, columns));
-        view->Out();
-        delete view;
+    // TODO: maybe make input-class
+    if (argc >= 3) {
+        rows    = task::helpers::Converter<int>::ConvertString(argv[1]);
+        columns = task::helpers::Converter<int>::ConvertString(argv[2]);
     }
-    catch (std::exception& exception) {
-        std::cerr << exception.what() << std::endl;
-        return 1;
+    else {
+        std::cout << "Enter count of rows and columns:" << std::endl;
+        std::cin >> rows >> columns;
     }
 
-    return 0;
+    task::helpers::ErrorHandler::AssertAndExit(!std::cin, "Bad input...");
+    task::helpers::ErrorHandler::AssertAndExit(rows < std::numeric_limits<unsigned short>::min() || columns < std::numeric_limits<unsigned short>::min(), "Rows or columns can't be lesser than 0...");
+    task::helpers::ErrorHandler::AssertAndExit(rows > std::numeric_limits<unsigned short>::max() || columns > std::numeric_limits<unsigned short>::max(), "Rows or columns can't be greater than 65535...");
+
+    // TODO: all new checks on nullptr
+    auto* boardFactory = new task::first::BoardFactory('*', ' ');
+    auto* board = boardFactory->CreateBoard(rows, columns);
+    auto* view = new task::first::View(*board);
+    view->Out();
+    // TODO: maybe make some smart pointers
+    delete view;
+    delete board;
+    delete boardFactory;
+
+    return EXIT_SUCCESS;
 }
