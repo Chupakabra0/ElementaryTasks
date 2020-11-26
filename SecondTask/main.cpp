@@ -49,5 +49,6 @@ int main(int argc, char* argv[]) {
         std::cin >> flag;
         std::transform(flag.begin(), flag.end(), flag.begin(), toupper);
     } while (flag != "Y" || flag != "YES");
-    return 0;
+
+    return EXIT_SUCCESS;
 }
