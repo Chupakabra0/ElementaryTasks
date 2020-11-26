@@ -1,27 +1,16 @@
 #include <iostream>
-#include <sstream>
 
 #include "ChessBoard.hpp"
 #include "View.hpp"
+#include "Helpers.hpp"
 
 int main(int argc, char* argv[]) {
     try {
         int rows, columns;
 
         if (argc >= 3) {
-            std::stringstream ss;
-            ss << argv[1];
-            ss >> rows;
-            if (ss.fail()) {
-                throw std::runtime_error("Bad arguments...");
-            }
-            ss.clear();
-
-            ss << argv[2];
-            ss >> columns;
-            if (ss.fail()) {
-                throw std::runtime_error("Bad arguments...");
-            }
+            rows = task::helpers::ConvertString<int>(argv[1]);
+            columns = task::helpers::ConvertString<int>(argv[2]);
         }
         else {
             std::cout << "Enter count of rows and columns:" << std::endl;
@@ -46,5 +35,6 @@ int main(int argc, char* argv[]) {
         std::cerr << exception.what() << std::endl;
         return 1;
     }
+
     return 0;
 }
