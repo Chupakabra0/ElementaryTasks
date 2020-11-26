@@ -6,6 +6,7 @@
 #define FIRSTTASK_BOARDFACTORY_HPP
 
 #include "Board.hpp"
+#include "Services/ErrorHandler.hpp"
 
 namespace task::first {
     class BoardFactory {
@@ -25,8 +26,9 @@ namespace task::first {
             }
 
             // TODO nullptr check
-            auto* result = new Board(rowsCount, columnsCount,
+            auto* result = new(std::nothrow) Board(rowsCount, columnsCount,
                                      this->blackSymbol_, this->whiteSymbol_);
+            task::helpers::ErrorHandler::AssertAndExit(!result, "Memory lack...");
 
             auto outStarOrBlink = [this](unsigned short first, unsigned short second,
                                          auto predicate) -> value_type {

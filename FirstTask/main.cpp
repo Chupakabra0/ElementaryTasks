@@ -23,10 +23,17 @@ int main(int argc, char* argv[]) {
     task::helpers::ErrorHandler::AssertAndExit(rows < std::numeric_limits<unsigned short>::min() || columns < std::numeric_limits<unsigned short>::min(), "Rows or columns can't be lesser than 0...");
     task::helpers::ErrorHandler::AssertAndExit(rows > std::numeric_limits<unsigned short>::max() || columns > std::numeric_limits<unsigned short>::max(), "Rows or columns can't be greater than 65535...");
 
-    // TODO: all new checks on nullptr
-    auto* boardFactory = new task::first::BoardFactory('*', ' ');
-    auto* board = boardFactory->CreateBoard(rows, columns);
-    auto* view = new task::first::View(*board);
+    // TODO: functional object for catching new errors and removing
+    // repetitive code
+    auto* boardFactory = new(std::nothrow) task::first::BoardFactory('*', ' ');
+    task::helpers::ErrorHandler::AssertAndExit(!boardFactory, "Memory lack...");
+
+    auto* board        = boardFactory->CreateBoard(rows, columns);
+    task::helpers::ErrorHandler::AssertAndExit(!board, "Memory lack...");
+
+    auto* view         = new(std::nothrow) task::first::View(*board);
+    task::helpers::ErrorHandler::AssertAndExit(!view, "Memory lack...");
+
     view->Out();
     // TODO: maybe make some smart pointers
     delete view;
