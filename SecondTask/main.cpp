@@ -8,15 +8,17 @@
 
 int main(int argc, char* argv[]) {
     std::string flag;
+    auto firstLaunch = true;
     do {
         try {
             double firstHeight, firstWidth;
             double secondHeight, secondWidth;
-            if (argc >= 5) {
+            if (firstLaunch && argc >= 5) {
                 firstHeight  = task::helpers::ConvertString<double>(argv[1]);
                 firstWidth   = task::helpers::ConvertString<double>(argv[2]);
                 secondHeight = task::helpers::ConvertString<double>(argv[3]);
                 secondWidth  = task::helpers::ConvertString<double>(argv[4]);
+                firstLaunch = false;
             }
             else {
                 std::cout << "Creating first envelope." << std::endl << "Enter height:" << std::endl;
