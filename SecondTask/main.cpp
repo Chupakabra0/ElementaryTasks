@@ -1,10 +1,10 @@
 #include <algorithm>
 #include <iostream>
-//#include <sstream>
 #include <string>
 
 #include "Envelope.hpp"
 #include "View.hpp"
+#include "Helpers.hpp"
 
 int main(int argc, char* argv[]) {
     std::string flag;
@@ -13,18 +13,10 @@ int main(int argc, char* argv[]) {
             double firstHeight, firstWidth;
             double secondHeight, secondWidth;
             if (argc >= 5) {
-                firstHeight = strtod(argv[1], nullptr);
-                firstWidth = strtod(argv[2], nullptr);
-                secondHeight = strtod(argv[3], nullptr);
-                secondWidth = strtod(argv[4], nullptr);
-//                std::stringstream ss;
-//                ss << argv[1];
-//                ss >> firstHeight;
-//                if (ss.fail()) {
-//                    throw std::runtime_error("Bad arguments...");
-//                }
-
-//                ss.clear();
+                firstHeight  = task::helpers::ConvertString<double>(argv[1]);
+                firstWidth   = task::helpers::ConvertString<double>(argv[2]);
+                secondHeight = task::helpers::ConvertString<double>(argv[3]);
+                secondWidth  = task::helpers::ConvertString<double>(argv[4]);
             }
             else {
                 std::cout << "Creating first envelope." << std::endl << "Enter height:" << std::endl;

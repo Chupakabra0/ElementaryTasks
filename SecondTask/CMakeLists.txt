@@ -3,4 +3,4 @@ project(SecondTask)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(SecondTask main.cpp Envelope.hpp EnvelopeFunctions.cpp View.hpp)
+add_executable(SecondTask main.cpp Envelope.hpp EnvelopeFunctions.cpp View.hpp Helpers.hpp)
