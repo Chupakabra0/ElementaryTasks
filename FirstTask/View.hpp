@@ -9,14 +9,13 @@
 
 #include "ChessBoard.hpp"
 
-namespace task {
-    namespace first {
+namespace task::first {
         class View {
         public:
-            View() = delete;
+            View()  = delete;
             ~View() = default;
 
-            View(const Board &chessBoard) : chessBoard_(chessBoard) {
+            explicit View(const Board& chessBoard) : chessBoard_(chessBoard) {
 
             }
 
@@ -28,6 +27,5 @@ namespace task {
             Board chessBoard_;
         };
     }
-}
 
 #endif //FIRSTTASK_TASK_H

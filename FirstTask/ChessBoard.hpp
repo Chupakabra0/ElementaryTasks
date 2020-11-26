@@ -9,25 +9,20 @@
 #include <map>
 #include <cstring>
 
-namespace task {
-    namespace first {
+namespace task::first {
         class Board {
             using value_type = char;
         public:
-            Board() = delete;
+            Board()                        = delete;
+            Board(const Board &)           = default;
+            Board(Board &&) noexcept       = default;
+            Board& operator=(const Board&) = delete;
+            Board& operator=(Board&&)      = delete;
 
-            Board(const Board &) = default;
-
-            Board(Board &&) noexcept = default;
-
-            Board(unsigned short rowsAndColumns) : Board(rowsAndColumns, rowsAndColumns) {
-
-            }
+            explicit Board(unsigned short rowsAndColumns) : Board(rowsAndColumns, rowsAndColumns) {}
 
             Board(unsigned short rows, unsigned short columns)
-                    : Board(rows, columns, value_type('*'), value_type(' ')) {
-
-            }
+                    : Board(rows, columns, value_type('*'), value_type(' ')) {}
 
             Board(unsigned short rows, unsigned short columns, value_type blackSymbol, value_type whiteSymbol)
                     : blackSymbol_(blackSymbol), whiteSymbol_(whiteSymbol), rowsCount_(rows), columnsCount_(columns),
@@ -62,7 +57,6 @@ namespace task {
             [[nodiscard]] unsigned short GetRowsCount() const {
                 return this->rowsCount_;
             }
-
             void SetRowsCount(unsigned short rows) {
                 if (this->rowsCount_ == rows) {
                     return;
@@ -73,7 +67,6 @@ namespace task {
             [[nodiscard]] unsigned short GetColumnsCount() const {
                 return this->columnsCount_;
             }
-
             void SetColumnsCount(unsigned short columns) {
                 if (this->columnsCount_ == columns) {
                     return;
@@ -82,8 +75,7 @@ namespace task {
             }
 
             template<class OstreamType>
-            friend std::basic_ostream<OstreamType> &
-            operator<<(std::basic_ostream<OstreamType> &out, const Board &chessBoard) {
+            friend std::basic_ostream<OstreamType>& operator<<(std::basic_ostream<OstreamType> &out, const Board &chessBoard) {
                 auto i = 0u;
                 for (const auto &element : chessBoard.board_) {
                     out << element.second;
@@ -105,6 +97,5 @@ namespace task {
             std::map<std::string, value_type> board_;
         };
     }
-}
 
 #endif //FIRSTTASK_CHESSBOARD_HPP

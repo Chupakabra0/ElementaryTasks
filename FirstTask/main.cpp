@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
         int rows, columns;
 
         if (argc >= 3) {
-            rows = task::helpers::ConvertString<int>(argv[1]);
+            rows    = task::helpers::ConvertString<int>(argv[1]);
             columns = task::helpers::ConvertString<int>(argv[2]);
         }
         else {
@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
         if (!std::cin) {
             throw std::runtime_error("Bad input...");
         }
-        if (rows < 0 || columns < 0) {
+        if (rows < std::numeric_limits<unsigned short>::min() || columns < std::numeric_limits<unsigned short>::min()) {
             throw std::runtime_error("Rows or columns can't be lesser than 0...");
         }
         if (rows > std::numeric_limits<unsigned short>::max() || columns > std::numeric_limits<unsigned short>::max()) {

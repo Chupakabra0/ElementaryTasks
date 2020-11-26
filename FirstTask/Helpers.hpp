@@ -8,13 +8,12 @@
 #include <string>
 #include <sstream>
 
-namespace task {
-    namespace helpers {
-        template<typename Type>
-        Type ConvertString(const std::string& string);
+namespace task::helpers {
+    template<class Type>
+    Type ConvertString(const std::string& string);
 
-        template<typename Type>
-        Type ConvertString(const std::string& string) {
+    template<class Type>
+    Type ConvertString(const std::string& string) {
             std::stringstream stringStream;
             Type result;
 
@@ -28,5 +27,4 @@ namespace task {
             return result;
         }
     }
-}
 #endif //HELPERS_HELPERS_HPP
