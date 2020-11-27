@@ -43,7 +43,7 @@ namespace task::helpers {
 
     private:
         unsigned argc_;
-        char **argv_;
+        char**   argv_;
     };
 }
 

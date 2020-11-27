@@ -2,7 +2,9 @@
 
 #include "Models/Board/BoardFactory.hpp"
 
-#include "ViewModels/View.hpp"
+#include "ViewModels/ViewModel.hpp"
+
+#include "View/View.hpp"
 
 #include "Services/Errors/ErrorHandler.hpp"
 #include "Services/ConsoleValidator/ConsoleValidator.hpp"
@@ -41,7 +43,13 @@ int main(int argc, char* argv[]) {
                 (task::helpers::Error::MEMORY_LACK_ERROR);
     }
 
-    auto* view = new(std::nothrow) task::first::View(board);
+    auto* viewModel = new(std::nothrow) task::first::ViewModel(*board);
+    if (!viewModel) {
+        task::helpers::ErrorHandler::AssertAndExit
+                (task::helpers::Error::MEMORY_LACK_ERROR);
+    }
+
+    auto* view = new(std::nothrow) task::first::View(*viewModel);
     if (!view) {
         task::helpers::ErrorHandler::AssertAndExit
                 (task::helpers::Error::MEMORY_LACK_ERROR);
@@ -51,6 +59,7 @@ int main(int argc, char* argv[]) {
 
     // TODO: maybe make some smart pointers
     delete view;
+    delete viewModel;
     delete board;
     delete boardFactory;
     delete consoleValidator;

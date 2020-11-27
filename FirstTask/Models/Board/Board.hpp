@@ -15,11 +15,9 @@ namespace task::first {
             friend class BoardFactory;
             using value_type = char;
         public:
-            Board()                        = delete;
-            Board(const Board &)           = default;
-            Board(Board &&) noexcept       = default;
-            Board& operator=(const Board&) = delete;
-            Board& operator=(Board&&)      = delete;
+            Board()                 = delete;
+            Board(const Board&)     = default;
+            Board(Board&&) noexcept = default;
 
             [[nodiscard]] unsigned short GetRowsCount() const {
                 return this->rowsCount_;
@@ -62,7 +60,9 @@ namespace task::first {
             }
 
             template<class OstreamType>
-            friend std::basic_ostream<OstreamType>& operator<<(std::basic_ostream<OstreamType> &out, const Board &chessBoard) {
+            friend std::basic_ostream<OstreamType>& operator<<
+                    (std::basic_ostream<OstreamType>& out, const Board&
+                    chessBoard) {
                 auto i = 0u;
                 for (const auto& element : chessBoard.board_) {
                     out << element.second;

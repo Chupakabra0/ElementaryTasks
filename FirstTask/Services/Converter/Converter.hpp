@@ -21,7 +21,7 @@ namespace task::helpers {
 
         static value_type ConvertString(const std::string& string) {
             std::stringstream stringStream;
-            value_type result;
+            value_type result{};
 
             stringStream << string;
             stringStream >> result;
