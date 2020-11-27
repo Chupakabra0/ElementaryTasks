@@ -8,26 +8,28 @@
 #include <string>
 #include <sstream>
 
-#include "ErrorHandler.hpp"
+#include "../Errors/ErrorHandler.hpp"
 
 namespace task::helpers {
     template<class Type>
     class Converter {
         using value_type = Type;
     public:
-        Converter() = delete;
+        Converter()                 = delete;
         Converter(const Converter&) = delete;
-        Converter(Converter&&) = delete;
+        Converter(Converter&&)      = delete;
 
-        static value_type ConvertString(const std::string &string) {
+        static value_type ConvertString(const std::string& string) {
             std::stringstream stringStream;
             value_type result;
 
             stringStream << string;
             stringStream >> result;
 
-            task::helpers::ErrorHandler::AssertAndExit(stringStream.fail(),
-                                                       "Convert error...");
+            if (stringStream.fail()) {
+                task::helpers::ErrorHandler::AssertAndExit
+                        (task::helpers::Error::PARSE_DATA_ERROR);
+            }
 
             return result;
         }

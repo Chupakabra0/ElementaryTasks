@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+#include "ErrorCode.hpp"
+
 namespace task::helpers {
     class ErrorHandler {
     public:
@@ -15,25 +17,20 @@ namespace task::helpers {
         ErrorHandler(ErrorHandler&&)      = delete;
 
         template<class Stream = std::basic_ostream<char>>
-        static bool Assert(bool condition, const std::string& message, Stream&
+        static void Assert(Error code, Stream&
         stream = std::cerr) {
-            if (condition) {
-                stream << message << std::endl;
-            }
-            // TIP: it's interesting, but seems to be quite useless sometimes
-            return condition;
+            stream << ToString(code) << std::endl;
         }
 
-        static void Exit(int code = EXIT_FAILURE) {
-            exit(code);
+        static void Exit(int exitCode = EXIT_FAILURE) {
+            exit(exitCode);
         }
 
         template<class Stream = std::basic_ostream<char>>
-        static void AssertAndExit(bool condition, const std::string& message,
-                             Stream& stream = std::cerr, int code = EXIT_FAILURE) {
-            if (Assert(condition, message, stream)) {
-                Exit(code);
-            }
+        static void AssertAndExit(Error code, Stream& stream = std::cerr, int
+        exitCode = EXIT_FAILURE) {
+            Assert(code);
+            Exit(exitCode);
         }
 
         ~ErrorHandler() = default;

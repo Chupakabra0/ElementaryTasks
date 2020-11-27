@@ -6,7 +6,6 @@
 #define FIRSTTASK_BOARDFACTORY_HPP
 
 #include "Board.hpp"
-#include "Services/ErrorHandler.hpp"
 
 namespace task::first {
     class BoardFactory {
@@ -21,14 +20,17 @@ namespace task::first {
 
         task::first::Board* CreateBoard(unsigned short rowsCount,
                            unsigned short columnsCount) {
+            // TODO: delete this
             if (rowsCount == 0 || columnsCount == 0) {
                 return nullptr;
             }
 
-            // TODO nullptr check
             auto* result = new(std::nothrow) Board(rowsCount, columnsCount,
                                      this->blackSymbol_, this->whiteSymbol_);
-            task::helpers::ErrorHandler::AssertAndExit(!result, "Memory lack...");
+            if (!result) {
+                // TIP: i don't know, maybe I have to throw message
+                return nullptr;
+            }
 
             auto outStarOrBlink = [this](unsigned short first, unsigned short second,
                                          auto predicate) -> value_type {
@@ -38,12 +40,14 @@ namespace task::first {
                 return this->whiteSymbol_;
             };
 
-            for (unsigned short i = 0u; i < rowsCount; ++i) {
-                for (unsigned short j = 0u; j < columnsCount; ++j) {
+            for (auto i = static_cast<unsigned short>(0); i < rowsCount; ++i) {
+                for (auto j = static_cast<unsigned short>(0); j <
+                columnsCount; ++j) {
                     value_type symbol;
                     if (i % 2 == 0) {
                         symbol = outStarOrBlink(j % 2, 0u, std::equal_to<>());
-                    } else {
+                    }
+                    else {
                         symbol = outStarOrBlink(j % 2, 0u, std::not_equal_to<>());
                     }
                     result->board_.insert(std::pair<std::string, value_type>

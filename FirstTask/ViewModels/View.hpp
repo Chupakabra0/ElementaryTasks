@@ -15,14 +15,14 @@ namespace task::first {
             View()  = delete;
             ~View() = default;
 
-            explicit View(const Board& chessBoard) : chessBoard_(chessBoard) {}
+            explicit View(Board* chessBoard) : chessBoard_(chessBoard) {}
 
             void Out() const {
-                std::cout << this->chessBoard_ << std::endl;
+                std::cout << *this->chessBoard_ << std::endl;
             }
 
         private:
-            Board chessBoard_;
+            Board* chessBoard_;
         };
     }
 

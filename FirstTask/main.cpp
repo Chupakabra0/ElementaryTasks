@@ -1,44 +1,59 @@
 #include <iostream>
 
-#include "Models/Board/Board.hpp"
-#include "ViewModels/View.hpp"
-#include "Services/ErrorHandler.hpp"
-#include "Services/Converter.hpp"
 #include "Models/Board/BoardFactory.hpp"
 
+#include "ViewModels/View.hpp"
+
+#include "Services/Errors/ErrorHandler.hpp"
+#include "Services/ConsoleValidator/ConsoleValidator.hpp"
+
 int main(int argc, char* argv[]) {
-    int rows, columns;
+
+    unsigned short rows, columns;
+    auto* consoleValidator = new(std::nothrow) task::helpers::ConsoleValidator(argc,
+                                                                     argv);
 
     // TODO: maybe make input-class
-    if (argc >= 3) {
-        rows    = task::helpers::Converter<int>::ConvertString(argv[1]);
-        columns = task::helpers::Converter<int>::ConvertString(argv[2]);
+    if (consoleValidator->CheckEnoughArgc(3)) {
+        rows    = consoleValidator->ValidateByIndex<unsigned short>(1);
+        columns = consoleValidator->ValidateByIndex<unsigned short>(2);
     }
     else {
-        std::cout << "Enter count of rows and columns:" << std::endl;
-        std::cin >> rows >> columns;
-    }
+        std::cout << "Launch help:" << std::endl;
+        std::cout << "FirstTask.exe rowsCount columnsCount" << std::endl;
 
-    task::helpers::ErrorHandler::AssertAndExit(!std::cin, "Bad input...");
-    task::helpers::ErrorHandler::AssertAndExit(rows < std::numeric_limits<unsigned short>::min() || columns < std::numeric_limits<unsigned short>::min(), "Rows or columns can't be lesser than 0...");
-    task::helpers::ErrorHandler::AssertAndExit(rows > std::numeric_limits<unsigned short>::max() || columns > std::numeric_limits<unsigned short>::max(), "Rows or columns can't be greater than 65535...");
+        delete consoleValidator;
+        return EXIT_SUCCESS;
+    }
 
     // TODO: functional object for catching new errors and removing
     // repetitive code
+    // MAKE THIS SHIT!
     auto* boardFactory = new(std::nothrow) task::first::BoardFactory('*', ' ');
-    task::helpers::ErrorHandler::AssertAndExit(!boardFactory, "Memory lack...");
+    if (!boardFactory) {
+        task::helpers::ErrorHandler::AssertAndExit
+                (task::helpers::Error::MEMORY_LACK_ERROR);
+    }
 
-    auto* board        = boardFactory->CreateBoard(rows, columns);
-    task::helpers::ErrorHandler::AssertAndExit(!board, "Memory lack...");
+    auto* board = boardFactory->CreateBoard(rows, columns);
+    if (!board) {
+        task::helpers::ErrorHandler::AssertAndExit
+                (task::helpers::Error::MEMORY_LACK_ERROR);
+    }
 
-    auto* view         = new(std::nothrow) task::first::View(*board);
-    task::helpers::ErrorHandler::AssertAndExit(!view, "Memory lack...");
+    auto* view = new(std::nothrow) task::first::View(board);
+    if (!view) {
+        task::helpers::ErrorHandler::AssertAndExit
+                (task::helpers::Error::MEMORY_LACK_ERROR);
+    }
 
     view->Out();
+
     // TODO: maybe make some smart pointers
     delete view;
     delete board;
     delete boardFactory;
+    delete consoleValidator;
 
     return EXIT_SUCCESS;
 }

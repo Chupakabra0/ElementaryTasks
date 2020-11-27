@@ -41,6 +41,26 @@ namespace task::first {
                 this->columnsCount_ = columns;
             }
 
+            [[nodiscard]] value_type GetWhiteSymbol() const {
+                return this->whiteSymbol_;
+            }
+            void SetWhiteSymbol(value_type whiteSymbol) {
+                if (this->whiteSymbol_ == whiteSymbol) {
+                    return;
+                }
+                this->whiteSymbol_ = whiteSymbol;
+            }
+
+            [[nodiscard]] value_type GetBlackSymbol() const {
+                return this->blackSymbol_;
+            }
+            void SetBlackSymbol(value_type blackSymbol) {
+                if (this->blackSymbol_ == blackSymbol) {
+                    return;
+                }
+                this->blackSymbol_ = blackSymbol;
+            }
+
             template<class OstreamType>
             friend std::basic_ostream<OstreamType>& operator<<(std::basic_ostream<OstreamType> &out, const Board &chessBoard) {
                 auto i = 0u;
@@ -66,8 +86,8 @@ namespace task::first {
                     : blackSymbol_(blackSymbol), whiteSymbol_(whiteSymbol), rowsCount_(rows), columnsCount_(columns),
                       board_() {}
 
-            [[maybe_unused]] value_type whiteSymbol_;
-            [[maybe_unused]] value_type blackSymbol_;
+            value_type whiteSymbol_;
+            value_type blackSymbol_;
             unsigned short rowsCount_;
             unsigned short columnsCount_;
             std::map<std::string, value_type> board_;
