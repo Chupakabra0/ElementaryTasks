@@ -9,11 +9,14 @@
 
 #include "ErrorCode.hpp"
 
+// TOASK: does we need it?
 #define NO_THROW_NEW(pointer, ctor) auto* pointer = new(std::nothrow) ctor; \
-if (!pointer) { task::helpers::ErrorHandler::AssertAndExit            \
+if (!pointer) { task::helpers::ErrorHandler::AssertAndExit                  \
 (task::helpers::Error::MEMORY_LACK_ERROR);}
 
-#define NO_THROW_DELETE(pointer) delete pointer;
+#define NO_THROW_DELETE(pointer) delete pointer; pointer = nullptr;         \
+if (pointer) { task::helpers::ErrorHandler::AssertAndExit                   \
+(task::helpers::Error::MEMORY_CLEAN_ERROR);}
 
 namespace task::helpers {
 
