@@ -18,9 +18,10 @@ namespace task::helpers {
                 : argc_(argc), argv_(argv) {}
 
         template<class Type>
-        Type ValidateByIndex(unsigned index) const {
+        Type ValidateByIndex(unsigned index, bool predicate(const char[]) =
+                nullptr) const {
             return task::helpers::Converter<Type>::ConvertString
-            (this->argv_[index]);
+            (this->argv_[index], predicate);
         }
 
         [[nodiscard]] bool CheckEnoughArgc(unsigned argc) const {

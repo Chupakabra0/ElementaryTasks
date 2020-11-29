@@ -19,7 +19,14 @@ namespace task::helpers {
         Converter(const Converter&) = delete;
         Converter(Converter&&)      = delete;
 
-        static value_type ConvertString(const std::string& string) {
+        static value_type ConvertString(const std::string& string,
+                                        bool predicate(const char[])) {
+
+            if (predicate && !predicate(string.c_str())) {
+                task::helpers::ErrorHandler::AssertAndExit
+                        (task::helpers::Error::PARSE_DATA_ERROR);
+            }
+
             std::stringstream stringStream;
             value_type result{};
 
