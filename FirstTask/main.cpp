@@ -1,4 +1,5 @@
 #include <iostream>
+#include <regex>
 
 #include "Models/Board/BoardFactory.hpp"
 #include "ViewModels/ViewModel.hpp"
@@ -10,13 +11,20 @@ int main(int argc, char* argv[]) {
     unsigned short rows, columns;
     NO_THROW_NEW(consoleValidator, task::helpers::ConsoleValidator(argc, argv));
 
+    auto checkLetters = [](const char string[]) -> bool {
+        const std::regex lettersCheck("(\\d+?)");
+        return std::regex_match(string, lettersCheck);
+    };
+
     // TODO: maybe make input-class
     if (consoleValidator->CheckEnoughArgc(3)) {
-        rows    = consoleValidator->ValidateByIndex<unsigned short>(1);
-        columns = consoleValidator->ValidateByIndex<unsigned short>(2);
+        rows    = consoleValidator->ValidateByIndex<unsigned short>(1,
+                                                                    checkLetters);
+        columns = consoleValidator->ValidateByIndex<unsigned short>(2,
+                                                                    checkLetters);
     }
     else {
-        std::cout << "Arguments error:" << std::endl;
+        std::cout << "Arguments error..." << std::endl;
         std::cout << "FirstTask.exe rowsCount columnsCount" << std::endl;
 
         NO_THROW_DELETE(consoleValidator);
@@ -32,7 +40,7 @@ int main(int argc, char* argv[]) {
     NO_THROW_NEW(view, task::first::View(*viewModel));
 
     view->Out();
-    
+
     NO_THROW_DELETE(board);
     NO_THROW_DELETE(view);
     NO_THROW_DELETE(viewModel);
