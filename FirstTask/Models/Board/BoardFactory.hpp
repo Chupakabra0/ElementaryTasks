@@ -6,6 +6,7 @@
 #define FIRSTTASK_BOARDFACTORY_HPP
 
 #include "Board.hpp"
+#include "../../Services/Errors/ErrorHandler.hpp"
 
 namespace task::first {
     class BoardFactory {
@@ -20,17 +21,13 @@ namespace task::first {
 
         task::first::Board* CreateBoard(unsigned short rowsCount,
                            unsigned short columnsCount) {
-            // TODO: delete this
             if (rowsCount == 0 || columnsCount == 0) {
-                return nullptr;
+                task::helpers::ErrorHandler::AssertAndExit
+                (helpers::ARGUMENT_ZERO_ERROR);
             }
 
-            auto* result = new(std::nothrow) Board(rowsCount, columnsCount,
-                                     this->blackSymbol_, this->whiteSymbol_);
-            if (!result) {
-                // TIP: i don't know, maybe I have to throw message
-                return nullptr;
-            }
+            NO_THROW_NEW(result, Board(rowsCount, columnsCount,
+                                       this->blackSymbol_, this->whiteSymbol_));
 
             auto outStarOrBlink = [this](unsigned short first, unsigned short second,
                                          auto predicate) -> value_type {

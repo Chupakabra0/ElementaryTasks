@@ -1,19 +1,14 @@
 #include <iostream>
 
 #include "Models/Board/BoardFactory.hpp"
-
 #include "ViewModels/ViewModel.hpp"
-
 #include "View/View.hpp"
-
-#include "Services/Errors/ErrorHandler.hpp"
 #include "Services/ConsoleValidator/ConsoleValidator.hpp"
 
 int main(int argc, char* argv[]) {
 
     unsigned short rows, columns;
-    auto* consoleValidator = new(std::nothrow) task::helpers::ConsoleValidator(argc,
-                                                                     argv);
+    NO_THROW_NEW(consoleValidator, task::helpers::ConsoleValidator(argc, argv));
 
     // TODO: maybe make input-class
     if (consoleValidator->CheckEnoughArgc(3)) {
@@ -21,48 +16,27 @@ int main(int argc, char* argv[]) {
         columns = consoleValidator->ValidateByIndex<unsigned short>(2);
     }
     else {
-        std::cout << "Launch help:" << std::endl;
+        std::cout << "Arguments error:" << std::endl;
         std::cout << "FirstTask.exe rowsCount columnsCount" << std::endl;
 
-        delete consoleValidator;
+        NO_THROW_DELETE(consoleValidator);
+
         return EXIT_SUCCESS;
     }
 
-    // TODO: functional object for catching new errors and removing
-    // repetitive code
-    // MAKE THIS SHIT!
-    auto* boardFactory = new(std::nothrow) task::first::BoardFactory('*', ' ');
-    if (!boardFactory) {
-        task::helpers::ErrorHandler::AssertAndExit
-                (task::helpers::Error::MEMORY_LACK_ERROR);
-    }
+    NO_THROW_DELETE(consoleValidator);
 
+    NO_THROW_NEW(boardFactory, task::first::BoardFactory('*', ' '));
     auto* board = boardFactory->CreateBoard(rows, columns);
-    if (!board) {
-        task::helpers::ErrorHandler::AssertAndExit
-                (task::helpers::Error::MEMORY_LACK_ERROR);
-    }
-
-    auto* viewModel = new(std::nothrow) task::first::ViewModel(*board);
-    if (!viewModel) {
-        task::helpers::ErrorHandler::AssertAndExit
-                (task::helpers::Error::MEMORY_LACK_ERROR);
-    }
-
-    auto* view = new(std::nothrow) task::first::View(*viewModel);
-    if (!view) {
-        task::helpers::ErrorHandler::AssertAndExit
-                (task::helpers::Error::MEMORY_LACK_ERROR);
-    }
+    NO_THROW_NEW(viewModel, task::first::ViewModel(*board));
+    NO_THROW_NEW(view, task::first::View(*viewModel));
 
     view->Out();
-
-    // TODO: maybe make some smart pointers
-    delete view;
-    delete viewModel;
-    delete board;
-    delete boardFactory;
-    delete consoleValidator;
+    
+    NO_THROW_DELETE(board);
+    NO_THROW_DELETE(view);
+    NO_THROW_DELETE(viewModel);
+    NO_THROW_DELETE(boardFactory);
 
     return EXIT_SUCCESS;
 }

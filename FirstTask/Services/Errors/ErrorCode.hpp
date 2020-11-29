@@ -13,7 +13,8 @@ namespace task::helpers {
         NO_ERROR,
         MEMORY_LACK_ERROR,
         PARSE_DATA_ERROR,
-        CHECK_DATA_ERROR
+        CHECK_DATA_ERROR,
+        ARGUMENT_ZERO_ERROR
     };
 
     std::string ToString(Error error) {
@@ -26,6 +27,9 @@ namespace task::helpers {
             }
             case CHECK_DATA_ERROR: {
                 return std::string("Code 3: Check data error");
+            }
+            case ARGUMENT_ZERO_ERROR: {
+                return std::string("Code 4: Argument zero error");
             }
             default: {
                 return std::string("Code 0: No error");

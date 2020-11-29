@@ -9,10 +9,17 @@
 
 #include "ErrorCode.hpp"
 
+#define NO_THROW_NEW(pointer, ctor) auto* pointer = new(std::nothrow) ctor; \
+if (!pointer) { task::helpers::ErrorHandler::AssertAndExit            \
+(task::helpers::Error::MEMORY_LACK_ERROR);}
+
+#define NO_THROW_DELETE(pointer) delete pointer;
+
 namespace task::helpers {
+
     class ErrorHandler {
     public:
-        ErrorHandler()                    = default;
+        ErrorHandler()                    = delete;
         ErrorHandler(const ErrorHandler&) = delete;
         ErrorHandler(ErrorHandler&&)      = delete;
 
