@@ -12,11 +12,6 @@
 int main() {
     std::string flag;
     do {
-        NO_THROW_NEW(firstHeight, double());
-        NO_THROW_NEW(firstWidth, double());
-        NO_THROW_NEW(secondHeight, double());
-        NO_THROW_NEW(secondWidth, double());
-
         NO_THROW_NEW(consoleValidator, task::helpers::ConsoleInputValidator());
 
         auto positive = [](const char string[]) -> bool {
@@ -26,14 +21,14 @@ int main() {
         };
 
         std::cout << "Creating first envelope." << std::endl << "Enter height:" << std::endl;
-        firstHeight = consoleValidator->LoopInput<double>(positive);
+        auto* firstHeight = consoleValidator->LoopInput<double>(positive);
         std::cout << "Enter width:" << std::endl;
-        firstWidth = consoleValidator->LoopInput<double>(positive);
+        auto* firstWidth = consoleValidator->LoopInput<double>(positive);
 
         std::cout << "Creating second envelope." << std::endl << "Enter height:" << std::endl;
-        secondHeight = consoleValidator->LoopInput<double>(positive);
+        auto* secondHeight = consoleValidator->LoopInput<double>(positive);
         std::cout << "Enter width:" << std::endl;
-        secondWidth = consoleValidator->LoopInput<double>(positive);
+        auto* secondWidth = consoleValidator->LoopInput<double>(positive);
 
         const task::second::Envelope firstEnvelope(*firstHeight, *firstWidth);
         const task::second::Envelope secondEnvelope(*secondHeight,
@@ -54,8 +49,6 @@ int main() {
         NO_THROW_DELETE(firstWidth);
 
         std::cout << "Continue? [y/Yes]:";
-        // TODO consoleInputValidator template specialization for const
-        // char[] and also std::string
         std::cin >> flag;
         std::transform(flag.begin(), flag.end(), flag.begin(), toupper);
     } while (flag == "Y" || flag == "YES");
