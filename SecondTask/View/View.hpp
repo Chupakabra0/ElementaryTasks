@@ -5,6 +5,9 @@
 #ifndef SECONDTASK_VIEW_HPP
 #define SECONDTASK_VIEW_HPP
 
+#include <sstream>
+#include <string>
+
 #include "../ViewModels/ViewModel.hpp"
 
 namespace task::second {
@@ -17,19 +20,30 @@ namespace task::second {
         explicit View(const ViewModel& vm) : vm_(vm) {}
 
         void Out() const {
+            std::stringstream ss;
+            ss << "First envelope " << this->vm_.GetFirstEnvelope().GetHeight() << " x "
+               << this->vm_.GetFirstEnvelope().GetWidth() << " ";
             if (CanPutIn(this->vm_.GetFirstEnvelope(), this->vm_.GetSecondEnvelope())) {
-                std::cout << "First envelope can be put in second envelope" << std::endl;
+                ss << "can be put in second envelope";
             }
             else {
-                std::cout << "First envelope can NOT be put in second envelope" << std::endl;
+                ss << "can NOT be put in second envelope";
             }
+            ss << " " << this->vm_.GetSecondEnvelope().GetHeight() << " x "
+                  << this->vm_.GetSecondEnvelope().GetWidth() << std::endl;
 
+            ss << "Second envelope " << this->vm_.GetSecondEnvelope().GetHeight() << " x "
+               << this->vm_.GetSecondEnvelope().GetWidth() << " ";
             if (CanPutIn(this->vm_.GetSecondEnvelope(), this->vm_.GetFirstEnvelope())) {
-                std::cout << "Second envelope can be put in first envelope" << std::endl;
+                ss << "can be put in first envelope";
             }
             else {
-                std::cout << "Second envelope can NOT be put in first envelope" << std::endl;
+                ss << "can NOT be put in first envelope";
             }
+            ss << " " << this->vm_.GetFirstEnvelope().GetHeight() << " x "
+               << " " << this->vm_.GetFirstEnvelope().GetWidth() << std::endl;
+
+            std::cout << ss.str();
         }
 
         ~View() = default;

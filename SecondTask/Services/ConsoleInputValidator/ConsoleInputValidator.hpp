@@ -2,8 +2,8 @@
 // Created by Александр Сафиюлин on 30.11.2020.
 //
 
-#ifndef SECONDTASK_CONSOLEINPUT_HPP
-#define SECONDTASK_CONSOLEINPUT_HPP
+#ifndef SECONDTASK_CONSOLEINPUTVALIDATOR_HPP
+#define SECONDTASK_CONSOLEINPUTVALIDATOR_HPP
 
 #include <iostream>
 #include <string>
@@ -11,11 +11,11 @@
 #include "../Converter/Converter.hpp"
 
 namespace task::helpers {
-    class ConsoleInput {
+    class ConsoleInputValidator {
     public:
-        ConsoleInput()                        = default;
-        ConsoleInput(const ConsoleInput&)     = default;
-        ConsoleInput(ConsoleInput&&)          = default;
+        ConsoleInputValidator()                             = default;
+        ConsoleInputValidator(const ConsoleInputValidator&) = default;
+        ConsoleInputValidator(ConsoleInputValidator&&)      = default;
 
         template<class Type>
         Type* LoopInput(bool predicate(const char[]) = nullptr) {
@@ -26,7 +26,11 @@ namespace task::helpers {
                 if (std::cin) {
                     data = task::helpers::Converter<Type>::ConvertString
                             (temp, predicate);
-                    if (data) {
+                    if (!data) {
+                        task::helpers::ErrorHandler::Assert
+                                (task::helpers::Error::PARSE_DATA_ERROR);
+                    }
+                    else {
                         return data;
                     }
                 }
@@ -44,6 +48,9 @@ namespace task::helpers {
                 data = task::helpers::Converter<Type>::ConvertString
                         (temp, predicate);
             }
+            if (!data) {
+                task::helpers::ErrorHandler::AssertAndExit(task::helpers::Error::PARSE_DATA_ERROR);
+            }
             return data;
         }
 
@@ -52,4 +59,4 @@ namespace task::helpers {
     };
 }
 
-#endif //SECONDTASK_CONSOLEINPUT_HPP
+#endif //SECONDTASK_CONSOLEINPUTVALIDATOR_HPP

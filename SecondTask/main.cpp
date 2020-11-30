@@ -7,7 +7,7 @@
 #include "ViewModels/ViewModel.hpp"
 #include "View/View.hpp"
 #include "Services/Converter/Converter.hpp"
-#include "Services/ConsoleInput/ConsoleInput.hpp"
+#include "Services/ConsoleInputValidator/ConsoleInputValidator.hpp"
 
 int main() {
     std::string flag;
@@ -17,7 +17,7 @@ int main() {
         NO_THROW_NEW(secondHeight, double());
         NO_THROW_NEW(secondWidth, double());
 
-        NO_THROW_NEW(consoleValidator, task::helpers::ConsoleInput());
+        NO_THROW_NEW(consoleValidator, task::helpers::ConsoleInputValidator());
 
         auto positive = [](const char string[]) -> bool {
             const std::regex number(R"((^\d+?(\.\d+?$|$)))");

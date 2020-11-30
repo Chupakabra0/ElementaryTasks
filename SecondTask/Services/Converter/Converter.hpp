@@ -24,8 +24,6 @@ namespace task::helpers {
                                         bool predicate(const char[])) {
 
             if (predicate && !predicate(string.c_str())) {
-                task::helpers::ErrorHandler::Assert
-                        (task::helpers::Error::PARSE_DATA_ERROR);
                 return nullptr;
             }
 
@@ -36,8 +34,6 @@ namespace task::helpers {
             stringStream >> *result;
 
             if (stringStream.fail()) {
-                task::helpers::ErrorHandler::Assert
-                        (task::helpers::Error::PARSE_DATA_ERROR);
                 NO_THROW_DELETE(result);
                 return nullptr;
             }
