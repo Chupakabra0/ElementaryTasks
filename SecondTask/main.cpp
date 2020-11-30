@@ -1,54 +1,64 @@
 #include <algorithm>
 #include <iostream>
 #include <string>
+#include <regex>
 
 #include "Models/Envelope/Envelope.hpp"
-#include "ViewModels/View.hpp"
-#include "Services/Converter.hpp"
+#include "ViewModels/ViewModel.hpp"
+#include "View/View.hpp"
+#include "Services/Converter/Converter.hpp"
+#include "Services/ConsoleInput/ConsoleInput.hpp"
 
-int main(int argc, char* argv[]) {
+int main() {
     std::string flag;
-    auto firstLaunch = true;
     do {
-        double firstHeight, firstWidth;
-        double secondHeight, secondWidth;
+        NO_THROW_NEW(firstHeight, double());
+        NO_THROW_NEW(firstWidth, double());
+        NO_THROW_NEW(secondHeight, double());
+        NO_THROW_NEW(secondWidth, double());
 
-        // TODO multiple argv choose
-        if (firstLaunch && argc >= 5) {
-            firstHeight  = task::helpers::Converter<double>::ConvertString(argv[1]);
-            firstWidth   = task::helpers::Converter<double>::ConvertString(argv[2]);
-            secondHeight = task::helpers::Converter<double>::ConvertString(argv[3]);
-            secondWidth  = task::helpers::Converter<double>::ConvertString(argv[4]);
-            firstLaunch = false;
-        }
-        else {
-            std::cout << "Creating first envelope." << std::endl << "Enter height:" << std::endl;
-            std::cin >> firstHeight;
-            std::cout << "Enter width:" << std::endl;
-            std::cin >> firstWidth;
+        NO_THROW_NEW(consoleValidator, task::helpers::ConsoleInput());
 
-            std::cout << "Creating second envelope." << std::endl << "Enter height:" << std::endl;
-            std::cin >> secondHeight;
-            std::cout << "Enter width:" << std::endl;
-            std::cin >> secondWidth;
-        }
+        auto positive = [](const char string[]) -> bool {
+            const std::regex number(R"((^\d+?(\.\d+?$|$)))");
+            return std::regex_match(string, number)
+                && std::string(string).find('-') == std::string::npos;
+        };
 
-        task::helpers::ErrorHandler::AssertAndExit(!std::cin, "Bad input...");
-        task::helpers::ErrorHandler::AssertAndExit
-            (firstHeight < 0.0 || firstWidth < 0.0 || secondHeight < 0.0 ||
-            secondWidth < 0.0, "Heights and widths must be greater than 0...");
+        std::cout << "Creating first envelope." << std::endl << "Enter height:" << std::endl;
+        firstHeight = consoleValidator->LoopInput<double>(positive);
+        std::cout << "Enter width:" << std::endl;
+        firstWidth = consoleValidator->LoopInput<double>(positive);
 
-        const task::second::Envelope firstEnvelope(firstHeight, firstWidth);
-        const task::second::Envelope secondEnvelope(secondHeight, secondWidth);
+        std::cout << "Creating second envelope." << std::endl << "Enter height:" << std::endl;
+        secondHeight = consoleValidator->LoopInput<double>(positive);
+        std::cout << "Enter width:" << std::endl;
+        secondWidth = consoleValidator->LoopInput<double>(positive);
 
-        const auto* view = new task::second::View(firstEnvelope, secondEnvelope);
+        const task::second::Envelope firstEnvelope(*firstHeight, *firstWidth);
+        const task::second::Envelope secondEnvelope(*secondHeight,
+                                                    *secondWidth);
+
+        NO_THROW_NEW(viewModel, task::second::ViewModel(firstEnvelope,
+                                                    secondEnvelope));
+        NO_THROW_NEW(view, task::second::View(*viewModel));
+
         view->Out();
-        delete view;
+
+        NO_THROW_DELETE(view);
+        NO_THROW_DELETE(viewModel);
+        NO_THROW_DELETE(consoleValidator);
+        NO_THROW_DELETE(secondWidth);
+        NO_THROW_DELETE(secondHeight);
+        NO_THROW_DELETE(firstHeight);
+        NO_THROW_DELETE(firstWidth);
 
         std::cout << "Continue? [y/Yes]:";
+        // TODO consoleInputValidator template specialization for const
+        // char[] and also std::string
         std::cin >> flag;
         std::transform(flag.begin(), flag.end(), flag.begin(), toupper);
-    } while (flag != "Y" || flag != "YES");
+    } while (flag == "Y" || flag == "YES");
 
     return EXIT_SUCCESS;
 }

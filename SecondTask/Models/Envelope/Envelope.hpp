@@ -10,7 +10,7 @@ namespace task::second {
     public:
         Envelope() = delete;
         Envelope(const Envelope &) = default;
-        Envelope(Envelope &&) = default;
+        Envelope(Envelope &&)      = default;
 
         Envelope(double heightAndWidth) : Envelope(heightAndWidth, heightAndWidth) {}
         Envelope(double height, double width) : height_(height), width_(width) {}
@@ -34,6 +34,8 @@ namespace task::second {
             }
             this->width_ = width;
         }
+
+        Envelope& operator=(const Envelope&) = default;
 
         ~Envelope() = default;
 

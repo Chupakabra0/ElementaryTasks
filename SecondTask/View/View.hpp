@@ -1,33 +1,30 @@
 //
-// Created by Александр Сафиюлин on 25.11.2020.
+// Created by Александр Сафиюлин on 30.11.2020.
 //
 
 #ifndef SECONDTASK_VIEW_HPP
 #define SECONDTASK_VIEW_HPP
 
-#include <iostream>
-
-#include "../Models/Envelope/Envelope.hpp"
+#include "../ViewModels/ViewModel.hpp"
 
 namespace task::second {
     class View {
     public:
         View()            = delete;
-        View(const View&) = delete;
-        View(View&&)      = delete;
+        View(const View&) = default;
+        View(View&&)      = default;
 
-        View(const Envelope& firstEnvelope, const Envelope& secondEnvelope)
-            : firstEnvelope_(firstEnvelope), secondEnvelope_(secondEnvelope) {}
+        explicit View(const ViewModel& vm) : vm_(vm) {}
 
         void Out() const {
-            if (CanPutIn(this->firstEnvelope_, this->secondEnvelope_)) {
+            if (CanPutIn(this->vm_.GetFirstEnvelope(), this->vm_.GetSecondEnvelope())) {
                 std::cout << "First envelope can be put in second envelope" << std::endl;
             }
             else {
                 std::cout << "First envelope can NOT be put in second envelope" << std::endl;
             }
 
-            if (CanPutIn(this->secondEnvelope_, this->firstEnvelope_)) {
+            if (CanPutIn(this->vm_.GetSecondEnvelope(), this->vm_.GetFirstEnvelope())) {
                 std::cout << "Second envelope can be put in first envelope" << std::endl;
             }
             else {
@@ -38,8 +35,7 @@ namespace task::second {
         ~View() = default;
 
     private:
-        Envelope firstEnvelope_;
-        Envelope secondEnvelope_;
+        ViewModel vm_;
     };
 }
 
