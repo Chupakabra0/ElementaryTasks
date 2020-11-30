@@ -14,28 +14,32 @@ namespace task::helpers {
     template<class Type>
     class Converter {
         using value_type = Type;
+        using pointer    = value_type*;
     public:
         Converter()                 = delete;
         Converter(const Converter&) = delete;
         Converter(Converter&&)      = delete;
 
-        static value_type ConvertString(const std::string& string,
+        static pointer ConvertString(const std::string& string,
                                         bool predicate(const char[])) {
 
             if (predicate && !predicate(string.c_str())) {
-                task::helpers::ErrorHandler::AssertAndExit
-                        (task::helpers::Error::PARSE_DATA_ERROR);
+//                task::helpers::ErrorHandler::Assert
+//                        (task::helpers::Error::PARSE_DATA_ERROR);
+                return nullptr;
             }
 
             std::stringstream stringStream;
-            value_type result{};
+            NO_THROW_NEW(result, value_type());
 
             stringStream << string;
-            stringStream >> result;
+            stringStream >> *result;
 
             if (stringStream.fail()) {
-                task::helpers::ErrorHandler::AssertAndExit
-                        (task::helpers::Error::PARSE_DATA_ERROR);
+//                task::helpers::ErrorHandler::Assert
+//                        (task::helpers::Error::PARSE_DATA_ERROR);
+                NO_THROW_DELETE(result);
+                return nullptr;
             }
 
             return result;
