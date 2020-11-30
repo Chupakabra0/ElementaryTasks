@@ -10,7 +10,7 @@
 #include <sstream>
 
 namespace task::helpers {
-    enum Error : unsigned short {
+    enum class Error : unsigned short {
         NO_ERROR,
         NOT_IMPLEMENTED_ERROR,
         MEMORY_LACK_ERROR,
@@ -31,22 +31,22 @@ namespace task::helpers {
         };
 
         switch (error) {
-            case NOT_IMPLEMENTED_ERROR: {
+            case Error::NOT_IMPLEMENTED_ERROR: {
                 return formatErrorString("Not implemented error");
             }
-            case MEMORY_LACK_ERROR: {
+            case Error::MEMORY_LACK_ERROR: {
                 return formatErrorString("Memory lack error");
             }
-            case MEMORY_CLEAN_ERROR: {
+            case Error::MEMORY_CLEAN_ERROR: {
                 return formatErrorString("Memory clean error");
             }
-            case PARSE_DATA_ERROR: {
+            case Error::PARSE_DATA_ERROR: {
                 return formatErrorString("Parse data error");
             }
-            case CHECK_DATA_ERROR: {
+            case Error::CHECK_DATA_ERROR: {
                 return formatErrorString("Check data error");
             }
-            case ARGUMENT_ZERO_ERROR: {
+            case Error::ARGUMENT_ZERO_ERROR: {
                 return formatErrorString("Argument zero error");
             }
             default: {

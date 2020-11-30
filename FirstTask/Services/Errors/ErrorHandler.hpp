@@ -14,7 +14,7 @@
 if (!pointer) { task::helpers::ErrorHandler::AssertAndExit                  \
 (task::helpers::Error::MEMORY_LACK_ERROR);}
 
-#define NO_THROW_DELETE(pointer) delete pointer; pointer = nullptr;         \
+#define NO_THROW_DELETE(pointer) delete pointer;                            \
 if (pointer) { task::helpers::ErrorHandler::AssertAndExit                   \
 (task::helpers::Error::MEMORY_CLEAN_ERROR);}
 
