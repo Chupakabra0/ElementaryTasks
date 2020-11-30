@@ -12,7 +12,7 @@
 namespace task::first {
         class ViewModel {
         public:
-            ViewModel()                  = delete;
+            ViewModel()                  = default;
             ViewModel(const ViewModel&)  = default;
             ViewModel(ViewModel&&)       = default;
 
@@ -20,6 +20,9 @@ namespace task::first {
 
             [[nodiscard]] Board GetChessBoard() const {
                 return this->chessBoard_;
+            }
+            void SetChessBoard(const Board& chessBoard) {
+                this->chessBoard_ = chessBoard;
             }
 
             ~ViewModel() = default;

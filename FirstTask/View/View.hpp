@@ -10,7 +10,7 @@
 namespace task::first {
     class View {
     public:
-        View()             = delete;
+        View()            = delete;
         View(const View&) = delete;
         View(View&&)      = delete;
 

@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
         const std::regex lettersCheck("(\\d+?)");
         return std::regex_match(string, lettersCheck);
     };
-
+ 
     // TODO: maybe make input-class
     if (consoleValidator->CheckEnoughArgc(3)) {
         rows    = consoleValidator->ValidateByIndex<unsigned short>(1,

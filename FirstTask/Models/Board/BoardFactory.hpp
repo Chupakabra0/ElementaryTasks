@@ -23,7 +23,7 @@ namespace task::first {
                            unsigned short columnsCount) {
             if (rowsCount == 0 || columnsCount == 0) {
                 task::helpers::ErrorHandler::AssertAndExit
-                (helpers::ARGUMENT_ZERO_ERROR);
+                (helpers::Error::ARGUMENT_ZERO_ERROR);
             }
 
             NO_THROW_NEW(result, Board(rowsCount, columnsCount,

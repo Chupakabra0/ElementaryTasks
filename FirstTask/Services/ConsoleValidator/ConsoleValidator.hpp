@@ -10,7 +10,7 @@
 namespace task::helpers {
     class ConsoleValidator {
     public:
-        ConsoleValidator()                        = default;
+        ConsoleValidator()                        = delete;
         ConsoleValidator(const ConsoleValidator&) = default;
         ConsoleValidator(ConsoleValidator&&)      = default;
 

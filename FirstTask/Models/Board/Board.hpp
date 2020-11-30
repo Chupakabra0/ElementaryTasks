@@ -74,6 +74,8 @@ namespace task::first {
                 return out;
             }
 
+            Board& operator=(const Board&) = default;
+
             value_type& operator[](const std::string& key) {
                 return this->board_[key];
             }
