@@ -8,16 +8,15 @@
 
 int main(int argc, char* argv[]) {
 
-    NO_THROW_NEW(rows, unsigned short());
-    NO_THROW_NEW(columns, unsigned short());
+    unsigned short* rows;
+    unsigned short* columns;
     NO_THROW_NEW(consoleArgsValidator, task::helpers::ConsoleArgsValidator(argc, argv));
 
     auto checkLetters = [](const char string[]) -> bool {
         const std::regex lettersCheck(R"((\d+?))");
         return std::regex_match(string, lettersCheck);
     };
- 
-    // TODO: maybe make input-class
+    
     if (consoleArgsValidator->CheckEnoughArgc(3)) {
         rows    = consoleArgsValidator->ValidateByIndex<unsigned short>(1,
                                                                     checkLetters);
