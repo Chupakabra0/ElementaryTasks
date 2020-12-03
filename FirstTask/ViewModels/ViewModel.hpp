@@ -27,6 +27,7 @@ namespace task::first {
 
             ~ViewModel() = default;
         private:
+            // TIP: maybe unique_ptr...
             Board chessBoard_;
         };
     }

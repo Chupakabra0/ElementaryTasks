@@ -11,8 +11,9 @@
 
 namespace task::first {
         class Board {
-            // TIP: VERY VERY doubtful thing...
+            // TODO: remove
             friend class BoardFactory;
+            //
             using value_type = char;
         public:
             Board()                 = delete;

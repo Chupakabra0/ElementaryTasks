@@ -18,13 +18,11 @@ namespace task::helpers {
                 : argc_(argc), argv_(argv) {}
 
         template<class Type>
-        Type* ValidateByIndex(unsigned index, bool predicate(const char[]) =
-                nullptr) const {
-            auto* result = task::helpers::Converter<Type>::ConvertString
-            (this->argv_[index], predicate);
-            if (!result) {
-                task::helpers::ErrorHandler::AssertAndExit(task::helpers::Error::PARSE_DATA_ERROR);
-            }
+        std::unique_ptr<Type> ValidateByIndex(const unsigned index, bool
+        predicate(const char[]) = nullptr) const {
+            auto result = std::move(task::helpers::Converter<Type>::ConvertString
+            (this->argv_[index], predicate));
+
             return result;
         }
 

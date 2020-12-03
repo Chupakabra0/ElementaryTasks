@@ -19,38 +19,38 @@ namespace task::first {
         BoardFactory(value_type blackSymbol, value_type whiteSymbol)
             : blackSymbol_(blackSymbol), whiteSymbol_(whiteSymbol) {}
 
-        task::first::Board* CreateBoard(unsigned short rowsCount,
-                           unsigned short columnsCount) {
+        std::unique_ptr<task::first::Board> CreateBoard
+        (unsigned short rowsCount, unsigned short columnsCount) {
             if (rowsCount == 0 || columnsCount == 0) {
-                task::helpers::ErrorHandler::AssertAndExit
-                (helpers::Error::ARGUMENT_ZERO_ERROR);
+                return nullptr;
             }
 
-            NO_THROW_NEW(result, Board(rowsCount, columnsCount,
-                                       this->blackSymbol_, this->whiteSymbol_));
-
-            auto outStarOrBlink = [this](unsigned short first, unsigned short second,
-                                         auto predicate) -> value_type {
-                if (predicate(first, second)) {
-                    return this->blackSymbol_;
-                }
-                return this->whiteSymbol_;
-            };
+            std::unique_ptr<task::first::Board> result
+                (new(std::nothrow)
+                Board(rowsCount, columnsCount, this->blackSymbol_,
+                 this->whiteSymbol_));
+            if (nullptr == result) {
+                return nullptr;
+            }
 
             for (auto i = static_cast<unsigned short>(0); i < rowsCount; ++i) {
                 for (auto j = static_cast<unsigned short>(0); j <
                 columnsCount; ++j) {
                     value_type symbol;
                     if (i % 2 == 0) {
-                        symbol = outStarOrBlink(j % 2, 0u, std::equal_to<>());
+                        symbol = this->outStarOrBlink(j % 2, 0u,
+                                                      std::equal_to<>());
                     }
                     else {
-                        symbol = outStarOrBlink(j % 2, 0u, std::not_equal_to<>());
+                        symbol = this->outStarOrBlink(j % 2, 0u,
+                                                      std::not_equal_to<>());
                     }
-                    result->board_.insert(std::pair<std::string, value_type>
-                            (getKey(std::string(1u, 'A' + i),
+                    // TODO: insert public method
+                    result->board_.insert(std::map<std::string,
+                                          value_type>::value_type
+                                          (getKey(std::string(1u, 'A' + i),
                                           std::string(1u, j + 1 + '0')),
-                             symbol));
+                                                                  symbol));
                 }
             }
 
@@ -64,6 +64,15 @@ namespace task::first {
         number) {
             return letter + number;
         }
+
+        template<class Predicate>
+        value_type outStarOrBlink(unsigned short first, unsigned short second,
+                                  Predicate predicate) {
+            if (predicate(first, second)) {
+                return this->blackSymbol_;
+            }
+            return this->whiteSymbol_;
+        };
 
         value_type whiteSymbol_;
         value_type blackSymbol_;
