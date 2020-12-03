@@ -11,9 +11,6 @@
 
 namespace task::first {
         class Board {
-            // TODO: remove
-            friend class BoardFactory;
-            //
             using value_type = char;
         public:
             Board()                 = delete;
@@ -58,6 +55,12 @@ namespace task::first {
                     return;
                 }
                 this->blackSymbol_ = blackSymbol;
+            }
+
+            void Insert
+                (const std::map<std::string, value_type>::value_type& element) {
+                // TIP: Maybe I have to create some checks
+                this->board_.insert(element);
             }
 
             template<class OstreamType>

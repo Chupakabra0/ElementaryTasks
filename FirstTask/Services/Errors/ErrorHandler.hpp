@@ -18,8 +18,7 @@ namespace task::helpers {
         ErrorHandler(ErrorHandler&&)      = delete;
 
         template<class Stream = std::basic_ostream<char>>
-        static void Assert(Error code, Stream&
-        stream = std::cerr) {
+        static void Assert(Error code, Stream& stream = std::cerr) {
             stream << ToString(code) << std::endl;
         }
 
@@ -28,8 +27,8 @@ namespace task::helpers {
         }
 
         template<class Stream = std::basic_ostream<char>>
-        static void AssertAndExit(Error code, Stream& stream = std::cerr, int
-        exitCode = EXIT_FAILURE) {
+        static void AssertAndExit
+            (Error code, Stream& stream = std::cerr, int exitCode = EXIT_FAILURE) {
             Assert(code);
             Exit(exitCode);
         }

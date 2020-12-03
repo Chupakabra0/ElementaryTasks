@@ -45,12 +45,9 @@ namespace task::first {
                         symbol = this->outStarOrBlink(j % 2, 0u,
                                                       std::not_equal_to<>());
                     }
-                    // TODO: insert public method
-                    result->board_.insert(std::map<std::string,
-                                          value_type>::value_type
-                                          (getKey(std::string(1u, 'A' + i),
-                                          std::string(1u, j + 1 + '0')),
-                                                                  symbol));
+                    result->Insert(std::map<std::string, value_type>::value_type
+                        (getKey(std::string(1u, 'A' + i),
+                                std::string(1u, j + 1 + '0')), symbol));
                 }
             }
 
@@ -60,8 +57,8 @@ namespace task::first {
         ~BoardFactory() = default;
 
     protected:
-        static std::string getKey(const std::string& letter, const std::string&
-        number) {
+        static inline std::string getKey
+            (const std::string& letter, const std::string& number) {
             return letter + number;
         }
 
