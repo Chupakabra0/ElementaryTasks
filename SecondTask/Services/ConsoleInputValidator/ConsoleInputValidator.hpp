@@ -18,15 +18,16 @@ namespace task::helpers {
         ConsoleInputValidator(ConsoleInputValidator&&)      = default;
 
         template<class Type>
-        Type* LoopInput(bool predicate(const char[]) = nullptr) {
-            Type* data;
+        std::unique_ptr<Type> LoopInput(bool predicate(const char[]) = nullptr) {
+            std::unique_ptr<Type> data;
             std::string temp;
             do {
-                std::cin >> temp;
+                getline(std::cin, temp);
                 if (std::cin) {
-                    data = task::helpers::Converter<Type>::ConvertString
-                            (temp, predicate);
-                    if (!data) {
+                    data = std::move(task::helpers::Converter<Type>::ConvertString
+                            (temp, predicate));
+
+                    if (nullptr == data) {
                         task::helpers::ErrorHandler::Assert
                                 (task::helpers::Error::PARSE_DATA_ERROR);
                     }
@@ -40,15 +41,15 @@ namespace task::helpers {
         }
 
         template<class Type>
-        Type* Input(bool predicate(const std::string&) = nullptr) {
-            Type* data;
+        std::unique_ptr<Type> Input(bool predicate(const char[]) = nullptr) {
+            std::unique_ptr<Type> data;
             std::string temp;
-            std::cin >> temp;
+            getline(std::cin, temp);
             if (std::cin) {
-                data = task::helpers::Converter<Type>::ConvertString
-                        (temp, predicate);
+                data = std::move(task::helpers::Converter<Type>::ConvertString
+                        (temp, predicate));
             }
-            if (!data) {
+            if (nullptr == data) {
                 task::helpers::ErrorHandler::AssertAndExit(task::helpers::Error::PARSE_DATA_ERROR);
             }
             return data;

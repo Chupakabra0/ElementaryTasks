@@ -9,15 +9,6 @@
 
 #include "ErrorCode.hpp"
 
-// TOASK: does we need it?
-#define NO_THROW_NEW(pointer, ctor) auto* pointer = new(std::nothrow) ctor; \
-if (!pointer) { task::helpers::ErrorHandler::AssertAndExit                  \
-(task::helpers::Error::MEMORY_LACK_ERROR);}
-
-#define NO_THROW_DELETE(pointer) delete pointer; pointer = nullptr;         \
-if (pointer) { task::helpers::ErrorHandler::AssertAndExit                   \
-(task::helpers::Error::MEMORY_CLEAN_ERROR);}
-
 namespace task::helpers {
 
     class ErrorHandler {
@@ -27,8 +18,7 @@ namespace task::helpers {
         ErrorHandler(ErrorHandler&&)      = delete;
 
         template<class Stream = std::basic_ostream<char>>
-        static void Assert(Error code, Stream&
-        stream = std::cerr) {
+        static void Assert(Error code, Stream& stream = std::cerr) {
             stream << ToString(code) << std::endl;
         }
 
@@ -37,8 +27,8 @@ namespace task::helpers {
         }
 
         template<class Stream = std::basic_ostream<char>>
-        static void AssertAndExit(Error code, Stream& stream = std::cerr, int
-        exitCode = EXIT_FAILURE) {
+        static void AssertAndExit
+            (Error code, Stream& stream = std::cerr, int exitCode = EXIT_FAILURE) {
             Assert(code);
             Exit(exitCode);
         }
@@ -46,7 +36,7 @@ namespace task::helpers {
         ~ErrorHandler() = default;
 
     private:
-        // TODO replace cerr, or make fields and remove static functions
+
     };
 }
 
