@@ -8,31 +8,33 @@
 
 int main(int argc, char* argv[]) {
 
-    // TIP: maybe func or class or functor
-    const auto nullCheck = [](const auto& pointer) -> void {
-        if (nullptr != pointer) return;
-        task::helpers::ErrorHandler::AssertAndExit
-                (task::helpers::Error::MEMORY_LACK_ERROR);
-    };
-
-    std::unique_ptr<unsigned short> rows, columns;
+    std::unique_ptr<unsigned short> rowsCount, columnsCount;
     std::unique_ptr<task::helpers::ConsoleArgsValidator> consoleArgsValidator
             (new(std::nothrow) task::helpers::ConsoleArgsValidator(argc, argv));
-    nullCheck(consoleArgsValidator);
+    if (nullptr == consoleArgsValidator) {
+        task::helpers::ErrorHandler::AssertAndExit
+            (task::helpers::Error::MEMORY_LACK_ERROR);
+    }
 
     const auto checkLetters = [](const char string[]) -> bool {
         const std::regex lettersCheck(R"((\d+?))");
         return std::regex_match(string, lettersCheck);
     };
-    
-    if (consoleArgsValidator->CheckEnoughArgc(3)) {
-        rows    = std::move(consoleArgsValidator->ValidateByIndex<unsigned
-                short>(1, checkLetters));
-        nullCheck(rows);
 
-        columns = std::move(consoleArgsValidator->ValidateByIndex<unsigned
+    if (consoleArgsValidator->CheckEnoughArgc(3)) {
+        rowsCount    = std::move(consoleArgsValidator->ValidateByIndex<unsigned
+                short>(1, checkLetters));
+        if (nullptr == rowsCount) {
+            task::helpers::ErrorHandler::AssertAndExit
+                    (task::helpers::Error::PARSE_DATA_ERROR);
+        }
+
+        columnsCount = std::move(consoleArgsValidator->ValidateByIndex<unsigned
                 short>(2, checkLetters));
-        nullCheck(columns);
+        if (nullptr == columnsCount) {
+            task::helpers::ErrorHandler::AssertAndExit
+                    (task::helpers::Error::PARSE_DATA_ERROR);
+        }
     }
     else {
         std::cout << "Arguments error..." << std::endl;
@@ -43,19 +45,31 @@ int main(int argc, char* argv[]) {
 
     std::unique_ptr<task::first::BoardFactory> boardFactory
         (new(std::nothrow) task::first::BoardFactory('*', ' '));
-    nullCheck(boardFactory);
+    if (nullptr == boardFactory) {
+        task::helpers::ErrorHandler::AssertAndExit
+                (task::helpers::Error::MEMORY_LACK_ERROR);
+    }
 
     std::unique_ptr<task::first::Board> board
-        (std::move(boardFactory->CreateBoard(*rows, *columns)));
-    nullCheck(board);
+        (std::move(boardFactory->CreateBoard(*rowsCount, *columnsCount)));
+    if (nullptr == board) {
+        task::helpers::ErrorHandler::AssertAndExit
+                (task::helpers::Error::MEMORY_LACK_ERROR);
+    }
 
     std::unique_ptr<task::first::ViewModel> viewModel
         (new(std::nothrow) task::first::ViewModel(*board));
-    nullCheck(viewModel);
+    if (nullptr == viewModel) {
+        task::helpers::ErrorHandler::AssertAndExit
+                (task::helpers::Error::MEMORY_LACK_ERROR);
+    }
 
     std::unique_ptr<task::first::View> view
         (new(std::nothrow) task::first::View(*viewModel));
-    nullCheck(view);
+    if (nullptr == view) {
+        task::helpers::ErrorHandler::AssertAndExit
+                (task::helpers::Error::MEMORY_LACK_ERROR);
+    }
 
     view->Out();
 
