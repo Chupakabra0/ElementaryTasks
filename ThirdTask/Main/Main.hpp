@@ -33,32 +33,36 @@ namespace task::third {
 													  task::helpers::ConsoleInputValidator());
 				if (nullptr == consoleInputValidator)
 				{
-					task::helpers::ErrorHandler::AssertAndExit
-							(task::helpers::Error::MEMORY_LACK_ERROR);
+					std::cerr << "Memory error" << std::endl;
+
+					return EXIT_FAILURE;
 				}
 
 				std::unique_ptr<task::helpers::StringCleaner> stringCleaner(new
 				(std::nothrow) task::helpers::StringCleaner(' '));
 				if (nullptr == stringCleaner)
 				{
-					task::helpers::ErrorHandler::AssertAndExit
-							(task::helpers::Error::MEMORY_LACK_ERROR);
+					std::cerr << "Memory error" << std::endl;
+
+					return EXIT_FAILURE;
 				}
 
 				std::unique_ptr<task::helpers::StringSplitter> stringSplitter(new
 				(std::nothrow) task::helpers::StringSplitter(','));
 				if (nullptr == stringSplitter)
 				{
-					task::helpers::ErrorHandler::AssertAndExit
-							(task::helpers::Error::MEMORY_LACK_ERROR);
+					std::cerr << "Memory error" << std::endl;
+
+					return EXIT_FAILURE;
 				}
 
 				std::unique_ptr<std::string> triangleString = std::move
 						(consoleInputValidator->LoopInput<std::string>());
 				if (nullptr == triangleString)
 				{
-					task::helpers::ErrorHandler::AssertAndExit
-							(task::helpers::Error::MEMORY_LACK_ERROR);
+					std::cerr << "Memory error" << std::endl;
+
+					return EXIT_FAILURE;
 				}
 
 				*triangleString = stringCleaner->Clean(*triangleString);
@@ -68,8 +72,7 @@ namespace task::third {
 
 				if (triangleParams.size() < 4)
 				{
-					task::helpers::ErrorHandler::Assert
-							(task::helpers::Error::PARSE_DATA_ERROR);
+					std::cerr << "Parse data error" << std::endl;
 				}
 				else
 				{
@@ -96,8 +99,9 @@ namespace task::third {
 					if (nullptr == triangleName || nullptr == firstSide ||
 						nullptr == secondSide || nullptr == thirdSide)
 					{
-						task::helpers::ErrorHandler::Assert
-								(task::helpers::Error::PARSE_DATA_ERROR);
+						std::cerr << "Parse data error" << std::endl;
+
+						return EXIT_FAILURE;
 					}
 					else
 					{
@@ -106,8 +110,9 @@ namespace task::third {
 										 (*triangleName, *firstSide, *secondSide, *thirdSide));
 
 						if (nullptr == triangle) {
-							task::helpers::ErrorHandler::Assert
-									(task::helpers::Error::PARSE_DATA_ERROR);
+							std::cerr << "Triangle creation error" << std::endl;
+
+							return EXIT_FAILURE;
 						}
 						else {
 							triangleMultiset.insert(std::move(*triangle));

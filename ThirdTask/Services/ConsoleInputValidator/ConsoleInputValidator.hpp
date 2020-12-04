@@ -37,8 +37,7 @@ namespace task::helpers
 							(task::helpers::Converter<Type>::ConvertString(temp, predicate));
 					if (nullptr == data)
 					{
-						task::helpers::ErrorHandler::Assert
-								(task::helpers::Error::PARSE_DATA_ERROR);
+						std::cerr << "Input data error" << std::endl;
 					}
 					else
 					{
@@ -46,7 +45,7 @@ namespace task::helpers
 					}
 				}
 
-				std::cerr << std::endl <<  "Try again." << std::endl;
+				std::cerr << std::endl << "Try again." << std::endl;
 				std::cin.clear();
 			} while (true);
 		}
@@ -60,14 +59,13 @@ namespace task::helpers
 				getline(std::cin, temp);
 				if (!std::cin || (nullptr != predicate && !predicate(temp.c_str())))
 				{
-					task::helpers::ErrorHandler::Assert
-								(task::helpers::Error::PARSE_DATA_ERROR);
+					std::cerr << "Input data error" << std::endl;
 				}
 				else {
 					return std::make_unique<std::string>(temp);
 				}
 
-				std::cerr << std::endl <<  "Try again." << std::endl;
+				std::cerr << std::endl << "Try again." << std::endl;
 				std::cin.clear();
 			} while (true);
 		}
@@ -85,8 +83,7 @@ namespace task::helpers
 			}
 			if (!data)
 			{
-				task::helpers::ErrorHandler::AssertAndExit(
-						task::helpers::Error::PARSE_DATA_ERROR);
+				std::cerr << "Input data error" << std::endl;
 			}
 			return data;
 		}
@@ -99,8 +96,7 @@ namespace task::helpers
 			getline(std::cin, temp);
 			if (!std::cin || (nullptr != predicate && !predicate(temp.c_str())))
 			{
-				task::helpers::ErrorHandler::AssertAndExit(
-						task::helpers::Error::PARSE_DATA_ERROR);
+				std::cerr << "Input data error" << std::endl;
 			}
 			data = std::move(std::make_unique<std::string>(temp));
 			return data;
