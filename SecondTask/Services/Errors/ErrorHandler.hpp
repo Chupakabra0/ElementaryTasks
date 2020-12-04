@@ -9,35 +9,44 @@
 
 #include "ErrorCode.hpp"
 
-namespace task::helpers {
+namespace task::helpers
+{
 
-    class ErrorHandler {
-    public:
-        ErrorHandler()                    = delete;
-        ErrorHandler(const ErrorHandler&) = delete;
-        ErrorHandler(ErrorHandler&&)      = delete;
+	class ErrorHandler
+	{
+	public:
+		ErrorHandler() = delete;
 
-        template<class Stream = std::basic_ostream<char>>
-        static void Assert(Error code, Stream& stream = std::cerr) {
-            stream << ToString(code) << std::endl;
-        }
+		ErrorHandler(const ErrorHandler&) = delete;
 
-        static void Exit(int exitCode = EXIT_FAILURE) {
-            exit(exitCode);
-        }
+		ErrorHandler(ErrorHandler&&) = delete;
 
-        template<class Stream = std::basic_ostream<char>>
-        static void AssertAndExit
-            (Error code, Stream& stream = std::cerr, int exitCode = EXIT_FAILURE) {
-            Assert(code);
-            Exit(exitCode);
-        }
+		template<class Stream = std::basic_ostream<char>>
+		static void Assert(Error code, Stream& stream = std::cerr)
+		{
+			stream << ToString(code) << std::endl;
+		}
 
-        ~ErrorHandler() = default;
+		static void Exit(int exitCode = EXIT_FAILURE)
+		{
+			exit(exitCode);
+		}
 
-    private:
+		template<class Stream = std::basic_ostream<char>>
+		static void AssertAndExit
+				(
+						Error code, Stream& stream = std::cerr,
+						int exitCode = EXIT_FAILURE)
+		{
+			Assert(code);
+			Exit(exitCode);
+		}
 
-    };
+		~ErrorHandler() = default;
+
+	private:
+
+	};
 }
 
 #endif //HELPERS_ERRORHANDLER_HPP

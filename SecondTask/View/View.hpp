@@ -10,47 +10,61 @@
 
 #include "../ViewModels/ViewModel.hpp"
 
-namespace task::second {
-    class View {
-    public:
-        View()            = delete;
-        View(const View&) = default;
-        View(View&&)      = default;
+namespace task::second
+{
+	class View
+	{
+	public:
+		View() = delete;
 
-        explicit View(const ViewModel& vm) : vm_(vm) {}
+		View(const View&) = default;
 
-        void Out() const {
-            std::stringstream ss;
-            ss << "First envelope " << this->vm_.GetFirstEnvelope().GetHeight() << " x "
-               << this->vm_.GetFirstEnvelope().GetWidth() << " ";
-            if (CanPutIn(this->vm_.GetFirstEnvelope(), this->vm_.GetSecondEnvelope())) {
-                ss << "can be put in second envelope";
-            }
-            else {
-                ss << "can NOT be put in second envelope";
-            }
-            ss << " " << this->vm_.GetSecondEnvelope().GetHeight() << " x "
-                  << this->vm_.GetSecondEnvelope().GetWidth() << std::endl;
+		View(View&&) = default;
 
-            ss << "Second envelope " << this->vm_.GetSecondEnvelope().GetHeight() << " x "
-               << this->vm_.GetSecondEnvelope().GetWidth() << " ";
-            if (CanPutIn(this->vm_.GetSecondEnvelope(), this->vm_.GetFirstEnvelope())) {
-                ss << "can be put in first envelope";
-            }
-            else {
-                ss << "can NOT be put in first envelope";
-            }
-            ss << " " << this->vm_.GetFirstEnvelope().GetHeight() << " x "
-               << " " << this->vm_.GetFirstEnvelope().GetWidth() << std::endl;
+		explicit View(const ViewModel& vm) : vm_(vm)
+		{}
 
-            std::cout << ss.str();
-        }
+		void Out() const
+		{
+			std::stringstream ss;
+			ss << "First envelope " << this->vm_.GetFirstEnvelope().GetHeight()
+			   << " x "
+			   << this->vm_.GetFirstEnvelope().GetWidth() << " ";
+			if (CanPutIn(this->vm_.GetFirstEnvelope(),
+						 this->vm_.GetSecondEnvelope()))
+			{
+				ss << "can be put in second envelope";
+			}
+			else
+			{
+				ss << "can NOT be put in second envelope";
+			}
+			ss << " " << this->vm_.GetSecondEnvelope().GetHeight() << " x "
+			   << this->vm_.GetSecondEnvelope().GetWidth() << std::endl;
 
-        ~View() = default;
+			ss << "Second envelope "
+			   << this->vm_.GetSecondEnvelope().GetHeight() << " x "
+			   << this->vm_.GetSecondEnvelope().GetWidth() << " ";
+			if (CanPutIn(this->vm_.GetSecondEnvelope(),
+						 this->vm_.GetFirstEnvelope()))
+			{
+				ss << "can be put in first envelope";
+			}
+			else
+			{
+				ss << "can NOT be put in first envelope";
+			}
+			ss << " " << this->vm_.GetFirstEnvelope().GetHeight() << " x "
+			   << " " << this->vm_.GetFirstEnvelope().GetWidth() << std::endl;
 
-    private:
-        ViewModel vm_;
-    };
+			std::cout << ss.str();
+		}
+
+		~View() = default;
+
+	private:
+		ViewModel vm_;
+	};
 }
 
 #endif //SECONDTASK_VIEW_HPP

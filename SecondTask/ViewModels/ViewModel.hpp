@@ -9,37 +9,49 @@
 
 #include "../Models/Envelope/Envelope.hpp"
 
-namespace task::second {
-    class ViewModel {
-    public:
-        ViewModel()                 = delete;
-        ViewModel(const ViewModel&) = default;
-        ViewModel(ViewModel&&)      = default;
+namespace task::second
+{
+	class ViewModel
+	{
+	public:
+		ViewModel() = delete;
 
-        explicit ViewModel(const Envelope& firstEnvelope, const Envelope&
-        secondEnvelope)
-            : firstEnvelope_(firstEnvelope), secondEnvelope_(secondEnvelope) {}
+		ViewModel(const ViewModel&) = default;
 
-        [[nodiscard]] Envelope GetFirstEnvelope() const {
-            return this->firstEnvelope_;
-        }
-        void SetFirstEnvelope(const Envelope& envelope) {
-            this->firstEnvelope_ = envelope;
-        }
+		ViewModel(ViewModel&&) = default;
 
-        [[nodiscard]] Envelope GetSecondEnvelope() const {
-            return this->secondEnvelope_;
-        }
-        void SetSecondEnvelope(const Envelope& envelope) {
-            this->secondEnvelope_ = envelope;
-        }
+		explicit ViewModel(
+				const Envelope& firstEnvelope, const Envelope&
+		secondEnvelope)
+				: firstEnvelope_(firstEnvelope), secondEnvelope_(secondEnvelope)
+		{}
 
-        ~ViewModel() = default;
+		[[nodiscard]] Envelope GetFirstEnvelope() const
+		{
+			return this->firstEnvelope_;
+		}
 
-    private:
-        Envelope firstEnvelope_;
-        Envelope secondEnvelope_;
-    };
+		void SetFirstEnvelope(const Envelope& envelope)
+		{
+			this->firstEnvelope_ = envelope;
+		}
+
+		[[nodiscard]] Envelope GetSecondEnvelope() const
+		{
+			return this->secondEnvelope_;
+		}
+
+		void SetSecondEnvelope(const Envelope& envelope)
+		{
+			this->secondEnvelope_ = envelope;
+		}
+
+		~ViewModel() = default;
+
+	private:
+		Envelope firstEnvelope_;
+		Envelope secondEnvelope_;
+	};
 }
 
 #endif //SECONDTASK_VIEWMODEL_HPP
