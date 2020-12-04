@@ -17,6 +17,10 @@ namespace task::first {
             Board(const Board&)     = default;
             Board(Board&&) noexcept = default;
 
+            explicit Board(unsigned short rows, unsigned short columns, value_type blackSymbol, value_type whiteSymbol)
+                    : blackSymbol_(blackSymbol), whiteSymbol_(whiteSymbol), rowsCount_(rows), columnsCount_(columns),
+                      board_() {}
+
             [[nodiscard]] unsigned short GetRowsCount() const {
                 return this->rowsCount_;
             }
@@ -87,11 +91,6 @@ namespace task::first {
             ~Board() = default;
 
         protected:
-
-            explicit Board(unsigned short rows, unsigned short columns, value_type blackSymbol, value_type whiteSymbol)
-                    : blackSymbol_(blackSymbol), whiteSymbol_(whiteSymbol), rowsCount_(rows), columnsCount_(columns),
-                      board_() {}
-
             value_type whiteSymbol_;
             value_type blackSymbol_;
             unsigned short rowsCount_;
