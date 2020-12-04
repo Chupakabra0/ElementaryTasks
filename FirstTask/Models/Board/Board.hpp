@@ -9,6 +9,8 @@
 #include <map>
 #include <cstring>
 
+#include "../../Services/Errors/ErrorHandler.hpp"
+
 namespace task::first {
         class Board {
             using value_type = char;
@@ -64,7 +66,13 @@ namespace task::first {
             void Insert
                 (const std::map<std::string, value_type>::value_type& element) {
                 // TIP: Maybe I have to create some checks
-                this->board_.insert(element);
+                try {
+                    this->board_.insert(element);
+                }
+                catch (const std::exception&) {
+                    task::helpers::ErrorHandler::Assert
+                        (task::helpers::Error::MEMORY_LACK_ERROR);
+                }
             }
 
             template<class OstreamType>
