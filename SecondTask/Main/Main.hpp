@@ -37,6 +37,8 @@ namespace task::second
 				if (nullptr == consoleValidator)
 				{
 					std::cerr << "Memory error" << std::endl;
+
+					return EXIT_FAILURE;
 				}
 
 				auto positiveDouble = [](const char string[]) -> bool
@@ -79,6 +81,8 @@ namespace task::second
 				if (nullptr == viewModel)
 				{
 					std::cerr << "Memory error" << std::endl;
+
+					return EXIT_FAILURE;
 				}
 
 				std::unique_ptr<task::second::View> view
@@ -86,6 +90,9 @@ namespace task::second
 				if (nullptr == view)
 				{
 					std::cerr << "Memory error" << std::endl;
+
+
+					return EXIT_FAILURE;
 				}
 
 				view->Out();
