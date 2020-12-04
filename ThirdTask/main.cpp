@@ -6,58 +6,95 @@
 #include "Services/StringCleaner/StringCleaner.hpp"
 #include "Services/StringSpliter/StringSplitter.hpp"
 
-int main() {
+int main()
+{
+	std::string flag;
+	do
+	{
+		std::unique_ptr<task::helpers::ConsoleInputValidator>
+				consoleInputValidator(new(std::nothrow)
+											  task::helpers::ConsoleInputValidator());
+		if (nullptr == consoleInputValidator)
+		{
+			task::helpers::ErrorHandler::AssertAndExit
+					(task::helpers::Error::MEMORY_LACK_ERROR);
+		}
 
-    NO_THROW_NEW(consoleInputValidator, task::helpers::ConsoleInputValidator());
-    NO_THROW_NEW(stringCleaner, task::helpers::StringCleaner(' '));
-    NO_THROW_NEW(stringSplitter, task::helpers::StringSplitter(','));
+		std::unique_ptr<task::helpers::StringCleaner> stringCleaner(new
+		(std::nothrow) task::helpers::StringCleaner(' '));
+		if (nullptr == stringCleaner)
+		{
+			task::helpers::ErrorHandler::AssertAndExit
+					(task::helpers::Error::MEMORY_LACK_ERROR);
+		}
 
-    auto* triangleString = consoleInputValidator->LoopInput<std::string>();
-    *triangleString = stringCleaner->Clean(*triangleString);
-    auto triangleParams = stringSplitter->Split(*triangleString);
+		std::unique_ptr<task::helpers::StringSplitter> stringSplitter(new
+		(std::nothrow) task::helpers::StringSplitter(','));
+		if (nullptr == stringSplitter)
+		{
+			task::helpers::ErrorHandler::AssertAndExit
+					(task::helpers::Error::MEMORY_LACK_ERROR);
+		}
 
-    NO_THROW_DELETE(triangleString);
-    NO_THROW_DELETE(stringSplitter);
-    NO_THROW_DELETE(stringCleaner);
-    NO_THROW_DELETE(consoleInputValidator);
+		std::unique_ptr<std::string> triangleString = std::move
+				(consoleInputValidator->LoopInput<std::string>());
+		if (nullptr == triangleString)
+		{
+			task::helpers::ErrorHandler::AssertAndExit
+					(task::helpers::Error::MEMORY_LACK_ERROR);
+		}
 
-    if (triangleParams.size() < 4) {
-        task::helpers::ErrorHandler::Assert
-        (task::helpers::Error::PARSE_DATA_ERROR);
-    }
-    else {
-        auto isPositiveDouble = [](const char string[]) -> bool {
-            const std::regex number(R"((^\d+?(\.\d+?$|$)))");
-            return std::regex_match(string, number)
-                   && std::string(string).find('-') == std::string::npos;
-        };
+		*triangleString = stringCleaner->Clean(*triangleString);
+		const auto triangleParams = stringSplitter->Split(*triangleString);
 
-        auto* triangleName =
-                task::helpers::Converter<std::string>::ConvertString
-                (triangleParams[0]);
-        auto* firstSide =
-                task::helpers::Converter<double>::ConvertString
-                (triangleParams[1], isPositiveDouble);
-        auto* secondSide =
-                task::helpers::Converter<double>::ConvertString
-                (triangleParams[2], isPositiveDouble);
-        auto* thirdSide =
-                task::helpers::Converter<double>::ConvertString
-                (triangleParams[3], isPositiveDouble);
+		// TIP: maybe release memory
 
-        if (!triangleName || !firstSide || !secondSide || !thirdSide) {
-            task::helpers::ErrorHandler::Assert
-                    (task::helpers::Error::PARSE_DATA_ERROR);
-        }
+		if (triangleParams.size() < 4)
+		{
+			task::helpers::ErrorHandler::Assert
+					(task::helpers::Error::PARSE_DATA_ERROR);
+		}
+		else
+		{
+			auto isPositiveDouble = [](const char string[]) -> bool
+			{
+				const std::regex number(R"((^\d+?(\.\d+?$|$)))");
+				return std::regex_match(string, number)
+					   && std::string(string).find('-') == std::string::npos;
+			};
 
-        std::cout << "[" << *triangleName << "]" << " " << *firstSide << " "
-        << *secondSide << " " << *thirdSide << std::endl;
+			std::unique_ptr<std::string> triangleName =
+					std::move(task::helpers::Converter<std::string>::
+							  ConvertString(triangleParams[0]));
+			std::unique_ptr<double> firstSide =
+					std::move(task::helpers::Converter<double>::ConvertString
+									  (triangleParams[1], isPositiveDouble));
+			std::unique_ptr<double> secondSide =
+					std::move(task::helpers::Converter<double>::ConvertString
+									  (triangleParams[2], isPositiveDouble));
+			std::unique_ptr<double> thirdSide =
+					std::move(task::helpers::Converter<double>::ConvertString
+									  (triangleParams[3], isPositiveDouble));
 
-        NO_THROW_DELETE(firstSide);
-        NO_THROW_DELETE(secondSide);
-        NO_THROW_DELETE(thirdSide);
-        NO_THROW_DELETE(triangleName);
-    }
+			if (nullptr == triangleName || nullptr == firstSide ||
+				nullptr == secondSide || nullptr == thirdSide)
+			{
+				task::helpers::ErrorHandler::Assert
+						(task::helpers::Error::PARSE_DATA_ERROR);
+			}
+			else
+			{
+				std::cout << "[" << *triangleName << "]" << " " << *firstSide
+						  << " "
+						  << *secondSide << " " << *thirdSide << std::endl;
+			}
 
-    return EXIT_SUCCESS;
+			std::cout << std::endl << "Continue? [y/Yes]:";
+			std::cin >> flag;
+			std::cin.ignore();
+			std::transform(flag.begin(), flag.end(), flag.begin(), toupper);
+		}
+	} while ("Y" == flag || "YES" == flag);
+
+	return EXIT_SUCCESS;
 }

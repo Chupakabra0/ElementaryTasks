@@ -7,25 +7,31 @@
 
 #include <string>
 
-namespace task::helpers {
-    class StringCleaner {
-    public:
-        StringCleaner()                     = delete;
-        StringCleaner(const StringCleaner&) = default;
-        StringCleaner(StringCleaner&&)      = default;
+namespace task::helpers
+{
+	class StringCleaner
+	{
+	public:
+		StringCleaner() = delete;
 
-        explicit StringCleaner(char toClean) : toClean_(toClean) {}
+		StringCleaner(const StringCleaner&) = default;
 
-        [[nodiscard]] std::string Clean(const std::string& string) const {
-            std::string result = string;
-            result.erase(remove(result.begin(), result.end(), this->toClean_),
-                         result.end());
-            return result;
-        }
+		StringCleaner(StringCleaner&&) = default;
 
-    private:
-        char toClean_;
-    };
+		explicit StringCleaner(char toClean) : toClean_(toClean)
+		{}
+
+		[[nodiscard]] std::string Clean(const std::string& string) const
+		{
+			std::string result = string;
+			result.erase(remove(result.begin(), result.end(), this->toClean_),
+						 result.end());
+			return result;
+		}
+
+	private:
+		char toClean_;
+	};
 }
 
 #endif //THIRDTASK_STRINGCLEANER_HPP

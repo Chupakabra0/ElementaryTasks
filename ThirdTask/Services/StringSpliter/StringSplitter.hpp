@@ -9,28 +9,36 @@
 #include <sstream>
 #include <vector>
 
-namespace task::helpers {
-    class StringSplitter {
-    public:
-        StringSplitter()                       = delete;
-        StringSplitter(const StringSplitter &) = default;
-        StringSplitter(StringSplitter &&)      = default;
+namespace task::helpers
+{
+	class StringSplitter
+	{
+	public:
+		StringSplitter() = delete;
 
-        explicit StringSplitter(char delimiter) : delimiter_(delimiter) {}
+		StringSplitter(const StringSplitter&) = default;
 
-        [[nodiscard]] std::vector<std::string> Split(const std::string &string) const {
-            std::vector<std::string> result;
-            std::string token;
-            std::stringstream ss(string);
-            while (getline(ss, token, this->delimiter_)) {
-                result.push_back(token);
-            }
-            return result;
-        }
+		StringSplitter(StringSplitter&&) = default;
 
-    private:
-        char delimiter_;
-    };
+		explicit StringSplitter(char delimiter) : delimiter_(delimiter)
+		{}
+
+		[[nodiscard]] std::vector<std::string>
+		Split(const std::string& string) const
+		{
+			std::vector<std::string> result;
+			std::string token;
+			std::stringstream ss(string);
+			while (getline(ss, token, this->delimiter_))
+			{
+				result.push_back(token);
+			}
+			return result;
+		}
+
+	private:
+		char delimiter_;
+	};
 }
 
 #endif //THIRDTASK_STRINGSPLITTER_HPP

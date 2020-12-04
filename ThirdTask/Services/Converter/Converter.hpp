@@ -10,50 +10,48 @@
 
 #include "../Errors/ErrorHandler.hpp"
 
-namespace task::helpers {
-    template<class Type>
-    class Converter {
-        using value_type = Type;
-        using pointer    = value_type*;
-    public:
-        Converter()                 = delete;
-        Converter(const Converter&) = delete;
-        Converter(Converter&&)      = delete;
+namespace task::helpers
+{
+	template<class Type>
+	class Converter
+	{
+	public:
+		Converter() = delete;
 
-        static pointer ConvertString(const std::string& string, bool
-        predicate(const char[]) = nullptr) {
+		Converter(const Converter&) = delete;
 
-            if (predicate && !predicate(string.c_str())) {
-                return nullptr;
-            }
+		Converter(Converter&&) = delete;
 
-            std::stringstream stringStream;
-            NO_THROW_NEW(result, value_type());
+		static std::unique_ptr<Type> ConvertString(
+				const std::string& string,
+				bool predicate(const char[]) = nullptr)
+		{
 
-            stringStream << string;
-            stringStream >> *result;
+			if (predicate && !predicate(string.c_str()))
+			{
+				return nullptr;
+			}
 
-            if (stringStream.fail()) {
-                NO_THROW_DELETE(result);
-                return nullptr;
-            }
+			std::stringstream stringStream;
+			std::unique_ptr<Type> result(new(std::nothrow) Type());
+			if (nullptr == result)
+			{
+				return nullptr;
+			}
 
-            return result;
-        }
+			stringStream << string;
+			stringStream >> *result;
 
-        ~Converter() = delete;
-    };
+			if (stringStream.fail())
+			{
+				return nullptr;
+			}
 
-    template<>
-    class Converter<std::string> {
-    public:
-        static std::string* ConvertString(const std::string& string, bool
-        predicate(const char[]) = nullptr) {
-            if (predicate && !predicate(string.c_str())) {
-                return nullptr;
-            }
-            return new std::string(string);
-        }
-    };
+			return result;
+		}
+
+		~Converter() = delete;
+	};
+
 }
 #endif //HELPERS_CONVERTER_HPP
