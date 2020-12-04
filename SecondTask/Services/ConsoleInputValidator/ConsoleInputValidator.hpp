@@ -6,7 +6,9 @@
 #define SECONDTASK_CONSOLEINPUTVALIDATOR_HPP
 
 #include <iostream>
+#include <memory>
 #include <string>
+#include <algorithm>
 
 #include "../Converter/Converter.hpp"
 
@@ -31,21 +33,39 @@ namespace task::helpers
 				getline(std::cin, temp);
 				if (std::cin)
 				{
-					data = std::move(
-							task::helpers::Converter<Type>::ConvertString
-									(temp, predicate));
-
+					data = std::move
+							(task::helpers::Converter<Type>::ConvertString(temp, predicate));
 					if (nullptr == data)
 					{
-						task::helpers::ErrorHandler::Assert
-								(task::helpers::Error::PARSE_DATA_ERROR);
+						std::cerr << "Input data error" << std::endl;
 					}
 					else
 					{
 						return data;
 					}
 				}
-				std::cerr << "Try again." << std::endl;
+
+				std::cerr << std::endl << "Try again." << std::endl;
+				std::cin.clear();
+			} while (true);
+		}
+
+		template<>
+		std::unique_ptr<std::string> LoopInput(bool predicate(const char[]))
+		{
+			std::string temp;
+			do
+			{
+				getline(std::cin, temp);
+				if (!std::cin || (nullptr != predicate && !predicate(temp.c_str())))
+				{
+					std::cerr << "Input data error" << std::endl;
+				}
+				else {
+					return std::make_unique<std::string>(temp);
+				}
+
+				std::cerr << std::endl << "Try again." << std::endl;
 				std::cin.clear();
 			} while (true);
 		}
@@ -58,14 +78,27 @@ namespace task::helpers
 			getline(std::cin, temp);
 			if (std::cin)
 			{
-				data = std::move(task::helpers::Converter<Type>::ConvertString
-										 (temp, predicate));
+				data = task::helpers::Converter<Type>::ConvertString
+						(temp, predicate);
 			}
-			if (nullptr == data)
+			if (!data)
 			{
-				task::helpers::ErrorHandler::AssertAndExit(
-						task::helpers::Error::PARSE_DATA_ERROR);
+				std::cerr << "Input data error" << std::endl;
 			}
+			return data;
+		}
+
+		template<>
+		std::unique_ptr<std::string> Input(bool predicate(const char[]))
+		{
+			std::unique_ptr<std::string> data;
+			std::string temp;
+			getline(std::cin, temp);
+			if (!std::cin || (nullptr != predicate && !predicate(temp.c_str())))
+			{
+				std::cerr << "Input data error" << std::endl;
+			}
+			data = std::move(std::make_unique<std::string>(temp));
 			return data;
 		}
 

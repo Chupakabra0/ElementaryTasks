@@ -36,8 +36,7 @@ namespace task::second
 						(new(std::nothrow) task::helpers::ConsoleInputValidator());
 				if (nullptr == consoleValidator)
 				{
-					task::helpers::ErrorHandler::AssertAndExit
-							(task::helpers::Error::MEMORY_LACK_ERROR);
+					std::cerr << "Memory error" << std::endl;
 				}
 
 				auto positiveDouble = [](const char string[]) -> bool
@@ -79,16 +78,14 @@ namespace task::second
 								secondEnvelope));
 				if (nullptr == viewModel)
 				{
-					task::helpers::ErrorHandler::AssertAndExit
-							(task::helpers::Error::MEMORY_LACK_ERROR);
+					std::cerr << "Memory error" << std::endl;
 				}
 
 				std::unique_ptr<task::second::View> view
 						(new(std::nothrow) task::second::View(*viewModel));
 				if (nullptr == view)
 				{
-					task::helpers::ErrorHandler::AssertAndExit
-							(task::helpers::Error::MEMORY_LACK_ERROR);
+					std::cerr << "Memory error" << std::endl;
 				}
 
 				view->Out();

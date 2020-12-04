@@ -8,8 +8,6 @@
 #include <string>
 #include <sstream>
 
-#include "../Errors/ErrorHandler.hpp"
-
 namespace task::helpers
 {
 	template<class Type>
@@ -24,7 +22,7 @@ namespace task::helpers
 
 		static std::unique_ptr<Type> ConvertString(
 				const std::string& string,
-				bool predicate(const char[]))
+				bool predicate(const char[]) = nullptr)
 		{
 
 			if (predicate && !predicate(string.c_str()))
