@@ -9,27 +9,36 @@
 
 #include "../Models/Board/Board.hpp"
 
-namespace task::first {
-        class ViewModel {
-        public:
-            ViewModel()                  = default;
-            ViewModel(const ViewModel&)  = default;
-            ViewModel(ViewModel&&)       = default;
+namespace task::first
+{
+	class ViewModel
+	{
+	public:
+		ViewModel() = default;
 
-            explicit ViewModel(const Board& chessBoard) : chessBoard_(chessBoard) {}
+		ViewModel(const ViewModel&) = default;
 
-            [[nodiscard]] Board GetChessBoard() const {
-                return this->chessBoard_;
-            }
-            void SetChessBoard(const Board& chessBoard) {
-                this->chessBoard_ = chessBoard;
-            }
+		ViewModel(ViewModel&&) = default;
 
-            ~ViewModel() = default;
-        private:
-            // TIP: maybe unique_ptr...
-            Board chessBoard_;
-        };
-    }
+		explicit ViewModel(const Board& chessBoard) : chessBoard_(chessBoard)
+		{}
+
+		[[nodiscard]] Board GetChessBoard() const
+		{
+			return this->chessBoard_;
+		}
+
+		void SetChessBoard(const Board& chessBoard)
+		{
+			this->chessBoard_ = chessBoard;
+		}
+
+		~ViewModel() = default;
+
+	private:
+		// TIP: maybe unique_ptr...
+		Board chessBoard_;
+	};
+}
 
 #endif //FIRSTTASK_TASK_H

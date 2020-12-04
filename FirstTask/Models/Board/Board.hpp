@@ -11,100 +11,132 @@
 
 #include "../../Services/Errors/ErrorHandler.hpp"
 
-namespace task::first {
-        class Board {
-            using value_type = char;
-        public:
-            Board()                 = delete;
-            Board(const Board&)     = default;
-            Board(Board&&) noexcept = default;
+namespace task::first
+{
+	class Board
+	{
+		using value_type = char;
+	public:
+		Board() = delete;
 
-            explicit Board(unsigned short rows, unsigned short columns, value_type blackSymbol, value_type whiteSymbol)
-                    : blackSymbol_(blackSymbol), whiteSymbol_(whiteSymbol), rowsCount_(rows), columnsCount_(columns),
-                      board_() {}
+		Board(const Board&) = default;
 
-            [[nodiscard]] unsigned short GetRowsCount() const {
-                return this->rowsCount_;
-            }
-            void SetRowsCount(unsigned short rows) {
-                if (this->rowsCount_ == rows) {
-                    return;
-                }
-                this->rowsCount_ = rows;
-            }
+		Board(Board&&) noexcept = default;
 
-            [[nodiscard]] unsigned short GetColumnsCount() const {
-                return this->columnsCount_;
-            }
-            void SetColumnsCount(unsigned short columns) {
-                if (this->columnsCount_ == columns) {
-                    return;
-                }
-                this->columnsCount_ = columns;
-            }
+		explicit Board(
+				unsigned short rows, unsigned short columns,
+				value_type blackSymbol, value_type whiteSymbol)
+				: blackSymbol_(blackSymbol), whiteSymbol_(whiteSymbol),
+				  rowsCount_(rows), columnsCount_(columns),
+				  board_()
+		{}
 
-            [[nodiscard]] value_type GetWhiteSymbol() const {
-                return this->whiteSymbol_;
-            }
-            void SetWhiteSymbol(value_type whiteSymbol) {
-                if (this->whiteSymbol_ == whiteSymbol) {
-                    return;
-                }
-                this->whiteSymbol_ = whiteSymbol;
-            }
+		[[nodiscard]] unsigned short GetRowsCount() const
+		{
+			return this->rowsCount_;
+		}
 
-            [[nodiscard]] value_type GetBlackSymbol() const {
-                return this->blackSymbol_;
-            }
-            void SetBlackSymbol(value_type blackSymbol) {
-                if (this->blackSymbol_ == blackSymbol) {
-                    return;
-                }
-                this->blackSymbol_ = blackSymbol;
-            }
+		void SetRowsCount(unsigned short rows)
+		{
+			if (this->rowsCount_ == rows)
+			{
+				return;
+			}
+			this->rowsCount_ = rows;
+		}
 
-            void Insert
-                (const std::map<std::string, value_type>::value_type& element) {
-                // TIP: Maybe I have to create some checks
-                try {
-                    this->board_.insert(element);
-                }
-                catch (const std::exception&) {
-                    task::helpers::ErrorHandler::Assert
-                        (task::helpers::Error::MEMORY_LACK_ERROR);
-                }
-            }
+		[[nodiscard]] unsigned short GetColumnsCount() const
+		{
+			return this->columnsCount_;
+		}
 
-            template<class OstreamType>
-            friend std::basic_ostream<OstreamType>& operator<<
-                    (std::basic_ostream<OstreamType>& out, const Board&
-                    chessBoard) {
-                auto i = 0u;
-                for (const auto& element : chessBoard.board_) {
-                    out << element.second;
-                    if (++i >= chessBoard.columnsCount_) {
-                        out << '\n';
-                        i = 0u;
-                    }
-                }
-                return out;
-            }
+		void SetColumnsCount(unsigned short columns)
+		{
+			if (this->columnsCount_ == columns)
+			{
+				return;
+			}
+			this->columnsCount_ = columns;
+		}
 
-            Board& operator=(const Board&) = default;
+		[[nodiscard]] value_type GetWhiteSymbol() const
+		{
+			return this->whiteSymbol_;
+		}
 
-            value_type& operator[](const std::string& key) {
-                return this->board_[key];
-            }
+		void SetWhiteSymbol(value_type whiteSymbol)
+		{
+			if (this->whiteSymbol_ == whiteSymbol)
+			{
+				return;
+			}
+			this->whiteSymbol_ = whiteSymbol;
+		}
 
-            ~Board() = default;
+		[[nodiscard]] value_type GetBlackSymbol() const
+		{
+			return this->blackSymbol_;
+		}
 
-        protected:
-            value_type whiteSymbol_;
-            value_type blackSymbol_;
-            unsigned short rowsCount_;
-            unsigned short columnsCount_;
-            std::map<std::string, value_type> board_;
-        };
-    }
+		void SetBlackSymbol(value_type blackSymbol)
+		{
+			if (this->blackSymbol_ == blackSymbol)
+			{
+				return;
+			}
+			this->blackSymbol_ = blackSymbol;
+		}
+
+		void Insert
+				(const std::map<std::string, value_type>::value_type& element)
+		{
+			// TIP: Maybe I have to create some checks
+			try
+			{
+				this->board_.insert(element);
+			}
+			catch (const std::exception&)
+			{
+				task::helpers::ErrorHandler::Assert
+						(task::helpers::Error::MEMORY_LACK_ERROR);
+			}
+		}
+
+		template<class OstreamType>
+		friend std::basic_ostream<OstreamType>& operator<<
+				(
+						std::basic_ostream<OstreamType>& out, const Board&
+				chessBoard)
+		{
+			auto i = 0u;
+			for (const auto& element : chessBoard.board_)
+			{
+				out << element.second;
+				if (++i >= chessBoard.columnsCount_)
+				{
+					out << '\n';
+					i = 0u;
+				}
+			}
+			return out;
+		}
+
+		Board& operator=(const Board&) = default;
+
+		value_type& operator[](const std::string& key)
+		{
+			return this->board_[key];
+		}
+
+		~Board() = default;
+
+	protected:
+		value_type whiteSymbol_;
+		value_type blackSymbol_;
+		unsigned short rowsCount_;
+		unsigned short columnsCount_;
+		std::map<std::string, value_type> board_;
+	};
+}
 
 #endif //FIRSTTASK_BOARD_HPP

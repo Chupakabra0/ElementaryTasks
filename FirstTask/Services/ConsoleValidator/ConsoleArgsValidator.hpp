@@ -7,47 +7,59 @@
 
 #include "../Converter/Converter.hpp"
 
-namespace task::helpers {
-    class ConsoleArgsValidator {
-    public:
-        ConsoleArgsValidator()                            = delete;
-        ConsoleArgsValidator(const ConsoleArgsValidator&) = default;
-        ConsoleArgsValidator(ConsoleArgsValidator&&)      = default;
+namespace task::helpers
+{
+	class ConsoleArgsValidator
+	{
+	public:
+		ConsoleArgsValidator() = delete;
 
-        ConsoleArgsValidator(unsigned argc, char **argv)
-                : argc_(argc), argv_(argv) {}
+		ConsoleArgsValidator(const ConsoleArgsValidator&) = default;
 
-        template<class Type>
-        std::unique_ptr<Type> ValidateByIndex(const unsigned index, bool
-        predicate(const char[]) = nullptr) const {
-            auto result = std::move(task::helpers::Converter<Type>::ConvertString
-            (this->argv_[index], predicate));
+		ConsoleArgsValidator(ConsoleArgsValidator&&) = default;
 
-            return result;
-        }
+		ConsoleArgsValidator(unsigned argc, char** argv)
+				: argc_(argc), argv_(argv)
+		{}
 
-        [[nodiscard]] bool CheckEnoughArgc(unsigned argc) const {
-            return this->argc_ >= argc;
-        }
+		template<class Type>
+		std::unique_ptr<Type> ValidateByIndex(
+				const unsigned index, bool
+		predicate(const char[]) = nullptr) const
+		{
+			auto result = std::move(
+					task::helpers::Converter<Type>::ConvertString
+							(this->argv_[index], predicate));
 
-        [[nodiscard]] const char* GetPath() const {
-            return this->argv_[0];
-        }
+			return result;
+		}
 
-        [[nodiscard]] unsigned GetArgc() const {
-            return this->argc_;
-        }
+		[[nodiscard]] bool CheckEnoughArgc(unsigned argc) const
+		{
+			return this->argc_ >= argc;
+		}
 
-        [[nodiscard]] char** GetArgv() const {
-            return this->argv_;
-        }
+		[[nodiscard]] const char* GetPath() const
+		{
+			return this->argv_[0];
+		}
 
-        ~ConsoleArgsValidator() = default;
+		[[nodiscard]] unsigned GetArgc() const
+		{
+			return this->argc_;
+		}
 
-    private:
-        unsigned argc_;
-        char**   argv_;
-    };
+		[[nodiscard]] char** GetArgv() const
+		{
+			return this->argv_;
+		}
+
+		~ConsoleArgsValidator() = default;
+
+	private:
+		unsigned argc_;
+		char** argv_;
+	};
 }
 
 #endif //FIRSTTASK_CONSOLEARGSVALIDATOR_HPP

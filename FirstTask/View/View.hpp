@@ -7,24 +7,31 @@
 
 #include "../ViewModels/ViewModel.hpp"
 
-namespace task::first {
-    class View {
-    public:
-        View()            = delete;
-        View(const View&) = delete;
-        View(View&&)      = delete;
+namespace task::first
+{
+	class View
+	{
+	public:
+		View() = delete;
 
-        explicit View(const ViewModel& vm) : vm_(vm) {}
+		View(const View&) = delete;
 
-        void Out() const {
-            std::cout << this->vm_.GetChessBoard() << std::endl;
-        }
+		View(View&&) = delete;
 
-        ~View() = default;
-    private:
-        // TIP: maybe unique_ptr...
-        ViewModel vm_;
-    };
+		explicit View(const ViewModel& vm) : vm_(vm)
+		{}
+
+		void Out() const
+		{
+			std::cout << this->vm_.GetChessBoard() << std::endl;
+		}
+
+		~View() = default;
+
+	private:
+		// TIP: maybe unique_ptr...
+		ViewModel vm_;
+	};
 }
 
 #endif //FIRSTTASK_VIEW_HPP

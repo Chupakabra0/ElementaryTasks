@@ -10,39 +10,48 @@
 
 #include "../Errors/ErrorHandler.hpp"
 
-namespace task::helpers {
-    template<class Type>
-    class Converter {
-    public:
-        Converter()                 = delete;
-        Converter(const Converter&) = delete;
-        Converter(Converter&&)      = delete;
+namespace task::helpers
+{
+	template<class Type>
+	class Converter
+	{
+	public:
+		Converter() = delete;
 
-        static std::unique_ptr<Type> ConvertString(const std::string& string,
-                                        bool predicate(const char[])) {
+		Converter(const Converter&) = delete;
 
-            if (predicate && !predicate(string.c_str())) {
-                return nullptr;
-            }
+		Converter(Converter&&) = delete;
 
-            std::stringstream stringStream;
-            std::unique_ptr<Type> result(new(std::nothrow) Type());
-            if (nullptr == result) {
-                return nullptr;
-            }
+		static std::unique_ptr<Type> ConvertString(
+				const std::string& string,
+				bool predicate(const char[]))
+		{
 
-            stringStream << string;
-            stringStream >> *result;
+			if (predicate && !predicate(string.c_str()))
+			{
+				return nullptr;
+			}
 
-            if (stringStream.fail()) {
-                return nullptr;
-            }
+			std::stringstream stringStream;
+			std::unique_ptr<Type> result(new(std::nothrow) Type());
+			if (nullptr == result)
+			{
+				return nullptr;
+			}
 
-            return result;
-        }
+			stringStream << string;
+			stringStream >> *result;
 
-        ~Converter() = delete;
-    };
+			if (stringStream.fail())
+			{
+				return nullptr;
+			}
+
+			return result;
+		}
+
+		~Converter() = delete;
+	};
 
 }
 #endif //HELPERS_CONVERTER_HPP
