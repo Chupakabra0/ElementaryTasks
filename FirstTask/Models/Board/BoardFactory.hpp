@@ -6,7 +6,6 @@
 #define FIRSTTASK_BOARDFACTORY_HPP
 
 #include "Board.hpp"
-#include "../../Services/Errors/ErrorHandler.hpp"
 
 namespace task::first
 {

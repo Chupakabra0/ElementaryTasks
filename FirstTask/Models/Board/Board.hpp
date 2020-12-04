@@ -9,8 +9,6 @@
 #include <map>
 #include <cstring>
 
-#include "../../Services/Errors/ErrorHandler.hpp"
-
 namespace task::first
 {
 	class Board
@@ -97,8 +95,7 @@ namespace task::first
 			}
 			catch (const std::exception&)
 			{
-				task::helpers::ErrorHandler::Assert
-						(task::helpers::Error::MEMORY_LACK_ERROR);
+				std::cerr << "Memory error" << std::endl;
 			}
 		}
 

@@ -11,7 +11,7 @@
 #include "../Models/Board/BoardFactory.hpp"
 #include "../ViewModels/ViewModel.hpp"
 #include "../View/View.hpp"
-#include "../Services/ConsoleValidator/ConsoleArgsValidator.hpp"
+#include "../Services/ConsoleArgsValidator/ConsoleArgsValidator.hpp"
 
 namespace task::first
 {
@@ -33,8 +33,9 @@ namespace task::first
 																		   argv));
 			if (nullptr == consoleArgsValidator)
 			{
-				task::helpers::ErrorHandler::AssertAndExit
-						(task::helpers::Error::MEMORY_LACK_ERROR);
+				std::cerr << "Memory error" << std::endl;
+
+				return EXIT_FAILURE;
 			}
 
 			const auto checkLetters = [](const char string[]) -> bool
@@ -50,8 +51,9 @@ namespace task::first
 						short>(1, checkLetters));
 				if (nullptr == rowsCount)
 				{
-					task::helpers::ErrorHandler::AssertAndExit
-							(task::helpers::Error::PARSE_DATA_ERROR);
+					std::cerr << "Parse data error" << std::endl;
+
+					return EXIT_FAILURE;
 				}
 
 				columnsCount = std::move(
@@ -59,8 +61,9 @@ namespace task::first
 						short>(2, checkLetters));
 				if (nullptr == columnsCount)
 				{
-					task::helpers::ErrorHandler::AssertAndExit
-							(task::helpers::Error::PARSE_DATA_ERROR);
+					std::cerr << "Parse data error" << std::endl;
+
+					return EXIT_FAILURE;
 				}
 			}
 			else
@@ -76,8 +79,9 @@ namespace task::first
 					(new(std::nothrow) task::first::BoardFactory('*', ' '));
 			if (nullptr == boardFactory)
 			{
-				task::helpers::ErrorHandler::AssertAndExit
-						(task::helpers::Error::MEMORY_LACK_ERROR);
+				std::cerr << "Memory error" << std::endl;
+
+				return EXIT_FAILURE;
 			}
 
 			std::unique_ptr<task::first::Board> board
@@ -85,24 +89,27 @@ namespace task::first
 														 *columnsCount)));
 			if (nullptr == board)
 			{
-				task::helpers::ErrorHandler::AssertAndExit
-						(task::helpers::Error::MEMORY_LACK_ERROR);
+				std::cerr << "Memory error" << std::endl;
+
+				return EXIT_FAILURE;
 			}
 
 			std::unique_ptr<task::first::ViewModel> viewModel
 					(new(std::nothrow) task::first::ViewModel(*board));
 			if (nullptr == viewModel)
 			{
-				task::helpers::ErrorHandler::AssertAndExit
-						(task::helpers::Error::MEMORY_LACK_ERROR);
+				std::cerr << "Memory error" << std::endl;
+
+				return EXIT_FAILURE;
 			}
 
 			std::unique_ptr<task::first::View> view
 					(new(std::nothrow) task::first::View(*viewModel));
 			if (nullptr == view)
 			{
-				task::helpers::ErrorHandler::AssertAndExit
-						(task::helpers::Error::MEMORY_LACK_ERROR);
+				std::cerr << "Memory error" << std::endl;
+
+				return EXIT_FAILURE;
 			}
 
 			view->Out();
