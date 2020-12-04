@@ -92,6 +92,26 @@ namespace task::third
 			return false;
 		}
 
+		friend bool operator>(const Triangle& first, const Triangle& second) {
+			return second < first;
+		}
+
+		friend bool operator>=(const Triangle& first, const Triangle& second) {
+			return !(first < second);
+		}
+
+		friend bool operator<=(const Triangle& first, const Triangle& second) {
+			return !(first > second);
+		}
+
+		friend bool operator==(const Triangle& first, const Triangle& second) {
+			return first <= second && first >= second;
+		}
+
+		friend bool operator!=(const Triangle& first, const Triangle& second) {
+			return !(first == second);
+		}
+
 		template<class OstreamType>
 		friend std::basic_ostream<OstreamType>& operator<<(std::basic_ostream<OstreamType>&
 		        out, const Triangle& triangle) {

@@ -10,11 +10,13 @@
 #include <regex>
 #include <set>
 
-#include "../Services/ConsoleInputValidator/ConsoleInputValidator.hpp"
-#include "../Services/StringCleaner/StringCleaner.hpp"
-#include "../Services/StringSpliter/StringSplitter.hpp"
+#include "Services/ConsoleInputValidator/ConsoleInputValidator.hpp"
+#include "Services/StringCleaner/StringCleaner.hpp"
+#include "Services/StringSpliter/StringSplitter.hpp"
 
 #include "Models/Triangle/Triangle.hpp"
+#include "../ViewModel/ViewModel.hpp"
+#include "../View/View.hpp"
 
 namespace task::third {
 	class Main {
@@ -25,7 +27,25 @@ namespace task::third {
 
 		int operator()() {
 			std::string flag;
-			std::multiset<task::third::Triangle> triangleMultiset;
+			std::unique_ptr<task::third::ViewModel> vm(new(std::nothrow)
+				task::third::ViewModel
+				(std::multiset<task::third::Triangle, std::greater<>>()));
+			if (nullptr == vm)
+			{
+				std::cerr << "Memory error" << std::endl;
+
+				return EXIT_FAILURE;
+			}
+
+			std::unique_ptr<task::third::View>
+			        view(new(std::nothrow) task::third::View(*vm));
+			if (nullptr == view)
+			{
+				std::cerr << "Memory error" << std::endl;
+
+				return EXIT_FAILURE;
+			}
+
 			do
 			{
 				std::unique_ptr<task::helpers::ConsoleInputValidator>
@@ -55,6 +75,9 @@ namespace task::third {
 
 					return EXIT_FAILURE;
 				}
+
+				std::cout << "Enter a new triangle in format:" << std::endl
+				<< "Name, FirstSide, SecondSide, ThirdSide" << std::endl;
 
 				std::unique_ptr<std::string> triangleString = std::move
 						(consoleInputValidator->LoopInput<std::string>());
@@ -100,8 +123,6 @@ namespace task::third {
 						nullptr == secondSide || nullptr == thirdSide)
 					{
 						std::cerr << "Parse data error" << std::endl;
-
-						return EXIT_FAILURE;
 					}
 					else
 					{
@@ -111,16 +132,13 @@ namespace task::third {
 
 						if (nullptr == triangle) {
 							std::cerr << "Triangle creation error" << std::endl;
-
-							return EXIT_FAILURE;
 						}
 						else {
-							triangleMultiset.insert(std::move(*triangle));
+							vm->AddToMultiset(*triangle);
 						}
 
-						for (const auto& i : triangleMultiset) {
-							std::cout << i << std::endl;
-						}
+						view->SetVM(*vm);
+						view->Out();
 					}
 
 					std::cout << std::endl << "Continue? [y/Yes]:";
