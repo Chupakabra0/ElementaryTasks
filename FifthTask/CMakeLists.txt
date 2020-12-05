@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(FourthTask)
+project(FifthTask)
 
 set(CMAKE_CXX_STANDARD 20)
 
