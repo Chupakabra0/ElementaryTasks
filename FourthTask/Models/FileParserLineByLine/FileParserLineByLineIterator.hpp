@@ -21,7 +21,6 @@ namespace task::fourth
 	class FileParserLineByLineIterator
 	{
 	public:
-
 		using value_type = char;
 		using pointer = value_type*;
 		using const_pointer = const pointer;
@@ -46,7 +45,7 @@ namespace task::fourth
 		}
 
 		explicit FileParserLineByLineIterator(
-				std::ifstream* pointer = nullptr) : fileStream_(pointer)
+				std::fstream* pointer = nullptr) : fileStream_(pointer)
 		{
 			this->read();
 		}
@@ -105,7 +104,7 @@ namespace task::fourth
 			}
 		}
 
-		std::ifstream* fileStream_;
+		std::fstream* fileStream_;
 		std::string stringBuffer_;
 	};
 }

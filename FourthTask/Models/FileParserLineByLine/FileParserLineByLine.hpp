@@ -21,6 +21,12 @@ namespace task::fourth
 		using iterator = FileParserLineByLineIterator;
 		using const_iterator = iterator;
 	public:
+
+		// TODO: make it more pretty)
+		void Close() {
+			this->fileStream_.close();
+		}
+
 		FileParserLineByLine() = delete;
 
 		FileParserLineByLine(const FileParserLineByLine&) = default;
@@ -31,6 +37,10 @@ namespace task::fourth
 		{
 			this->path_ = path;
 			this->fileStream_.open(path);
+		}
+
+		[[nodiscard]] std::string GetPath() const {
+			return this->path_;
 		}
 
 		auto begin()
@@ -46,7 +56,7 @@ namespace task::fourth
 		~FileParserLineByLine() = default;
 
 	private:
-		std::ifstream fileStream_;
+		std::fstream fileStream_;
 		std::string path_;
 	};
 //
