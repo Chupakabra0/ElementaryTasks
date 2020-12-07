@@ -64,95 +64,116 @@ namespace task::fifth
 			}
 			if (number <= 99ll)
 			{
+				const auto temp = ToSmallPrescriptionWithoutZero(number % 10ll);
 				std::string strings[]{
 						"twenty", "thirty", "forty", "fifty", "sixty",
 						"seventy", "eighty", "ninety" };
-				return strings[number / 10 - 2] + " " +
-					   ToSmallPrescriptionWithoutZero(number % 10);
+				return strings[number / 10 - 2] +
+				(temp.empty() ? "" : " " + temp);
 			}
 			if (number <= 199ll)
 			{
-				return std::string("one hundred") + " " +
-					   ToSmallPrescriptionWithoutZero(number % 100);
+				const auto temp = ToSmallPrescriptionWithoutZero(number %
+						100ll);
+				return std::string("one hundred") +
+						(temp.empty() ? "" : " " + temp);
 			}
 			if (number <= 999ll)
 			{
-				return ToSmallPrescriptionWithoutZero(number / 100) + " "
-					   + "hundreds" + " " +
-					   ToSmallPrescriptionWithoutZero(number % 100);
+				const auto temp = ToSmallPrescriptionWithoutZero(number %
+						100ll);
+				return ToSmallPrescriptionWithoutZero(number / 100ll)
+					   + std::string(" hundreds") + (temp.empty() ? "" :
+					   " " + temp);
 			}
 			if (number <= 1999ll)
 			{
-				return std::string("one thousand") + " " +
-					   ToSmallPrescriptionWithoutZero(number % 1000);
+				const auto temp = ToSmallPrescriptionWithoutZero(number %
+						1000ll);
+				return std::string("one thousand")
+					+ (temp.empty() ? "" : " " + temp);
 			}
 			if (number <= 999999ll)
 			{
-				return ToSmallPrescriptionWithoutZero(number / 1000) + " "
-					   + "thousands" + " " +
-					   ToSmallPrescriptionWithoutZero(number % 1000);
+				const auto temp = ToSmallPrescriptionWithoutZero(number %
+						1000ll);
+				return ToSmallPrescriptionWithoutZero(number / 1000ll) +
+				std::string(" thousands") + (temp.empty() ? "" : " " + temp);
 			}
 			if (number <= 1999999ll)
 			{
-				return std::string("one million") + " " +
-					   ToSmallPrescriptionWithoutZero(number % 1000);
+				const auto temp = ToSmallPrescriptionWithoutZero(number %
+						1000000ll);
+				return std::string("one million") +
+						(temp.empty() ? "" : " " + temp);
 			}
 			if (number <= 999999999ll)
 			{
-				return ToSmallPrescriptionWithoutZero(number / 1000) + " " +
-					   std::string("millions") + " " +
-					   ToSmallPrescriptionWithoutZero(number % 1000);
+				const auto temp = ToSmallPrescriptionWithoutZero(number %
+						1000000ll);
+				return ToSmallPrescriptionWithoutZero(number / 1000000ll)
+					+ std::string(" millions") +
+						(temp.empty() ? "" : " " + temp);
 			}
 			if (number <= 1999999999ll)
 			{
-				return std::string("one billion") + " " +
-					   ToSmallPrescriptionWithoutZero(number % 1000000000);
+				const auto temp = ToSmallPrescriptionWithoutZero(number %
+						1000000000ll);
+				return std::string("one billion") +
+						(temp.empty() ? "" : " " + temp);
 			}
 			if (number <= 999999999999ll)
 			{
-				return ToSmallPrescriptionWithoutZero(number / 1000000000) + " "
-					   + "billions" + " " +
-					   ToSmallPrescriptionWithoutZero(number % 1000000000);
+				const auto temp = ToSmallPrescriptionWithoutZero(number %
+						1000000000ll);
+				return ToSmallPrescriptionWithoutZero(number / 1000000000ll) +
+				std::string(" billions") + (temp.empty() ? "" : " " + temp);
 			}
 			if (number <= 1999999999999ll)
 			{
-				return std::string("one billiard") + " " +
-					   ToSmallPrescriptionWithoutZero(number % 1000000000000);
+				const auto temp = ToSmallPrescriptionWithoutZero(number %
+						1000000000000ll);
+				return std::string("one billiard") +
+						(temp.empty() ? "" : " " + temp);
 			}
 			if (number <= 999999999999999ll)
 			{
-				return ToSmallPrescriptionWithoutZero(number / 1000000000000) +
-					   " "
-					   + "billiards" + " " +
-					   ToSmallPrescriptionWithoutZero(number % 1000000000000);
+				const auto temp = ToSmallPrescriptionWithoutZero(number %
+						1000000000000ll);
+				return ToSmallPrescriptionWithoutZero(number /
+				1000000000000ll) + std::string(" billiards") +
+						(temp.empty() ? "" : " " + temp);
 			}
 			if (number <= 1999999999999999ll)
 			{
-				return std::string("one trillion") + " " +
-					   ToSmallPrescriptionWithoutZero(
-							   number % 1000000000000000);
+				const auto temp = ToSmallPrescriptionWithoutZero(
+						number % 1000000000000000ll);
+				return std::string("one trillion") +
+						(temp.empty() ? "" : " " + temp);
 			}
 			if (number <= 999999999999999999ll)
 			{
+				const auto temp = ToSmallPrescriptionWithoutZero(number %
+						1000000000000000ll);
 				return ToSmallPrescriptionWithoutZero(
-						number / 1000000000000000) +
-					   " "
-					   + "trillions" + " " +
-					   ToSmallPrescriptionWithoutZero(
-							   number % 1000000000000000);
+						number / 1000000000000000ll) +
+						std::string(" trillions") +
+						(temp.empty() ? "" : " " + temp);
 			}
 			if (number <= 1999999999999999999ll)
 			{
-				return std::string("one trilliard") + " " +
-					   ToSmallPrescriptionWithoutZero(
-							   number % 1000000000000000000);
+				const auto temp = ToSmallPrescriptionWithoutZero(
+						number % 1000000000000000000ll);
+				return std::string("one trilliard") +
+						(temp.empty() ? "" : " " + temp);
 			}
 
+			const auto temp = ToSmallPrescriptionWithoutZero(number %
+												   1000000000000000000ll);
 			return ToSmallPrescriptionWithoutZero(
-					number / 1000000000000000000) +
-				   " "
-				   + "trilliards" + " " +
-				   ToSmallPrescriptionWithoutZero(number % 1000000000000000000);
+					number / 1000000000000000000ll) +
+				   std::string(" trilliards") +
+					(temp.empty() ? "" : " " + temp);
 		}
 	};
 }

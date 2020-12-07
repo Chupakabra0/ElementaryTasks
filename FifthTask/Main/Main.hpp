@@ -36,7 +36,7 @@ namespace task::fifth {
 				number = consoleArgsValidator->ValidateByIndex<long long>
 						(1u, [](const char string[]) -> bool
 						{
-							std::regex regex(R"(^(\d+?)$)");
+							std::regex regex(R"((^|^-)(\d+?)$)");
 							return std::regex_match(string, regex);
 						});
 
