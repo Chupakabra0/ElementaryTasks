@@ -35,7 +35,7 @@ namespace task::sixth {
 			}
 
 			return result;
-		}В
+		}
 
 		[[nodiscard]] unsigned long long GetLuckyTicketsIntegralCount() const {
 			auto temp = [this](double x) -> double {

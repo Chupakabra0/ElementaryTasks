@@ -6,7 +6,7 @@
 int main()
 {
 	const auto* ltc = new(std::nothrow)
-			task::sixth::LuckyTicketIntegralCounter(9);
+			task::sixth::LuckyTicketCounter(9);
 	std::cout << ltc->GetLuckyTicketsIntegralCount() << std::endl;
 	std::cout << ltc->GetLuckyTicketsForceCount() << std::endl;
 	delete ltc;
