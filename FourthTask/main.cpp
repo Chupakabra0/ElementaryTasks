@@ -47,30 +47,39 @@ int main(int argc, char** argv)
 			return EXIT_FAILURE;
 		}
 
-		std::fstream ofs("temp.txt", std::ios_base::trunc);
+		if (std::filesystem::space(std::filesystem::current_path()).free >
+			std::filesystem::file_size(filePath->c_str()))
+		{
 
-		std::for_each(parser->begin(), parser->end(),
-					  [&stringToFind, &stringToReplace, &ofs](
-							  const std::string&
-							  string)
-					  {
-						  if (string != *stringToFind)
+			std::fstream ofs("temp.tmp", std::ios_base::trunc |
+			std::ios_base::out);
+
+			std::for_each(parser->begin(), parser->end(),
+						  [&stringToFind, &stringToReplace, &ofs](
+								  const std::string&
+								  string)
 						  {
-							  ofs << string << std::endl;
-						  }
-						  else
-						  {
-							  ofs << *stringToReplace << std::endl;
-						  }
-					  });
+							  if (string != *stringToFind)
+							  {
+								  ofs << string << std::endl;
+							  }
+							  else
+							  {
+								  ofs << *stringToReplace << std::endl;
+							  }
+						  });
 
-		ofs.close();
-		parser->Close();
+			ofs.close();
+			parser->Close();
 
-		std::filesystem::remove(filePath->c_str());
-		std::filesystem::rename("temp.txt", filePath->c_str());
+			std::filesystem::remove(filePath->c_str());
+			std::filesystem::rename("temp.tmp", filePath->c_str());
 
-		std::cout << "Done" << std::endl;
+			std::cout << "Done" << std::endl;
+		}
+		else {
+			std::cerr << "Not enough memory to do this operation" << std::endl;
+		}
 	}
 	else if (consoleArgsValidator->CheckEnoughArgc(3))
 	{
