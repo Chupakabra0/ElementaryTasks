@@ -3,4 +3,4 @@ project(SixthTask)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(SixthTask main.cpp Models/LuckyTicketCounter.hpp)
+add_executable(SixthTask main.cpp)
