@@ -36,6 +36,18 @@ namespace task::helpers
 			return result;
 		}
 
+		template<>
+		std::unique_ptr<std::string> ValidateByIndex(
+				const unsigned index, bool
+		predicate(const char[])) const
+		{
+			if (nullptr != predicate && !predicate(this->argv_[index])) {
+				return nullptr;
+			}
+
+			return std::make_unique<std::string>(std::string(this->argv_[index]));
+		}
+
 		[[nodiscard]] bool CheckEnoughArgc(unsigned argc) const
 		{
 			return this->argc_ >= argc;
