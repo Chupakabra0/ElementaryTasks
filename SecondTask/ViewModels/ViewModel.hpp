@@ -2,6 +2,8 @@
 // Created by Александр Сафиюлин on 25.11.2020.
 //
 
+#pragma once
+
 #ifndef SECONDTASK_VIEWMODEL_HPP
 #define SECONDTASK_VIEWMODEL_HPP
 
@@ -9,49 +11,36 @@
 
 #include "../Models/Envelope/Envelope.hpp"
 
-namespace task::second
-{
-	class ViewModel
-	{
-	public:
-		ViewModel() = delete;
+namespace task::second {
+class ViewModel {
+ public:
+  ViewModel() = delete;
 
-		ViewModel(const ViewModel&) = default;
+  ViewModel(const ViewModel &) = default;
 
-		ViewModel(ViewModel&&) = default;
+  ViewModel(ViewModel &&) = default;
 
-		explicit ViewModel(
-				const Envelope& firstEnvelope, const Envelope&
-		secondEnvelope)
-				: firstEnvelope_(firstEnvelope), secondEnvelope_(secondEnvelope)
-		{}
+  ViewModel &operator=(const ViewModel &) = default;
 
-		[[nodiscard]] Envelope GetFirstEnvelope() const
-		{
-			return this->firstEnvelope_;
-		}
+  ViewModel &operator=(ViewModel &) = default;
 
-		void SetFirstEnvelope(const Envelope& envelope)
-		{
-			this->firstEnvelope_ = envelope;
-		}
+  explicit ViewModel(const Envelope &firstEnvelope, const Envelope &
+  secondEnvelope);
 
-		[[nodiscard]] Envelope GetSecondEnvelope() const
-		{
-			return this->secondEnvelope_;
-		}
+  [[nodiscard]] Envelope GetFirstEnvelope() const;
 
-		void SetSecondEnvelope(const Envelope& envelope)
-		{
-			this->secondEnvelope_ = envelope;
-		}
+  void SetFirstEnvelope(const Envelope &envelope);
 
-		~ViewModel() = default;
+  [[nodiscard]] Envelope GetSecondEnvelope() const;
 
-	private:
-		Envelope firstEnvelope_;
-		Envelope secondEnvelope_;
-	};
+  void SetSecondEnvelope(const Envelope &envelope);
+
+  ~ViewModel() = default;
+
+ private:
+  Envelope firstEnvelope_;
+  Envelope secondEnvelope_;
+};
 }
 
 #endif //SECONDTASK_VIEWMODEL_HPP

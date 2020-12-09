@@ -3,4 +3,4 @@ project(SecondTask)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(SecondTask main.cpp)
+add_executable(SecondTask Main.cpp Application/Application.cpp Models/Envelope/Envelope.cpp View/View.cpp ViewModels/ViewModel.cpp)
