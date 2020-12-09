@@ -4,6 +4,11 @@
 
 #include "Application.hpp"
 
+#include "../Models/Board/BoardCreator.hpp"
+#include "../ViewModels/ViewModel.hpp"
+#include "../View/View.hpp"
+#include "../Services/ConsoleArgsValidator/ConsoleArgsValidator.hpp"
+
 task::first::Application::Application(const unsigned int argc, char **argv)
 	: argc_(argc), argv_(argv) {}
 
@@ -14,13 +19,15 @@ task::first::Application::GetInstance(const unsigned int argc, char **argv) {
 }
 
 int task::first::Application::operator()() {
+  task::helpers::ErrorHandler errorHandler(task::helpers::ErrorCode::NO_ERROR);
+
   std::unique_ptr<unsigned short> rowsCount, columnsCount;
-  std::unique_ptr<
-	  task::helpers::ConsoleArgsValidator> consoleArgsValidator
+  std::unique_ptr<task::helpers::ConsoleArgsValidator> consoleArgsValidator
 	  (new(std::nothrow) task::helpers::ConsoleArgsValidator
 		   (this->argc_, this->argv_));
   if (nullptr == consoleArgsValidator) {
-	std::cerr << "Memory error" << std::endl;
+	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
+	errorHandler.OutError(std::string("\n"));
 
 	return EXIT_FAILURE;
   }
@@ -34,7 +41,8 @@ int task::first::Application::operator()() {
 	rowsCount = consoleArgsValidator->ValidateByIndex<unsigned
 													  short>(1, checkLetters);
 	if (nullptr == rowsCount) {
-	  std::cerr << "Parse data error" << std::endl;
+	  errorHandler.SetErrorCode(task::helpers::ErrorCode::PARSE_FAILED);
+	  errorHandler.OutError(std::string("\n"));
 
 	  return EXIT_FAILURE;
 	}
@@ -43,13 +51,16 @@ int task::first::Application::operator()() {
 														 short>(2,
 																checkLetters);
 	if (nullptr == columnsCount) {
-	  std::cerr << "Parse data error" << std::endl;
+	  errorHandler.SetErrorCode(task::helpers::ErrorCode::PARSE_FAILED);
+	  errorHandler.OutError(std::string("\n"));
 
 	  return EXIT_FAILURE;
 	}
   } else {
-	std::cout << "Arguments error..." << std::endl
-			  << "FirstTask.exe rowsCount columnsCount" << std::endl;
+	errorHandler.SetErrorCode(task::helpers::ErrorCode::NOT_ENOUGH_ARGS);
+	errorHandler.OutError(std::string("\n"));
+
+    std::cout << "FirstTask.exe rowsCount columnsCount" << std::endl;
 
 	return EXIT_SUCCESS;
   }
@@ -57,7 +68,8 @@ int task::first::Application::operator()() {
   std::unique_ptr<task::first::BoardCreator<char>> boardFactory
 	  (new(std::nothrow) task::first::BoardCreator('*', ' '));
   if (nullptr == boardFactory) {
-	std::cerr << "Memory error" << std::endl;
+	errorHandler.SetErrorCode(task::helpers::ErrorCode::PARSE_FAILED);
+	errorHandler.OutError(std::string("\n"));
 
 	return EXIT_FAILURE;
   }
@@ -65,7 +77,8 @@ int task::first::Application::operator()() {
   std::unique_ptr<task::first::Board<char>> board
 	  = boardFactory->CreateBoard(*rowsCount, *columnsCount);
   if (nullptr == board) {
-	std::cerr << "Memory error" << std::endl;
+	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
+	errorHandler.OutError(std::string("\n"));
 
 	return EXIT_FAILURE;
   }
@@ -73,7 +86,8 @@ int task::first::Application::operator()() {
   std::unique_ptr<task::first::ViewModel<char>> viewModel
 	  (new(std::nothrow) task::first::ViewModel(*board));
   if (nullptr == viewModel) {
-	std::cerr << "Memory error" << std::endl;
+	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
+	errorHandler.OutError(std::string("\n"));
 
 	return EXIT_FAILURE;
   }
@@ -81,7 +95,8 @@ int task::first::Application::operator()() {
   std::unique_ptr<task::first::View<char>> view
 	  (new(std::nothrow) task::first::View(*viewModel));
   if (nullptr == view) {
-	std::cerr << "Memory error" << std::endl;
+	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
+	errorHandler.OutError(std::string("\n"));
 
 	return EXIT_FAILURE;
   }

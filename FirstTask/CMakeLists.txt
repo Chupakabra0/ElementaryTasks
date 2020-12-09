@@ -3,4 +3,4 @@ project(FirstTask)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(FirstTask main.cpp Application/Application.cpp)
+add_executable(FirstTask Main.cpp Application/Application.cpp)

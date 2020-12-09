@@ -10,10 +10,7 @@
 #include <iostream>
 #include <regex>
 
-#include "../Models/Board/BoardCreator.hpp"
-#include "../ViewModels/ViewModel.hpp"
-#include "../View/View.hpp"
-#include "../Services/ConsoleArgsValidator/ConsoleArgsValidator.hpp"
+#include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
 
 namespace task::first {
 class Application {
