@@ -11,21 +11,27 @@
 
 namespace task::first
 {
-	class BoardFactory
+	template<class SymbolType>
+	class BoardCreator
 	{
-		using value_type = char;
 	public:
-		BoardFactory() = delete;
+		using value_type = SymbolType;
 
-		BoardFactory(const BoardFactory&) = default;
+		BoardCreator() = delete;
 
-		BoardFactory(BoardFactory&&) = default;
+		BoardCreator(const BoardCreator&) = default;
 
-		BoardFactory(value_type blackSymbol, value_type whiteSymbol)
+		BoardCreator(BoardCreator&&) noexcept = default;
+
+		BoardCreator& operator=(const BoardCreator&) = delete;
+
+		BoardCreator& operator=(BoardCreator&&) = delete;
+
+		BoardCreator(value_type blackSymbol, value_type whiteSymbol)
 				: blackSymbol_(blackSymbol), whiteSymbol_(whiteSymbol)
 		{}
 
-		std::unique_ptr<task::first::Board> CreateBoard
+		std::unique_ptr<task::first::Board<value_type>> CreateBoard
 				(unsigned short rowsCount, unsigned short columnsCount)
 		{
 			if (rowsCount == 0 || columnsCount == 0)

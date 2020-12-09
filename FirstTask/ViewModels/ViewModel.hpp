@@ -13,6 +13,7 @@
 
 namespace task::first
 {
+	template<class BoardSymbolType>
 	class ViewModel
 	{
 	public:
@@ -20,17 +21,22 @@ namespace task::first
 
 		ViewModel(const ViewModel&) = default;
 
-		ViewModel(ViewModel&&) = default;
+		ViewModel(ViewModel&&) noexcept = default;
 
-		explicit ViewModel(const Board& chessBoard) : chessBoard_(chessBoard)
+		ViewModel& operator=(const ViewModel&) = delete;
+
+		ViewModel& operator=(ViewModel&&) = delete;
+
+		explicit ViewModel(const Board<BoardSymbolType>& chessBoard)
+				: chessBoard_(chessBoard)
 		{}
 
-		[[nodiscard]] Board GetChessBoard() const
+		[[nodiscard]] Board<BoardSymbolType> GetChessBoard() const
 		{
 			return this->chessBoard_;
 		}
 
-		void SetChessBoard(const Board& chessBoard)
+		void SetChessBoard(const Board<BoardSymbolType>& chessBoard)
 		{
 			this->chessBoard_ = chessBoard;
 		}

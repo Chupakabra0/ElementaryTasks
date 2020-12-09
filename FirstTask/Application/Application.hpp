@@ -17,20 +17,26 @@
 
 namespace task::first
 {
-	class Main
+	class Application
 	{
 	public:
-		Main() = default;
+		Application() = delete;
 
+		Application(const Application&) = delete;
 
+		Application(Application&&) noexcept = delete;
 
-		Main(Main&&) = default;
+		Application& operator=(const Application&) = delete;
 
-		int operator()(const unsigned argc, char* argv[])
+		Application& operator=(Application&&) = delete;
+
+		static Application& GetInstance(const unsigned argc, char** argv)
+		{
 			static Application instance(argc, argv);
 			return instance;
 		}
 
+		int operator()()
 		{
 			std::unique_ptr<unsigned short> rowsCount, columnsCount;
 			std::unique_ptr<
@@ -73,6 +79,7 @@ namespace task::first
 			else
 			{
 				std::cout << "Arguments error..." << std::endl
+				<< "FirstTask.exe rowsCount columnsCount" << std::endl;
 
 				return EXIT_SUCCESS;
 			}
@@ -118,7 +125,6 @@ namespace task::first
 			return EXIT_SUCCESS;
 		}
 
-		~Main() = default;
 		~Application() = default;
 
 	private:

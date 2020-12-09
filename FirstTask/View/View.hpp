@@ -11,6 +11,7 @@
 
 namespace task::first
 {
+	template<class ViewModelType>
 	class View
 	{
 	public:
@@ -18,9 +19,13 @@ namespace task::first
 
 		View(const View&) = delete;
 
-		View(View&&) = delete;
+		View(View&&) noexcept = delete;
 
-		explicit View(const ViewModel& vm) : vm_(vm)
+		View& operator=(const View&) = delete;
+
+		View& operator=(View&&) = delete;
+
+		explicit View(const ViewModel<ViewModelType>& vm) : vm_(vm)
 		{}
 
 		void Out() const
@@ -32,7 +37,7 @@ namespace task::first
 
 	private:
 		// TIP: maybe unique_ptr...
-		ViewModel vm_;
+		ViewModel<ViewModelType> vm_;
 	};
 }
 

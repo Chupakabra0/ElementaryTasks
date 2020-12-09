@@ -7,21 +7,27 @@
 #ifndef FIRSTTASK_BOARD_HPP
 #define FIRSTTASK_BOARD_HPP
 
-#include <ostream>
+#include <iostream>
 #include <map>
 #include <cstring>
 
 namespace task::first
 {
+	template<class SymbolType>
 	class Board
 	{
-		using value_type = char;
 	public:
+		using value_type = SymbolType;
+
 		Board() = delete;
 
 		Board(const Board&) = default;
 
 		Board(Board&&) noexcept = default;
+
+		Board& operator=(const Board&) = default;
+
+		Board& operator=(Board&&) = default;
 
 		explicit Board(
 				unsigned short rows, unsigned short columns,
@@ -88,9 +94,9 @@ namespace task::first
 		}
 
 		void Insert
-				(const std::map<std::string, value_type>::value_type& element)
+				(const typename std::map<std::string, value_type>::value_type& element)
 		{
-			// TIP: Maybe I have to create some checks
+			// TODO: Maybe I have to create some checks
 			try
 			{
 				this->board_.insert(element);
@@ -120,7 +126,43 @@ namespace task::first
 			return out;
 		}
 
-		Board& operator=(const Board&) = default;
+		template<class OfstreamType>
+		friend std::basic_ofstream<OfstreamType>& operator<<
+				(
+						std::basic_ofstream<OfstreamType>& out, const Board&
+				chessBoard)
+		{
+			auto i = 0u;
+			for (const auto& element : chessBoard.board_)
+			{
+				out << element.second;
+				if (++i >= chessBoard.columnsCount_)
+				{
+					out << '\n';
+					i = 0u;
+				}
+			}
+			return out;
+		}
+
+		template<class FstreamType>
+		friend std::basic_fstream<FstreamType>& operator<<
+				(
+						std::basic_fstream<FstreamType>& out, const Board&
+				chessBoard)
+		{
+			auto i = 0u;
+			for (const auto& element : chessBoard.board_)
+			{
+				out << element.second;
+				if (++i >= chessBoard.columnsCount_)
+				{
+					out << '\n';
+					i = 0u;
+				}
+			}
+			return out;
+		}
 
 		value_type& operator[](const std::string& key)
 		{
