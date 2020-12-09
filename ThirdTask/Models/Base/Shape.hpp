@@ -28,9 +28,9 @@ class Shape {
 
   void SetName(const std::string &string);
 
-  virtual double GetPerimeter() const = 0;
+  [[nodiscard]] virtual double GetPerimeter() const = 0;
 
-  virtual double GetSquare() const = 0;
+  [[nodiscard]] virtual double GetSquare() const = 0;
 
   virtual ~Shape() = default;
 
