@@ -2,38 +2,35 @@
 // Created by Александр Сафиюлин on 04.12.2020.
 //
 
+#pragma once
+
 #ifndef THIRDTASK_VIEW_HPP
 #define THIRDTASK_VIEW_HPP
 
 #include "../ViewModel/ViewModel.hpp"
 
-namespace task::third
-{
-	class View
-	{
-	public:
-		View() = delete;
+namespace task::third {
+class View {
+ public:
+  View() = delete;
 
-		View(const View&) = delete;
+  View(const View &) = delete;
 
-		View(View&&) = delete;
+  View(View &&) = delete;
 
-		View(const ViewModel& vm) : vm_(vm)
-		{}
+  View &operator=(const View &) = delete;
 
-		void SetVM(const ViewModel& vm) {
-			this->vm_ = vm;
-		}
+  View &operator=(View &&) = delete;
 
-		void Out() const {
-			for (const auto& i : this->vm_.GetMultiset()) {
-				std::cout << i << std::endl;
-			}
-		}
+  explicit View(const ViewModel &vm);
 
-	private:
-		ViewModel vm_;
-	};
+  void SetVM(const ViewModel &vm);
+
+  void Out() const;
+
+ private:
+  ViewModel vm_;
+};
 }
 
 #endif //THIRDTASK_VIEW_HPP
