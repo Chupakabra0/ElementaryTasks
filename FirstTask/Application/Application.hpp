@@ -15,34 +15,32 @@
 #include "../View/View.hpp"
 #include "../Services/ConsoleArgsValidator/ConsoleArgsValidator.hpp"
 
-namespace task::first
-{
-	class Application
-	{
-	public:
-		Application() = delete;
+namespace task::first {
+class Application {
+ public:
+  Application() = delete;
 
-		Application(const Application&) = delete;
+  Application(const Application &) = delete;
 
-		Application(Application&&) noexcept = delete;
+  Application(Application &&) noexcept = delete;
 
-		Application& operator=(const Application&) = delete;
+  Application &operator=(const Application &) = delete;
 
-		Application& operator=(Application&&) = delete;
+  Application &operator=(Application &&) = delete;
 
-		static Application& GetInstance(unsigned argc, char** argv);
+  static Application &GetInstance(unsigned argc, char **argv);
 
-		int operator()();
+  int operator()();
 
-		~Application() = default;
+  ~Application() = default;
 
-	private:
+ private:
 
-		explicit Application(unsigned argc, char** argv);
+  explicit Application(unsigned argc, char **argv);
 
-		unsigned argc_;
-		char** argv_;
-	};
+  unsigned argc_;
+  char **argv_;
+};
 }
 
 #endif //FIRSTTASK_APPLICATION_HPP

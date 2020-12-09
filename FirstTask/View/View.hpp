@@ -9,36 +9,32 @@
 
 #include "../ViewModels/ViewModel.hpp"
 
-namespace task::first
-{
-	template<class ViewModelType>
-	class View
-	{
-	public:
-		View() = delete;
+namespace task::first {
+template<class ViewModelType>
+class View {
+ public:
+  View() = delete;
 
-		View(const View&) = delete;
+  View(const View &) = delete;
 
-		View(View&&) noexcept = delete;
+  View(View &&) noexcept = delete;
 
-		View& operator=(const View&) = delete;
+  View &operator=(const View &) = delete;
 
-		View& operator=(View&&) = delete;
+  View &operator=(View &&) = delete;
 
-		explicit View(const ViewModel<ViewModelType>& vm) : vm_(vm)
-		{}
+  explicit View(const ViewModel<ViewModelType> &vm) : vm_(vm) {}
 
-		void Out() const
-		{
-			std::cout << this->vm_.GetChessBoard() << std::endl;
-		}
+  void Out() const {
+	std::cout << this->vm_.GetChessBoard() << std::endl;
+  }
 
-		~View() = default;
+  ~View() = default;
 
-	private:
-		// TODO: maybe unique_ptr...
-		ViewModel<ViewModelType> vm_;
-	};
+ private:
+  // TODO: maybe unique_ptr...
+  ViewModel<ViewModelType> vm_;
+};
 }
 
 #endif //FIRSTTASK_VIEW_HPP
