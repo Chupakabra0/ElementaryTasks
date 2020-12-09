@@ -36,7 +36,7 @@ namespace task::first
 		~View() = default;
 
 	private:
-		// TIP: maybe unique_ptr...
+		// TODO: maybe unique_ptr...
 		ViewModel<ViewModelType> vm_;
 	};
 }
