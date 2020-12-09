@@ -30,7 +30,7 @@ namespace task::first
 
 		Application& operator=(Application&&) = delete;
 
-		static Application& GetInstance(const unsigned argc, char** argv);
+		static Application& GetInstance(unsigned argc, char** argv);
 
 		int operator()();
 
@@ -38,7 +38,7 @@ namespace task::first
 
 	private:
 
-		explicit Application(const unsigned argc, char** argv);
+		explicit Application(unsigned argc, char** argv);
 
 		unsigned argc_;
 		char** argv_;
