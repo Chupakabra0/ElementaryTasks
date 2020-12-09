@@ -2,8 +2,10 @@
 // Created by Александр Сафиюлин on 26.11.2020.
 //
 
-#ifndef FIRSTTASK_BOARDFACTORY_HPP
-#define FIRSTTASK_BOARDFACTORY_HPP
+#pragma once
+
+#ifndef FIRSTTASK_BOARDCREATOR_HPP
+#define FIRSTTASK_BOARDCREATOR_HPP
 
 #include "Board.hpp"
 
@@ -31,7 +33,7 @@ namespace task::first
 				return nullptr;
 			}
 
-			std::unique_ptr<task::first::Board> result
+			std::unique_ptr<task::first::Board<value_type>> result
 					(new(std::nothrow)
 							 Board(rowsCount, columnsCount, this->blackSymbol_,
 								   this->whiteSymbol_));
@@ -67,7 +69,7 @@ namespace task::first
 			return result;
 		}
 
-		~BoardFactory() = default;
+		~BoardCreator() = default;
 
 	protected:
 		static inline std::string getKey
@@ -93,4 +95,4 @@ namespace task::first
 	};
 }
 
-#endif //FIRSTTASK_BOARDFACTORY_HPP
+#endif //FIRSTTASK_BOARDCREATOR_HPP

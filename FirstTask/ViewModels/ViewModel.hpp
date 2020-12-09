@@ -2,6 +2,8 @@
 // Created by Александр Сафиюлин on 25.11.2020.
 //
 
+#pragma once
+
 #ifndef FIRSTTASK_VIEWMODEL_HPP
 #define FIRSTTASK_VIEWMODEL_HPP
 
@@ -37,7 +39,7 @@ namespace task::first
 
 	private:
 		// TIP: maybe unique_ptr...
-		Board chessBoard_;
+		Board <BoardSymbolType> chessBoard_;
 	};
 }
 

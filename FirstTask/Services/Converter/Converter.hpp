@@ -2,6 +2,8 @@
 // Created by Александр Сафиюлин on 25.11.2020.
 //
 
+#pragma once
+
 #ifndef HELPERS_CONVERTER_HPP
 #define HELPERS_CONVERTER_HPP
 

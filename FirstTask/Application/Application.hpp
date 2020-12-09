@@ -2,13 +2,15 @@
 // Created by Александр Сафиюлин on 04.12.2020.
 //
 
-#ifndef FIRSTTASK_MAIN_HPP
-#define FIRSTTASK_MAIN_HPP
+#pragma once
+
+#ifndef FIRSTTASK_APPLICATION_HPP
+#define FIRSTTASK_APPLICATION_HPP
 
 #include <iostream>
 #include <regex>
 
-#include "../Models/Board/BoardFactory.hpp"
+#include "../Models/Board/BoardCreator.hpp"
 #include "../ViewModels/ViewModel.hpp"
 #include "../View/View.hpp"
 #include "../Services/ConsoleArgsValidator/ConsoleArgsValidator.hpp"
@@ -20,17 +22,21 @@ namespace task::first
 	public:
 		Main() = default;
 
-		Main(const Main&) = default;
+
 
 		Main(Main&&) = default;
 
 		int operator()(const unsigned argc, char* argv[])
+			static Application instance(argc, argv);
+			return instance;
+		}
+
 		{
 			std::unique_ptr<unsigned short> rowsCount, columnsCount;
 			std::unique_ptr<
 					task::helpers::ConsoleArgsValidator> consoleArgsValidator
-					(new(std::nothrow) task::helpers::ConsoleArgsValidator(argc,
-																		   argv));
+					(new(std::nothrow) task::helpers::ConsoleArgsValidator
+							 (this->argc_, this->argv_));
 			if (nullptr == consoleArgsValidator)
 			{
 				std::cerr << "Memory error" << std::endl;
@@ -46,9 +52,8 @@ namespace task::first
 
 			if (consoleArgsValidator->CheckEnoughArgc(3))
 			{
-				rowsCount = std::move(
-						consoleArgsValidator->ValidateByIndex<unsigned
-						short>(1, checkLetters));
+				rowsCount = consoleArgsValidator->ValidateByIndex<unsigned
+						short>(1, checkLetters);
 				if (nullptr == rowsCount)
 				{
 					std::cerr << "Parse data error" << std::endl;
@@ -56,9 +61,8 @@ namespace task::first
 					return EXIT_FAILURE;
 				}
 
-				columnsCount = std::move(
-						consoleArgsValidator->ValidateByIndex<unsigned
-						short>(2, checkLetters));
+				columnsCount = consoleArgsValidator->ValidateByIndex<unsigned
+						short>(2, checkLetters);
 				if (nullptr == columnsCount)
 				{
 					std::cerr << "Parse data error" << std::endl;
@@ -68,15 +72,13 @@ namespace task::first
 			}
 			else
 			{
-				std::cout << "Arguments error..." << std::endl;
-				std::cout << "FirstTask.exe rowsCount columnsCount"
-						  << std::endl;
+				std::cout << "Arguments error..." << std::endl
 
 				return EXIT_SUCCESS;
 			}
 
-			std::unique_ptr<task::first::BoardFactory> boardFactory
-					(new(std::nothrow) task::first::BoardFactory('*', ' '));
+			std::unique_ptr<task::first::BoardCreator<char>> boardFactory
+					(new(std::nothrow) task::first::BoardCreator('*', ' '));
 			if (nullptr == boardFactory)
 			{
 				std::cerr << "Memory error" << std::endl;
@@ -84,9 +86,8 @@ namespace task::first
 				return EXIT_FAILURE;
 			}
 
-			std::unique_ptr<task::first::Board> board
-					(std::move(boardFactory->CreateBoard(*rowsCount,
-														 *columnsCount)));
+			std::unique_ptr<task::first::Board<char>> board
+					= boardFactory->CreateBoard(*rowsCount, *columnsCount);
 			if (nullptr == board)
 			{
 				std::cerr << "Memory error" << std::endl;
@@ -94,7 +95,7 @@ namespace task::first
 				return EXIT_FAILURE;
 			}
 
-			std::unique_ptr<task::first::ViewModel> viewModel
+			std::unique_ptr<task::first::ViewModel<char>> viewModel
 					(new(std::nothrow) task::first::ViewModel(*board));
 			if (nullptr == viewModel)
 			{
@@ -103,7 +104,7 @@ namespace task::first
 				return EXIT_FAILURE;
 			}
 
-			std::unique_ptr<task::first::View> view
+			std::unique_ptr<task::first::View<char>> view
 					(new(std::nothrow) task::first::View(*viewModel));
 			if (nullptr == view)
 			{
@@ -118,10 +119,17 @@ namespace task::first
 		}
 
 		~Main() = default;
+		~Application() = default;
 
 	private:
 
+		explicit Application(const unsigned argc, char** argv)
+				: argc_(argc), argv_(argv)
+		{}
+
+		unsigned argc_;
+		char** argv_;
 	};
 }
 
-#endif //FIRSTTASK_MAIN_HPP
+#endif //FIRSTTASK_APPLICATION_HPP

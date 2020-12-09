@@ -1,7 +1,6 @@
-#include "Main/Main.hpp"
+#include "Application/Application.hpp"
 
-int main(int argc, char* argv[])
+int main(int argc, char** argv)
 {
-	task::first::Main main;
-	return main(argc, argv);
+	return task::first::Application::GetInstance(argc, argv)();
 }

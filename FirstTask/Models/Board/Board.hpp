@@ -2,6 +2,8 @@
 // Created by Александр Сафиюлин on 24.11.2020.
 //
 
+#pragma once
+
 #ifndef FIRSTTASK_BOARD_HPP
 #define FIRSTTASK_BOARD_HPP
 

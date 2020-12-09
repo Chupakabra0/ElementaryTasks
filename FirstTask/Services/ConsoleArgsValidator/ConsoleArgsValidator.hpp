@@ -2,6 +2,8 @@
 // Created by Александр Сафиюлин on 27.11.2020.
 //
 
+#pragma once
+
 #ifndef FIRSTTASK_CONSOLEARGSVALIDATOR_HPP
 #define FIRSTTASK_CONSOLEARGSVALIDATOR_HPP
 
