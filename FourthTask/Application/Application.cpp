@@ -11,6 +11,7 @@
 #include "../Services/ConsoleArgsValidator/ConsoleArgsValidator.hpp"
 #include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
 #include "../Models/FileParserLineByLine/FileParserLineByLine.hpp"
+#include "../View/View.hpp"
 
 task::fourth::Application::Application(const unsigned int argc, char **argv)
 	: argc_(argc), argv_(argv) {}
@@ -26,12 +27,20 @@ int task::fourth::Application::operator()() const {
   task::helpers::ErrorHandler errorHandler(task::helpers::ErrorCode::NO_ERROR);
   const std::string tempPath("temp.tmp");
 
+  std::unique_ptr<task::fourth::View<std::ostream>> view(new(std::nothrow)
+  task::fourth::View(std::cout, errorHandler));
+  if (nullptr == view) {
+	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
+	errorHandler.OutError();
+
+	return EXIT_FAILURE;
+  }
+
   std::unique_ptr<task::helpers::ConsoleArgsValidator> consoleArgsValidator
 	  (new(std::nothrow) task::helpers::ConsoleArgsValidator(this->argc_,
 															 this->argv_));
   if (nullptr == consoleArgsValidator) {
-	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
-	errorHandler.OutError();
+	view->OutMemoryError();
 
 	return EXIT_FAILURE;
   }
@@ -47,8 +56,7 @@ int task::fourth::Application::operator()() const {
 
 	if (nullptr == filePath || nullptr == stringToFind ||
 		nullptr == stringToReplace) {
-	  errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
-	  errorHandler.OutError();
+	  view->OutParseError();
 
 	  return EXIT_FAILURE;
 	}
@@ -56,8 +64,7 @@ int task::fourth::Application::operator()() const {
 	std::unique_ptr<task::fourth::CharFileParserLineByLine> parser
 		(new(std::nothrow) task::fourth::CharFileParserLineByLine(*filePath));
 	if (nullptr == parser) {
-	  errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
-	  errorHandler.OutError();
+	  view->OutMemoryError();
 
 	  return EXIT_FAILURE;
 	}
@@ -67,6 +74,7 @@ int task::fourth::Application::operator()() const {
 
 	  std::fstream ofs(tempPath.c_str(), std::ios_base::trunc |
 		  std::ios_base::out);
+
 
 	  std::for_each(parser->begin(), parser->end(),
 					[&stringToFind, &stringToReplace, &ofs](
@@ -85,16 +93,15 @@ int task::fourth::Application::operator()() const {
 	  std::filesystem::remove(filePath->c_str());
 	  std::filesystem::rename(tempPath.c_str(), filePath->c_str());
 
-	  std::cout << "Done" << std::endl;
+	  view->OutDoneMessage();
 	} else {
-	  std::cerr << "Not enough memory to do this operation" << std::endl;
+	  view->OutNotDoneMessage();
 	}
   } else if (consoleArgsValidator->CheckEnoughArgc(3)) {
 	filePath = consoleArgsValidator->ValidateByIndex<std::string>(1u);
 	stringToFind = consoleArgsValidator->ValidateByIndex<std::string>(2u);
 	if (nullptr == filePath || nullptr == stringToFind) {
-	  errorHandler.SetErrorCode(task::helpers::ErrorCode::PARSE_FAILED);
-	  errorHandler.OutError();
+	  view->OutParseError();
 
 	  return EXIT_FAILURE;
 	}
@@ -103,8 +110,7 @@ int task::fourth::Application::operator()() const {
 		(new(std::nothrow) task::fourth::CharFileParserLineByLine
 			 (*filePath));
 	if (nullptr == parser) {
-	  errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
-	  errorHandler.OutError();
+	  view->OutMemoryError();
 
 	  return EXIT_FAILURE;
 	}
@@ -118,12 +124,9 @@ int task::fourth::Application::operator()() const {
 					++count;
 				  });
 
-	std::cout << count;
+	view->OutFileWordCount(*stringToFind, count);
   } else {
-	std::cout << "Not enough args:" << std::endl
-			  << "FourthTask.exe filePath stringToCount" << std::endl
-			  << "FourthTask.exe filePath stringToFind stringToReplace" <<
-			  std::endl;
+	view->OutInstructionsMessage();
 
 	return EXIT_SUCCESS;
   }
