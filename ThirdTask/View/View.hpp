@@ -43,15 +43,15 @@ class View {
   };
 
   void OutMemoryError() {
-	this->OutError(task::helpers::ErrorCode::MEMORY_OUT);
+	this->outError(task::helpers::ErrorCode::MEMORY_OUT);
   }
 
   void OutParseError() {
-	this->OutError(task::helpers::ErrorCode::PARSE_FAILED);
+	this->outError(task::helpers::ErrorCode::PARSE_FAILED);
   }
 
   void OutValidError() {
-	this->OutError(task::helpers::ErrorCode::VALIDATION_FAILED);
+	this->outError(task::helpers::ErrorCode::VALIDATION_FAILED);
   }
 
   [[nodiscard]] std::multiset<task::third::Triangle,
@@ -72,7 +72,7 @@ class View {
   }
 
  private:
-  void OutError(task::helpers::ErrorCode errorCode) {
+  void outError(task::helpers::ErrorCode errorCode) {
 	this->errorHandler_.SetErrorCode(errorCode);
 	this->errorHandler_.OutError(std::string("\n"));
   }
