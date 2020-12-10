@@ -22,7 +22,7 @@ concept IsSymbolType = std::is_same_v<Type, char> ||
 template<IsSymbolType Type>
 class FileParserLineByLineIterator {
  public:
-  using value_type = char;
+  using value_type = Type;
   using pointer = value_type *;
   using const_pointer = const pointer;
   using reference = value_type &;

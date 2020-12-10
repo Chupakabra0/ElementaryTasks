@@ -10,9 +10,9 @@
 #include "FileParserLineByLineIterator.hpp"
 
 namespace task::fourth {
-	template<IsSymbolType Type>
+template<IsSymbolType Type>
 class FileParserLineByLine {
-  using value_type = char;
+  using value_type = Type;
   using pointer = value_type *;
   using const_pointer = const pointer;
   using reference = value_type &;
@@ -62,6 +62,11 @@ class FileParserLineByLine {
 
   void CloseFile() {
 	this->fileStream_.close();
+  }
+
+  void Reset() {
+	this->fileStream_.clear();
+	this->fileStream_.seekg(0u);
   }
 
   ~FileParserLineByLine() = default;
