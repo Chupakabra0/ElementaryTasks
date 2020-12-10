@@ -11,7 +11,6 @@
 #include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
 
 #include "../Models/Triangle/Triangle.hpp"
-#include "../ViewModel/ViewModel.hpp"
 #include "../View/View.hpp"
 
 #include "Application.hpp"
@@ -25,19 +24,8 @@ int task::third::Application::operator()() {
   std::string flag;
   task::helpers::ErrorHandler errorHandler(task::helpers::ErrorCode::NO_ERROR);
 
-  std::unique_ptr<task::third::ViewModel> vm(new(std::nothrow)
-												 task::third::ViewModel(std::multiset<
-	  task::third::Triangle,
-	  std::greater<>>()));
-  if (nullptr == vm) {
-	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
-	errorHandler.OutError(std::string("\n"));
-
-	return EXIT_FAILURE;
-  }
-
-  std::unique_ptr<task::third::View>
-	  view(new(std::nothrow) task::third::View(*vm));
+  std::unique_ptr<task::third::View<std::ostream>>
+	  view(new(std::nothrow) task::third::View(std::cout, errorHandler));
   if (nullptr == view) {
 	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
 	errorHandler.OutError(std::string("\n"));
@@ -45,54 +33,50 @@ int task::third::Application::operator()() {
 	return EXIT_FAILURE;
   }
 
+  std::unique_ptr<task::helpers::ConsoleInputValidator>
+	  consoleInputValidator(new(std::nothrow)
+								task::helpers::ConsoleInputValidator());
+  if (nullptr == consoleInputValidator) {
+	view->OutMemoryError();
+
+	return EXIT_FAILURE;
+  }
+
+  std::unique_ptr<task::helpers::StringCleaner> stringCleaner(new
+																  (std::nothrow) task::helpers::StringCleaner(
+	  ' '));
+  if (nullptr == stringCleaner) {
+	view->OutMemoryError();
+
+	return EXIT_FAILURE;
+  }
+
+  std::unique_ptr<task::helpers::StringSplitter> stringSplitter(new
+																	(std::nothrow) task::helpers::StringSplitter(
+	  ','));
+  if (nullptr == stringSplitter) {
+	view->OutMemoryError();
+
+	return EXIT_FAILURE;
+  }
+
   do {
-	std::unique_ptr<task::helpers::ConsoleInputValidator>
-		consoleInputValidator(new(std::nothrow)
-								  task::helpers::ConsoleInputValidator());
-	if (nullptr == consoleInputValidator) {
-	  errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
-	  errorHandler.OutError(std::string("\n"));
 
-	  return EXIT_FAILURE;
-	}
+	view->OutInstructions();
 
-	std::unique_ptr<task::helpers::StringCleaner> stringCleaner(new
-	(std::nothrow) task::helpers::StringCleaner(' '));
-	if (nullptr == stringCleaner) {
-	  errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
-	  errorHandler.OutError(std::string("\n"));
-
-	  return EXIT_FAILURE;
-	}
-
-	std::unique_ptr<task::helpers::StringSplitter> stringSplitter(new
-																	  (std::nothrow) task::helpers::StringSplitter(
-		','));
-	if (nullptr == stringSplitter) {
-	  errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
-	  errorHandler.OutError(std::string("\n"));
-
-	  return EXIT_FAILURE;
-	}
-
-	std::cout << "Enter a new triangle in format:" << std::endl
-			  << "Name, FirstSide, SecondSide, ThirdSide" << std::endl;
-
-	std::unique_ptr<std::string> triangleString = std::move
-		(consoleInputValidator->LoopInput<std::string>());
+	std::unique_ptr<std::string> triangleString =
+		consoleInputValidator->LoopInput<std::string>();
 	if (nullptr == triangleString) {
-	  errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
-	  errorHandler.OutError(std::string("\n"));
+	  view->OutMemoryError();
 
 	  return EXIT_FAILURE;
 	}
 
-	*triangleString = stringCleaner->Clean(*triangleString);
-	const auto triangleParams = stringSplitter->Split(*triangleString);
+	const auto triangleParams =
+		stringSplitter->Split(stringCleaner->Clean(*triangleString));
 
 	if (triangleParams.size() < 4) {
-	  errorHandler.SetErrorCode(task::helpers::ErrorCode::PARSE_FAILED);
-	  errorHandler.OutError(std::string("\n"));
+	  view->OutParseError();
 	} else {
 	  auto isPositiveDouble = [](const char string[]) -> bool {
 		const std::regex number(R"((^\d+?(\.\d+?$|$)))");
@@ -101,36 +85,29 @@ int task::third::Application::operator()() {
 	  };
 
 	  std::unique_ptr<std::string> triangleName =
-		  std::move(task::helpers::Converter<std::string>::
-					ConvertString(triangleParams[0]));
+	  	task::helpers::Converter<std::string>::ConvertString(triangleParams[0]);
 	  std::unique_ptr<double> firstSide =
-		  std::move(task::helpers::Converter<double>::ConvertString
-						(triangleParams[1], isPositiveDouble));
+		  task::helpers::Converter<double>::ConvertString(triangleParams[1], isPositiveDouble);
 	  std::unique_ptr<double> secondSide =
-		  std::move(task::helpers::Converter<double>::ConvertString
-						(triangleParams[2], isPositiveDouble));
+		  task::helpers::Converter<double>::ConvertString(triangleParams[2], isPositiveDouble);
 	  std::unique_ptr<double> thirdSide =
-		  std::move(task::helpers::Converter<double>::ConvertString
-						(triangleParams[3], isPositiveDouble));
+		  task::helpers::Converter<double>::ConvertString(triangleParams[3], isPositiveDouble);
 
 	  if (nullptr == triangleName || nullptr == firstSide ||
 		  nullptr == secondSide || nullptr == thirdSide) {
-		errorHandler.SetErrorCode(task::helpers::ErrorCode::PARSE_FAILED);
-		errorHandler.OutError(std::string("\n"));
+		view->OutParseError();
 	  } else {
 		std::unique_ptr<task::third::Triangle> triangle
 			(task::third::Triangle::CreateUniquePtrTriangle
 				 (*triangleName, *firstSide, *secondSide, *thirdSide));
 
 		if (nullptr == triangle) {
-		  errorHandler.SetErrorCode(task::helpers::ErrorCode::VALIDATION_FAILED);
-		  errorHandler.OutError(std::string("\n"));
+		  view->OutValidError();
 		} else {
-		  vm->AddToMultiset(*triangle);
+		  view->AddToMultiset(*triangle);
 		}
 
-		view->SetVM(*vm);
-		view->Out();
+		view->OutTriangles();
 	  }
 
 	  std::cout << std::endl << "Continue? [y/Yes]:";

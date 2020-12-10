@@ -3,4 +3,4 @@ project(ThirdTask)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(ThirdTask Main.cpp Models/Base/Shape.cpp Models/Triangle/Triangle.cpp Models/Triangle/Triangle.hpp View/View.cpp ViewModel/ViewModel.cpp Application/Application.cpp)
+add_executable(ThirdTask Main.cpp Models/Base/Shape.cpp Models/Triangle/Triangle.cpp Models/Triangle/Triangle.hpp Application/Application.cpp)
