@@ -34,12 +34,12 @@ class View {
 	  : chessBoard_(std::make_unique<Board>(chessBoard)), out_(out),
 		errorHandler_(errorHandler) {}
 
-  void OutBoard() const {
+  void OutBoard() {
 	if (nullptr == this->chessBoard_) {
-	  // TODO: maybe error
+	  this->outError(task::helpers::ErrorCode::NOT_ENOUGH_ARGS);
 	  return;
 	}
-	operator<<(this->out_, *this->chessBoard_);
+	this->out_ << *this->chessBoard_;
   }
 
   [[nodiscard]] Board GetChessBoard() const {
@@ -51,10 +51,8 @@ class View {
   }
 
   void OutNotEnoughArgsMessage() {
-	this->errorHandler_.SetErrorCode(task::helpers::ErrorCode::NOT_ENOUGH_ARGS);
-	this->errorHandler_.OutError(std::string("\n"));
-
-	operator<<(this->out_, "FirstTask.exe rowsCount columnsCount");
+	this->outError(task::helpers::ErrorCode::NOT_ENOUGH_ARGS);
+	this->out_ << "FirstTask.exe rowsCount columnsCount" << std::endl;
   }
 
   void OutParseError() {
