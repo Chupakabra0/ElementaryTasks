@@ -12,7 +12,6 @@
 #include "../Models/Envelope/Envelope.hpp"
 #include "../View/View.hpp"
 #include "../Services/ConsoleInputValidator/ConsoleInputValidator.hpp"
-#include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
 
 task::second::Application &task::second::Application::GetInstance() {
   static Application instance;
@@ -23,18 +22,8 @@ int task::second::Application::operator()() const {
   std::string flag;
   task::helpers::ErrorHandler errorHandler(task::helpers::ErrorCode::NO_ERROR);
 
-  std::unique_ptr<
-	  task::helpers::ConsoleInputValidator> consoleValidator
-	  (new(std::nothrow) task::helpers::ConsoleInputValidator());
-  if (nullptr == consoleValidator) {
-	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
-	errorHandler.OutError(std::string("\n"));
-
-	return EXIT_FAILURE;
-  }
-
   std::unique_ptr<task::second::View<std::ostream>> view
-	  (new(std::nothrow) task::second::View(std::cout));
+	  (new(std::nothrow) task::second::View(std::cout, errorHandler));
   if (nullptr == view) {
 	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
 	errorHandler.OutError(std::string("\n"));
@@ -42,11 +31,19 @@ int task::second::Application::operator()() const {
 	return EXIT_FAILURE;
   }
 
+  std::unique_ptr<
+	  task::helpers::ConsoleInputValidator> consoleValidator
+	  (new(std::nothrow) task::helpers::ConsoleInputValidator());
+  if (nullptr == consoleValidator) {
+	view->OutMemoryError();
+
+	return EXIT_FAILURE;
+  }
+
   auto positiveDouble = [](const char string[]) -> bool {
 	const std::regex number(R"((^\d+?(\.\d+?$|$)))");
 	return std::regex_match(string, number)
-		&&
-			std::string(string).find('-') == std::string::npos;
+		&& std::string(string).find('-') == std::string::npos;
   };
 
   do {
@@ -70,7 +67,7 @@ int task::second::Application::operator()() const {
 	view->SetFirstEnvelope(Envelope(*firstHeight, *firstWidth));
 	view->SetSecondEnvelope(Envelope(*secondHeight, *secondWidth));
 
-	view->Out();
+	view->OutPutInResult();
 
 	std::cout << "Continue? [y/Yes]:";
 	std::cin >> flag;

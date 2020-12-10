@@ -7,6 +7,8 @@
 #include <sstream>
 #include <string>
 
+#include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
+
 #ifndef SECONDTASK_VIEW_HPP
 #define SECONDTASK_VIEW_HPP
 
@@ -20,12 +22,15 @@ class View {
 
   View(View &&) noexcept = default;
 
-  explicit View(Ostream &out) : out_(out) {}
+  explicit View(Ostream &out, task::helpers::ErrorHandler errorHandler)
+	  : out_(out), errorHandler_(errorHandler) {}
 
   explicit View(Ostream &out, const Envelope firstEnvelope, const Envelope
-  secondEnvelope) : out_(out),
-					firstEnvelope_(std::make_unique<Envelope>(firstEnvelope)),
-					secondEnvelope_(std::make_unique<Envelope>(secondEnvelope)) {}
+  secondEnvelope, task::helpers::ErrorHandler errorHandler)
+	  : out_(out),
+		firstEnvelope_(std::make_unique<Envelope>(firstEnvelope)),
+		secondEnvelope_(std::make_unique<Envelope>(secondEnvelope)),
+		errorHandler_(errorHandler) {}
 
   View &operator=(const View &) = default;
 
@@ -47,7 +52,11 @@ class View {
 	this->secondEnvelope_ = std::make_unique<Envelope>(envelope);
   }
 
-  void Out() const {
+  void OutMemoryError() {
+	this->outError(task::helpers::ErrorCode::MEMORY_OUT);
+  }
+
+  void OutPutInResult() {
 	std::stringstream ss;
 	ss << "First envelope " << this->firstEnvelope_->GetHeight()
 	   << " x " << this->firstEnvelope_->GetWidth() << " ";
@@ -80,9 +89,15 @@ class View {
   ~View() = default;
 
  private:
+  void outError(task::helpers::ErrorCode errorCode) {
+	this->errorHandler_.SetErrorCode(errorCode);
+	this->errorHandler_.OutError();
+  }
+
   std::unique_ptr<Envelope> firstEnvelope_;
   std::unique_ptr<Envelope> secondEnvelope_;
   Ostream &out_;
+  task::helpers::ErrorHandler errorHandler_;
 };
 
 }
