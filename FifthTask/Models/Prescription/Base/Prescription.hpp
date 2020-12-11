@@ -2,6 +2,8 @@
 // Created by Александр Сафиюлин on 05.12.2020.
 //
 
+#pragma once
+
 #ifndef FOURTHTASK_PRESCRIPTION_HPP
 #define FOURTHTASK_PRESCRIPTION_HPP
 
@@ -16,11 +18,11 @@ class Prescription {
 
   Prescription(const Prescription &) = default;
 
-  Prescription(Prescription &&) = default;
+  Prescription(Prescription &&) noexcept = default;
 
   Prescription &operator=(const Prescription &) = default;
 
-  Prescription &operator=(Prescription &&) = default;
+  Prescription &operator=(Prescription &&) noexcept = default;
 
   virtual std::string ToSmallPrescription(long long number) = 0;
 

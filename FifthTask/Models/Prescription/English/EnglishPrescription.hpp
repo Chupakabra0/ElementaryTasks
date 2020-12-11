@@ -18,11 +18,11 @@ class EnglishPrescription : public Prescription {
 
   EnglishPrescription(const EnglishPrescription &) = default;
 
-  EnglishPrescription(EnglishPrescription &&) = default;
+  EnglishPrescription(EnglishPrescription &&) noexcept = default;
 
   EnglishPrescription &operator=(const EnglishPrescription &) = default;
 
-  EnglishPrescription &operator=(EnglishPrescription &&) = default;
+  EnglishPrescription &operator=(EnglishPrescription &&) noexcept = default;
 
   std::string ToSmallPrescription(long long number) override;
 

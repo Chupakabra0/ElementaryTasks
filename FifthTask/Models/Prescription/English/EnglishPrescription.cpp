@@ -4,7 +4,7 @@
 
 #include "EnglishPrescription.hpp"
 
-std::string task::fifth::EnglishPrescription::ToSmallPrescription(long long int number) {
+std::string task::fifth::EnglishPrescription::ToSmallPrescription(const long long int number) {
   if (0ll == number) {
 	return this->singleNumbers_[0ll];
   }
@@ -12,7 +12,7 @@ std::string task::fifth::EnglishPrescription::ToSmallPrescription(long long int 
 }
 
 std::string task::fifth::EnglishPrescription::toSmallPrescriptionWithoutZero(
-	long long int number) {
+	const long long int number) {
   if (number == 0ll) {
 	return std::string("");
   }
@@ -26,7 +26,7 @@ std::string task::fifth::EnglishPrescription::toSmallPrescriptionWithoutZero(
   if (number <= 99ll) {
 	const auto temp = toSmallPrescriptionWithoutZero(number % 10ll);
 
-	return this->singleNumbers_[number]
+	return this->singleNumbers_[number / 10ll * 10ll]
 		+ (temp.empty() ? "" : " " + temp);
   }
   if (number <= 199ll) {
@@ -104,7 +104,7 @@ void task::fifth::EnglishPrescription::bigNumbersPrescription(const long long nu
 
 	result = singularString + (temp.empty() ? "" : " " + temp);
   }
-  if (number <= multipleLimit) {
+  else if (number <= multipleLimit) {
 	const auto temp = toSmallPrescriptionWithoutZero(number % divider);
 
 	result = toSmallPrescriptionWithoutZero(number / divider) +
