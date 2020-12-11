@@ -3,4 +3,5 @@ project(FifthTask)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(FourthTask main.cpp)
+add_executable(FourthTask main.cpp Models/Prescription/English/EnglishPrescription.cpp
+        Models/Prescription/Base/Prescription.cpp)

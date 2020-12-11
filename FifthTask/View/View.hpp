@@ -5,7 +5,7 @@
 #ifndef FOURTHTASK_VIEW_HPP
 #define FOURTHTASK_VIEW_HPP
 
-#include "../Models/Prescription.hpp"
+#include "../Models/Prescription/Base/Prescription.hpp"
 
 namespace task::fifth
 {
@@ -18,9 +18,8 @@ namespace task::fifth
 
 		View(View&&) = delete;
 
-		explicit View(const long long number)
-		: number_(number), numberString_(Prescription::ToSmallPrescription
-		(this->number_)) {}
+		explicit View(const long long number, const std::string& numberString)
+		: number_(number), numberString_(numberString) {}
 
 		void Out() const {
 			std::cout << "Digit: " << this->number_ << std::endl
