@@ -77,8 +77,8 @@ namespace task::sixth {
 				return num;
 			}
 
-			return num % this->rank_ + getSumOfEvenDigits(num / std::pow
-			(this->rank_, 2u));
+			return num % this->rank_ + getSumOfEvenDigits
+			(num / static_cast<unsigned>(std::pow(this->rank_, 2u)));
 		}
 
 		[[nodiscard]] unsigned long long getSumOfOddDigits(unsigned long
@@ -104,7 +104,8 @@ namespace task::sixth {
 
 		[[nodiscard]] unsigned long long getLuckyTicketPiterCount() const {
 			auto result = 0u;
-			auto limit = std::pow(this->rank_, this->countNumbers_ * 2u);
+			auto limit = static_cast<unsigned long long >(std::pow(this->rank_,
+									 this->countNumbers_ * 2ull));
 
 			for (auto i = 0u; i < limit; ++i) {
 				if (this->getSumOfEvenDigits(i) == this->getSumOfOddDigits(i)) {
