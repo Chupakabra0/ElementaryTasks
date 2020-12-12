@@ -18,20 +18,19 @@ task::eighth::Application &task::eighth::Application::GetInstance(const unsigned
 }
 
 int task::eighth::Application::operator()() const {
-  task::helpers::ErrorHandler errorHandler(task::helpers::ErrorCode::NO_ERROR);
+  helpers::ErrorHandler errorHandler(helpers::ErrorCode::NO_ERROR);
 
-  std::unique_ptr<task::eighth::View<std::ostream>> view
-	  (new(std::nothrow) task::eighth::View(std::cout, errorHandler));
+  std::unique_ptr<View<std::ostream>> view
+	  (new(std::nothrow) View<std::ostream>(std::cout, errorHandler));
   if (nullptr == view) {
-	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
+	errorHandler.SetErrorCode(helpers::ErrorCode::MEMORY_OUT);
 	errorHandler.OutError("\n");
 
 	return EXIT_FAILURE;
   }
 
-  std::unique_ptr<task::helpers::ConsoleArgsValidator> consoleArgsValidator
-	  (new(std::nothrow) task::helpers::ConsoleArgsValidator(this->argc_,
-															 this->argv_));
+  const std::unique_ptr<helpers::ConsoleArgsValidator> consoleArgsValidator
+	  (new(std::nothrow) helpers::ConsoleArgsValidator(this->argc_, this->argv_));
   if (nullptr == consoleArgsValidator) {
 	view->OutMemoryError();
 
@@ -49,10 +48,10 @@ int task::eighth::Application::operator()() const {
 	return std::regex_match(string, lettersCheck);
   };
 
-  std::unique_ptr<unsigned long long> lowLimit =
+  const std::unique_ptr<unsigned long long> lowLimit =
 	  consoleArgsValidator
 		  ->ValidateByIndex<unsigned long long>(1u, checkLetters);
-  std::unique_ptr<unsigned long long> highLimit =
+  const std::unique_ptr<unsigned long long> highLimit =
 	  consoleArgsValidator
 		  ->ValidateByIndex<unsigned long long>(2u, checkLetters);
   if (nullptr == lowLimit || nullptr == highLimit) {
@@ -61,8 +60,8 @@ int task::eighth::Application::operator()() const {
 	return EXIT_FAILURE;
   }
 
-  std::unique_ptr<task::eighth::FibonacciBuilder<unsigned long long>>
-	  fibonacciBuilder(new(std::nothrow) task::eighth::FibonacciBuilder
+  const std::unique_ptr<FibonacciBuilder<unsigned long long>>
+	  fibonacciBuilder(new(std::nothrow) FibonacciBuilder<unsigned long long>
 						   (*lowLimit, *highLimit));
   if (nullptr == fibonacciBuilder) {
 	view->OutMemoryError();

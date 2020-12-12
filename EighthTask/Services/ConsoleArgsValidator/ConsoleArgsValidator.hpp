@@ -14,11 +14,15 @@ class ConsoleArgsValidator {
  public:
   ConsoleArgsValidator() = delete;
 
-  ConsoleArgsValidator(const ConsoleArgsValidator &) = default;
+  ConsoleArgsValidator(const ConsoleArgsValidator&) = default;
 
   ConsoleArgsValidator(ConsoleArgsValidator &&) = default;
 
-  ConsoleArgsValidator(unsigned argc, char **argv)
+  ConsoleArgsValidator& operator=(const ConsoleArgsValidator&) = default;
+
+  ConsoleArgsValidator& operator=(ConsoleArgsValidator&&) = default;
+
+  ConsoleArgsValidator(const unsigned argc, char **argv)
 	  : argc_(argc), argv_(argv) {}
 
   template<class Type>
@@ -26,7 +30,7 @@ class ConsoleArgsValidator {
 	  const unsigned index, bool
   predicate(const char[]) = nullptr) const {
 	auto result = std::move(
-		task::helpers::Converter<Type>::ConvertString
+		Converter<Type>::ConvertString
 			(this->argv_[index], predicate));
 
 	return result;
@@ -43,7 +47,7 @@ class ConsoleArgsValidator {
 	return std::make_unique<std::string>(std::string(this->argv_[index]));
   }
 
-  [[nodiscard]] bool CheckEnoughArgc(unsigned argc) const {
+  [[nodiscard]] bool CheckEnoughArgc(const unsigned argc) const {
 	return this->argc_ >= argc;
   }
 
