@@ -26,11 +26,11 @@ class BoardCreator {
   BoardCreator &operator=(BoardCreator &&) = delete;
 
   BoardCreator(value_type blackSymbol, value_type whiteSymbol)
-	  : blackSymbol_(blackSymbol), whiteSymbol_(whiteSymbol) {}
+	  : whiteSymbol_(whiteSymbol), blackSymbol_(blackSymbol) {}
 
-  std::unique_ptr<task::first::Board<value_type>> CreateBoard
+  std::unique_ptr<Board<value_type>> CreateBoard
 	  (unsigned short rowsCount, unsigned short columnsCount) {
-	if (rowsCount == 0 || columnsCount == 0) {
+	if (0 == rowsCount || 0 == columnsCount) {
 	  return nullptr;
 	}
 
@@ -67,7 +67,7 @@ class BoardCreator {
   ~BoardCreator() = default;
 
  protected:
-  static inline std::string getKey
+  static std::string getKey
 	  (const std::string &letter, const std::string &number) {
 	return letter + number;
   }
@@ -80,7 +80,7 @@ class BoardCreator {
 	  return this->blackSymbol_;
 	}
 	return this->whiteSymbol_;
-  };
+  }
 
   value_type whiteSymbol_;
   value_type blackSymbol_;

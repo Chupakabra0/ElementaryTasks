@@ -9,7 +9,6 @@
 
 #include <iostream>
 #include <map>
-#include <cstring>
 
 namespace task::first {
 template<class SymbolType>
@@ -30,7 +29,7 @@ class Board {
   explicit Board(
 	  unsigned short rows, unsigned short columns,
 	  value_type blackSymbol, value_type whiteSymbol)
-	  : blackSymbol_(blackSymbol), whiteSymbol_(whiteSymbol),
+	  : whiteSymbol_(whiteSymbol), blackSymbol_(blackSymbol),
 		rowsCount_(rows), columnsCount_(columns),
 		board_() {}
 
@@ -91,9 +90,7 @@ class Board {
 
   template<class OstreamType>
   friend std::basic_ostream<OstreamType> &operator<<
-	  (
-		  std::basic_ostream<OstreamType> &out, const Board &
-	  chessBoard) {
+	  (std::basic_ostream<OstreamType> &out, const Board &chessBoard) {
 	auto i = 0u;
 	for (const auto &element : chessBoard.board_) {
 	  out << element.second;
@@ -107,9 +104,7 @@ class Board {
 
   template<class OfstreamType>
   friend std::basic_ofstream<OfstreamType> &operator<<
-	  (
-		  std::basic_ofstream<OfstreamType> &out, const Board &
-	  chessBoard) {
+	  (std::basic_ofstream<OfstreamType> &out, const Board &chessBoard) {
 	auto i = 0u;
 	for (const auto &element : chessBoard.board_) {
 	  out << element.second;
@@ -123,9 +118,7 @@ class Board {
 
   template<class FstreamType>
   friend std::basic_fstream<FstreamType> &operator<<
-	  (
-		  std::basic_fstream<FstreamType> &out, const Board &
-	  chessBoard) {
+	  (std::basic_fstream<FstreamType> &out, const Board &chessBoard) {
 	auto i = 0u;
 	for (const auto &element : chessBoard.board_) {
 	  out << element.second;

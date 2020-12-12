@@ -7,11 +7,6 @@
 #ifndef FIRSTTASK_APPLICATION_HPP
 #define FIRSTTASK_APPLICATION_HPP
 
-#include <iostream>
-#include <regex>
-
-#include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
-
 namespace task::first {
 class Application {
  public:
@@ -27,7 +22,7 @@ class Application {
 
   static Application &GetInstance(unsigned argc, char **argv);
 
-  int operator()();
+  int operator()() const;
 
   ~Application() = default;
 
