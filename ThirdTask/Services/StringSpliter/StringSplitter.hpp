@@ -24,7 +24,7 @@ class StringSplitter {
 
   StringSplitter &operator=(StringSplitter &&) noexcept = default;
 
-  explicit StringSplitter(char delimiter) : delimiter_(delimiter) {}
+  explicit StringSplitter(const char delimiter) : delimiter_(delimiter) {}
 
   [[nodiscard]] std::vector<std::string>
   Split(const std::string &string) const {

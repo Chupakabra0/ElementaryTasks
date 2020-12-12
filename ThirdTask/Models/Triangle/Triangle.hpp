@@ -7,7 +7,6 @@
 #ifndef THIRDTASK_TRIANGLE_HPP
 #define THIRDTASK_TRIANGLE_HPP
 
-#include <fstream>
 #include <iostream>
 
 #include "../Base/Shape.hpp"

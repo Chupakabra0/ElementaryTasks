@@ -22,12 +22,17 @@ class StringCleaner {
 
   StringCleaner& operator=(StringCleaner&&) noexcept = default;
 
-  explicit StringCleaner(char toClean) : toClean_(toClean) {}
+  explicit StringCleaner(const char toClean) : toClean_(toClean) {}
 
   [[nodiscard]] std::string Clean(const std::string &string) const {
-	std::string result = string;
-	result.erase(remove(result.begin(), result.end(), this->toClean_),
-				 result.end());
+	auto result = string;
+  	// C++11
+	//result.erase(remove(result.begin(), result.end(), this->toClean_),
+	//			 result.end());
+	// C++20
+	result.erase(std::ranges::remove(result, this->toClean_).begin(),
+		result.end());
+  	
 	return result;
   }
 

@@ -12,10 +12,10 @@ task::third::Triangle::Triangle(const std::string &name,
 	(secondSide), thirdSide_(thirdDouble) {}
 
 std::unique_ptr<task::third::Triangle> task::third::Triangle::CreateUniquePtrTriangle(
-	const std::string &name,
-	double firstSide,
-	double secondSide,
-	double thirdSide) {
+	const std::string & name,
+	const double firstSide,
+	const double secondSide,
+	const double thirdSide) {
   std::unique_ptr<Triangle> triangle;
   if (firstSide < secondSide + thirdSide && secondSide < firstSide
 	  + thirdSide && thirdSide < firstSide + secondSide) {
@@ -76,27 +76,27 @@ bool task::third::operator<(const task::third::Triangle &first,
   return false;
 }
 
-bool task::third::operator>(const task::third::Triangle &first,
-							const task::third::Triangle &second) {
+bool task::third::operator>(const Triangle &first,
+							const Triangle &second) {
   return second < first;
 }
 
-bool task::third::operator>=(const task::third::Triangle &first,
-							 const task::third::Triangle &second) {
+bool task::third::operator>=(const Triangle &first,
+							 const Triangle &second) {
   return !(first < second);
 }
 
-bool task::third::operator<=(const task::third::Triangle &first,
-							 const task::third::Triangle &second) {
+bool task::third::operator<=(const Triangle &first,
+							 const Triangle &second) {
   return !(first > second);
 }
 
-bool task::third::operator==(const task::third::Triangle &first,
-							 const task::third::Triangle &second) {
+bool task::third::operator==(const Triangle &first,
+							 const Triangle &second) {
   return first <= second && first >= second;
 }
 
-bool task::third::operator!=(const task::third::Triangle &first,
-							 const task::third::Triangle &second) {
+bool task::third::operator!=(const Triangle &first,
+							 const Triangle &second) {
   return !(first == second);
 }

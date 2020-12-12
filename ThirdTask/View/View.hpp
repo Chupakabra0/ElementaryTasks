@@ -37,29 +37,29 @@ class View {
 	}
   }
 
-  void OutInstructions() {
+  void OutInstructions() const {
 	this->out_ << "Enter a new triangle in format:" << std::endl
 			   << "Name, FirstSide, SecondSide, ThirdSide" << std::endl;
   };
 
   void OutMemoryError() {
-	this->outError(task::helpers::ErrorCode::MEMORY_OUT);
+	this->outError(helpers::ErrorCode::MEMORY_OUT);
   }
 
   void OutParseError() {
-	this->outError(task::helpers::ErrorCode::PARSE_FAILED);
+	this->outError(helpers::ErrorCode::PARSE_FAILED);
   }
 
   void OutValidError() {
-	this->outError(task::helpers::ErrorCode::VALIDATION_FAILED);
+	this->outError(helpers::ErrorCode::VALIDATION_FAILED);
   }
 
-  [[nodiscard]] std::multiset<task::third::Triangle,
+  [[nodiscard]] std::multiset<Triangle,
 							  std::greater<>> GetMultiset() const {
 	return this->triangleMultiset_;
   }
 
-  void SetMultiset(const std::multiset<task::third::Triangle, std::greater<>>
+  void SetMultiset(const std::multiset<Triangle, std::greater<>>
 				   &multiset) {
 	if (this->triangleMultiset_ == multiset) {
 	  return;
@@ -67,19 +67,19 @@ class View {
 	this->triangleMultiset_ = multiset;
   }
 
-  void AddToMultiset(const task::third::Triangle &triangle) {
+  void AddToMultiset(const Triangle &triangle) {
 	this->triangleMultiset_.insert(triangle);
   }
 
  private:
-  void outError(task::helpers::ErrorCode errorCode) {
+  void outError(const helpers::ErrorCode errorCode) {
 	this->errorHandler_.SetErrorCode(errorCode);
 	this->errorHandler_.OutError(std::string("\n"));
   }
 
   Ostream &out_;
-  std::multiset<task::third::Triangle, std::greater<>> triangleMultiset_;
-  task::helpers::ErrorHandler errorHandler_;
+  std::multiset<Triangle, std::greater<>> triangleMultiset_;
+  helpers::ErrorHandler errorHandler_;
 };
 
 }

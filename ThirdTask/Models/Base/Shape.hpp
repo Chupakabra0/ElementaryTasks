@@ -18,7 +18,7 @@ class Shape {
 
   Shape(Shape &&) noexcept = default;
 
-  explicit Shape(const std::string &name);;
+  explicit Shape(const std::string &name);
 
   Shape &operator=(const Shape &) = default;
 

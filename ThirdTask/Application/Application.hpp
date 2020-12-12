@@ -20,7 +20,7 @@ class Application {
 
   static Application& GetInstance();
 
-  int operator()();
+  int operator()() const;
 
   ~Application() = default;
  private:
