@@ -28,7 +28,7 @@ int task::fourth::Application::operator()() const {
   const std::string tempPath("temp.tmp");
 
   std::unique_ptr<task::fourth::View<std::ostream>> view(new(std::nothrow)
-  task::fourth::View(std::cout, errorHandler));
+  task::fourth::View<std::ostream>(std::cout, errorHandler));
   if (nullptr == view) {
 	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
 	errorHandler.OutError();
