@@ -26,7 +26,7 @@ class Application {
 
   ~Application() = default;
  private:
-  explicit Application(unsigned argc, char **argv) : argc_(argc), argv_(argv) {}
+  explicit Application(const unsigned argc, char ** argv) : argc_(argc), argv_(argv) {}
 
   unsigned argc_;
   char **argv_;

@@ -3,4 +3,4 @@ project(SixthTask)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(SixthTask main.cpp Application/Application.cpp View/View.hpp)
+add_executable(SixthTask Main.cpp Application/Application.cpp View/View.hpp)

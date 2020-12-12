@@ -22,20 +22,20 @@ task::sixth::Application &task::sixth::Application::GetInstance(unsigned int arg
 }
 
 int task::sixth::Application::operator()() const {
-  task::helpers::ErrorHandler errorHandler(task::helpers::ErrorCode::NO_ERROR);
+  helpers::ErrorHandler errorHandler(helpers::ErrorCode::NO_ERROR);
 
-  std::unique_ptr<task::sixth::View<std::ostream>> view
-  (new(std::nothrow) task::sixth::View(std::cout, errorHandler));
+  std::unique_ptr<View<std::ostream>> view
+  (new(std::nothrow) View<std::ostream>(std::cout, errorHandler));
   if(nullptr == view) {
-	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
+	errorHandler.SetErrorCode(helpers::ErrorCode::MEMORY_OUT);
 	errorHandler.OutError("\n");
 
 	return EXIT_FAILURE;
   }
 
 
-  std::unique_ptr<task::helpers::ConsoleArgsValidator> consoleArgsValidator
-	  (new(std::nothrow) task::helpers::ConsoleArgsValidator(this->argc_,
+  std::unique_ptr<helpers::ConsoleArgsValidator> consoleArgsValidator
+	  (new(std::nothrow) helpers::ConsoleArgsValidator(this->argc_,
 															 this->argv_));
   if (nullptr == consoleArgsValidator) {
 	view->OutParseError();
@@ -49,16 +49,16 @@ int task::sixth::Application::operator()() const {
 	return EXIT_SUCCESS;
   }
 
-  std::unique_ptr<std::string> filePath = std::move
-	  (consoleArgsValidator->ValidateByIndex<std::string>(1u));
+  const std::unique_ptr<std::string> filePath =
+	  consoleArgsValidator->ValidateByIndex<std::string>(1u);
   if (nullptr == filePath) {
 	view->OutParseError();
 
 	return EXIT_FAILURE;
   }
 
-  std::unique_ptr<task::helpers::FileInputValidator> fileInputValidator
- 	 (new(std::nothrow) task::helpers::FileInputValidator
+  std::unique_ptr<helpers::FileInputValidator> fileInputValidator
+ 	 (new(std::nothrow) helpers::FileInputValidator
  	 	(std::filesystem::path(*filePath)));
   if (nullptr == fileInputValidator) {
 	view->OutParseError();
@@ -77,10 +77,13 @@ int task::sixth::Application::operator()() const {
 
 	return EXIT_FAILURE;
   }
-  std::transform(flag->begin(), flag->end(), flag->begin(), toupper);
+  // C++14
+  //std::transform(flag->begin(), flag->end(), flag->begin(), toupper);
+  // C++20
+  std::ranges::transform(*flag, flag->begin(), toupper);
 
-  auto luckyTicketType = task::sixth::FromString(*flag);
-  if (task::sixth::LuckyTicketType::NONE == luckyTicketType) {
+  const auto luckyTicketType = FromString(*flag);
+  if (LuckyTicketType::NONE == luckyTicketType) {
 	view->OutParseError();
 
 	return EXIT_FAILURE;
@@ -99,7 +102,7 @@ int task::sixth::Application::operator()() const {
 	std::unique_ptr<unsigned> temp = std::move(
 		consoleArgsValidator->ValidateByIndex
 			<unsigned>(2u, [](const char string[]) {
-		  std::regex checkLetters(R"((\d+?))");
+			const std::regex checkLetters(R"((\d+?))");
 		  return std::regex_match(string, checkLetters);
 		}));
 
@@ -108,8 +111,8 @@ int task::sixth::Application::operator()() const {
 	}
   }
 
-  std::unique_ptr<task::sixth::LuckyTicketCounter> ltc
-  	(new(std::nothrow) task::sixth::LuckyTicketCounter(*countDigits));
+  const std::unique_ptr<LuckyTicketCounter> ltc
+  	(new(std::nothrow) LuckyTicketCounter(*countDigits));
   if (nullptr == ltc) {
 	view->OutMemoryError();
 

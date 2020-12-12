@@ -12,7 +12,7 @@ namespace task::sixth {
 		NONE, MOSCOW, PITER
 	};
 
-	std::string ToString(LuckyTicketType luckyTicketType) {
+	inline std::string ToString(const LuckyTicketType luckyTicketType) {
 		switch (luckyTicketType)
 		{
 			case LuckyTicketType::MOSCOW: {
@@ -26,8 +26,8 @@ namespace task::sixth {
 			}
 		}
 	}
-	
-	LuckyTicketType FromString(const std::string& string) {
+
+	inline LuckyTicketType FromString(const std::string& string) {
 		if (ToString(LuckyTicketType::MOSCOW) == string) {
 			return LuckyTicketType::MOSCOW;
 		}
