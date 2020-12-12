@@ -18,11 +18,7 @@ class Converter {
 
   Converter(const Converter &) = delete;
 
-  Converter(Converter &&) noexcept = delete;
-
-  Converter& operator=(const Converter&) = default;
-
-  Converter& operator=(Converter&&) noexcept = default;
+  Converter(Converter &&) = delete;
 
   static std::unique_ptr<Type> ConvertString(
 	  const std::string &string,
@@ -33,7 +29,7 @@ class Converter {
 	}
 
 	std::stringstream stringStream;
-	Type temp;
+	Type temp{};
 
 	stringStream << string;
 	stringStream >> temp;

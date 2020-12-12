@@ -9,7 +9,6 @@
 
 #include <iostream>
 
-#include "../Models/Prescription/Base/Prescription.hpp"
 #include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
 
 namespace task::fifth {
@@ -26,19 +25,19 @@ class View {
 
   View &operator=(View &&) noexcept = delete;
 
-  explicit View(Ostream &out, task::helpers::ErrorHandler errorHandler)
-	  : out_(out), errorHandler_(errorHandler),
-		number_(nullptr), numberString_(nullptr) {}
+  explicit View(Ostream &out, const helpers::ErrorHandler errorHandler)
+	  : number_(nullptr), numberString_(nullptr),
+		out_(out), errorHandler_(errorHandler) {}
 
-  explicit View(Ostream &out, task::helpers::ErrorHandler errorHandler,
+  explicit View(Ostream &out, const helpers::ErrorHandler errorHandler,
 				std::unique_ptr<long long> &number,
 				std::unique_ptr<std::string> &numberString)
-	  : out_(out), errorHandler_(errorHandler),
-		number_(std::move(number)), numberString_(std::move(numberString)) {}
+	  : number_(std::move(number)), numberString_(std::move(numberString)),
+		out_(out), errorHandler_(errorHandler) {}
 
   void OutDigitAndLetter() {
 	if (nullptr == this->number_ || nullptr == this->numberString_) {
-	  this->outError(task::helpers::ErrorCode::NOT_ENOUGH_ARGS);
+	  this->outError(helpers::ErrorCode::NOT_ENOUGH_ARGS);
 	  return;
 	}
 	this->out_ << "Digit: " << *this->number_ << std::endl
@@ -46,7 +45,7 @@ class View {
   }
 
   void OutNotEnoughArgsMessage() {
-	this->outError(task::helpers::ErrorCode::NOT_ENOUGH_ARGS);
+	this->outError(helpers::ErrorCode::NOT_ENOUGH_ARGS);
 	this->out_ << "Args not enough" << std::endl
 			   << "FifthTask.exe number" << std::endl;
   }
@@ -68,17 +67,17 @@ class View {
   }
 
   void OutMemoryError() {
-	this->outError(task::helpers::ErrorCode::MEMORY_OUT);
+	this->outError(helpers::ErrorCode::MEMORY_OUT);
   }
 
   void OutParseError() {
-	this->outError(task::helpers::ErrorCode::PARSE_FAILED);
+	this->outError(helpers::ErrorCode::PARSE_FAILED);
   }
 
   ~View() = default;
 
  private:
-  void outError(task::helpers::ErrorCode errorCode) {
+  void outError(const helpers::ErrorCode errorCode) {
 	this->errorHandler_.SetErrorCode(errorCode);
 	this->errorHandler_.OutError("\n");
   }
@@ -86,7 +85,7 @@ class View {
   std::unique_ptr<long long> number_;
   std::unique_ptr<std::string> numberString_;
   Ostream &out_;
-  task::helpers::ErrorHandler errorHandler_;
+  helpers::ErrorHandler errorHandler_;
 };
 }
 

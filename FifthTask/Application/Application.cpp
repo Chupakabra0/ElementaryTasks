@@ -19,19 +19,19 @@ task::fifth::Application &task::fifth::Application::GetInstance(const unsigned i
 }
 
 int task::fifth::Application::operator()() const {
-  task::helpers::ErrorHandler errorHandler(task::helpers::ErrorCode::NO_ERROR);
+  helpers::ErrorHandler errorHandler(helpers::ErrorCode::NO_ERROR);
 
-  std::unique_ptr<View<std::ostream>> view(new(std::nothrow) View
-											   (std::cout, errorHandler));
+  std::unique_ptr<View<std::ostream>> view
+	(new(std::nothrow) View<std::ostream>(std::cout, errorHandler));
   if (nullptr == view) {
-	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
+	errorHandler.SetErrorCode(helpers::ErrorCode::MEMORY_OUT);
 	errorHandler.OutError("\n");
 
 	return EXIT_FAILURE;
   }
 
-  std::unique_ptr<task::helpers::ConsoleArgsValidator> consoleArgsValidator
-	  (new(std::nothrow) task::helpers::ConsoleArgsValidator(this->argc_,
+  const std::unique_ptr<helpers::ConsoleArgsValidator> consoleArgsValidator
+	  (new(std::nothrow) helpers::ConsoleArgsValidator(this->argc_,
 														  this->argv_));
   if (nullptr == consoleArgsValidator) {
 	view->OutMemoryError();
@@ -44,7 +44,7 @@ int task::fifth::Application::operator()() const {
   if (consoleArgsValidator->CheckEnoughArgc(2)) {
 	number = consoleArgsValidator->ValidateByIndex<long long>
 		(1u, [](const char string[]) -> bool {
-		  std::regex regex(R"((^|^-)(\d+?)$)");
+			const std::regex regex(R"((^|^-)(\d+?)$)");
 		  return std::regex_match(string, regex);
 		});
 

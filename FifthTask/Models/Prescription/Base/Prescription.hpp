@@ -8,7 +8,6 @@
 #define FOURTHTASK_PRESCRIPTION_HPP
 
 #include <iostream>
-#include <sstream>
 #include <string>
 
 namespace task::fifth {
