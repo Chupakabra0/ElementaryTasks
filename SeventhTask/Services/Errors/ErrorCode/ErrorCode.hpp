@@ -7,7 +7,6 @@
 #ifndef FIRSTTASK_SERVICES_ERRORS_ERRORCODE_ERRORTYPE_HPP_
 #define FIRSTTASK_SERVICES_ERRORS_ERRORCODE_ERRORTYPE_HPP_
 
-#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -22,7 +21,7 @@ enum class ErrorCode : unsigned short {
   ETERNAL_SERVER_ERROR
 };
 
-inline static std::string ToString(ErrorCode errorCode) {
+static std::string ToString(ErrorCode errorCode) {
   std::stringstream ss;
   ss << "Code " << static_cast<unsigned short>(errorCode) << ": ";
   switch (errorCode) {

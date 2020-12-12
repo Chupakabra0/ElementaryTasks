@@ -25,23 +25,23 @@ class View {
 
   View &operator=(View &&) noexcept = delete;
 
-  explicit View(Ostream &out, task::helpers::ErrorHandler errorHandler)
+  explicit View(Ostream &out, helpers::ErrorHandler errorHandler)
 	  : View(out, errorHandler, {}) {}
 
-  explicit View(Ostream &out, task::helpers::ErrorHandler errorHandler,
+  explicit View(Ostream &out, const helpers::ErrorHandler errorHandler,
 				const std::vector<unsigned long long> &numbers)
-	  : out_(out), errorHandler_(errorHandler), numbers_(numbers) {}
+	  : numbers_(numbers), out_(out), errorHandler_(errorHandler) {}
 
   void OutMemoryError() {
-	this->outError(task::helpers::ErrorCode::MEMORY_OUT);
+	this->outError(helpers::ErrorCode::MEMORY_OUT);
   }
 
   void OutParseError() {
-	this->outError(task::helpers::ErrorCode::PARSE_FAILED);
+	this->outError(helpers::ErrorCode::PARSE_FAILED);
   }
 
   void OutNotEnoughArgsMessage() {
-	this->outError(task::helpers::ErrorCode::NOT_ENOUGH_ARGS);
+	this->outError(helpers::ErrorCode::NOT_ENOUGH_ARGS);
 	this->out_ << "SeventhTask.exe number" << std::endl;
   }
 
@@ -62,20 +62,20 @@ class View {
 	this->numbers_ = numbers;
   }
 
-  void PushToNumbers(unsigned long long number) {
+  void PushToNumbers(const unsigned long long number) {
 	this->numbers_.push_back(number);
   }
 
   ~View() = default;
  private:
-  void outError(task::helpers::ErrorCode errorCode) {
+  void outError(const helpers::ErrorCode errorCode) {
 	this->errorHandler_.SetErrorCode(errorCode);
 	this->errorHandler_.OutError("\n");
   }
 
   std::vector<unsigned long long> numbers_;
   Ostream &out_;
-  task::helpers::ErrorHandler errorHandler_;
+  helpers::ErrorHandler errorHandler_;
 };
 }
 

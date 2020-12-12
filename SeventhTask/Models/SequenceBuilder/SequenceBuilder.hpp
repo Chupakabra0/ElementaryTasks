@@ -28,7 +28,7 @@ class SequenceBuilder {
 	  : begin_(begin), end_(end) {}
 
   std::vector<Type1> Build() const {
-	Type1 number;
+	Type1 number{};
 	std::vector<Type1> vector;
 
 	for (auto i = this->begin_; i < static_cast<Type1>(this->end_); ++i) {
