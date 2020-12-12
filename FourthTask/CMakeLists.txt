@@ -3,4 +3,4 @@ project(FourthTask)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(FourthTask Main.cpp Models/FileParserLineByLine/FileParserLineByLine.hpp Application/Application.hpp Application/Application.cpp)
+add_executable(FourthTask Main.cpp Application/Application.cpp)

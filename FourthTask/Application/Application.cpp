@@ -124,6 +124,8 @@ int task::fourth::Application::operator()() const {
 					++count;
 				  });
 
+	parser->CloseFile();
+
 	view->OutFileWordCount(*stringToFind, count);
   } else {
 	view->OutInstructionsMessage();

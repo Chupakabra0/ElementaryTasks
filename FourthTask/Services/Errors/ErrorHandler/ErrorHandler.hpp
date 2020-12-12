@@ -18,7 +18,7 @@ class ErrorHandler {
 
   ErrorHandler(ErrorHandler &&) noexcept = default;
 
-  ErrorHandler(ErrorCode error) : error_(error) {}
+  explicit ErrorHandler(const ErrorCode error) : error_(error) {}
 
   ErrorHandler &operator=(const ErrorHandler &) = default;
 
@@ -35,7 +35,7 @@ class ErrorHandler {
 	this->error_ = error;
   }
 
-  void OutError(const std::string &delimiter = "") {
+  void OutError(const std::string &delimiter = "") const {
 	std::cerr << ToString(error_) << delimiter;
   }
 

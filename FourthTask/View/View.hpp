@@ -19,7 +19,7 @@ class View {
 
   View(View &&) = delete;
 
-  explicit View(Ostream &out, task::helpers::ErrorHandler errorHandler)
+  explicit View(Ostream &out, const helpers::ErrorHandler errorHandler)
 	  : out_(out), errorHandler_(errorHandler) {}
 
   View &operator=(const View &) = delete;
@@ -27,22 +27,22 @@ class View {
   View &operator=(View &&) = delete;
 
   void OutMemoryError() {
-	this->outError(task::helpers::ErrorCode::MEMORY_OUT);
+	this->outError(helpers::ErrorCode::MEMORY_OUT);
   }
 
   void OutParseError() {
-	this->outError(task::helpers::ErrorCode::MEMORY_OUT);
+	this->outError(helpers::ErrorCode::MEMORY_OUT);
   }
 
   void OutArgsNotEnoughError() {
-	this->outError(task::helpers::ErrorCode::NOT_ENOUGH_ARGS);
+	this->outError(helpers::ErrorCode::NOT_ENOUGH_ARGS);
   }
 
-  void OutDoneMessage() {
+  void OutDoneMessage() const {
 	this->out_ << "Done" << std::endl;
   }
 
-  void OutNotDoneMessage() {
+  void OutNotDoneMessage() const {
 	this->out_ << "Not enough memory to do this operation" << std::endl;
   }
 
@@ -53,7 +53,7 @@ class View {
 			   std::endl;
   }
 
-  void OutFileWordCount(const std::string &string, const unsigned count) {
+  void OutFileWordCount(const std::string &string, const unsigned count) const {
 	std::stringstream ss;
 	switch (count) {
 	  case 0u: {
@@ -76,13 +76,13 @@ class View {
 
   ~View() = default;
  private:
-  void outError(task::helpers::ErrorCode errorCode) {
+  void outError(const helpers::ErrorCode errorCode) {
 	this->errorHandler_.SetErrorCode(errorCode);
 	this->errorHandler_.OutError();
   }
 
   Ostream &out_;
-  task::helpers::ErrorHandler errorHandler_;
+  helpers::ErrorHandler errorHandler_;
 };
 }
 
