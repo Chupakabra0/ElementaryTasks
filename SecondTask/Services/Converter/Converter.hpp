@@ -29,7 +29,7 @@ class Converter {
 	}
 
 	std::stringstream stringStream;
-	Type temp;
+	Type temp{};
 
 	stringStream << string;
 	stringStream >> temp;

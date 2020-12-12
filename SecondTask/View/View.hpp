@@ -5,7 +5,6 @@
 #pragma once
 
 #include <sstream>
-#include <string>
 
 #include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
 
@@ -22,38 +21,38 @@ class View {
 
   View(View &&) noexcept = default;
 
-  explicit View(Ostream &out, task::helpers::ErrorHandler errorHandler)
+  explicit View(Ostream &out, const helpers::ErrorHandler errorHandler)
 	  : out_(out), errorHandler_(errorHandler) {}
 
   explicit View(Ostream &out, const Envelope firstEnvelope, const Envelope
-  secondEnvelope, task::helpers::ErrorHandler errorHandler)
-	  : out_(out),
-		firstEnvelope_(std::make_unique<Envelope>(firstEnvelope)),
+  secondEnvelope, const helpers::ErrorHandler errorHandler)
+	  : firstEnvelope_(std::make_unique<Envelope>(firstEnvelope)),
 		secondEnvelope_(std::make_unique<Envelope>(secondEnvelope)),
+		out_(out),
 		errorHandler_(errorHandler) {}
 
   View &operator=(const View &) = default;
 
   View &operator=(View &&) noexcept = default;
 
-  task::second::Envelope GetFirstEnvelope() const {
+  Envelope GetFirstEnvelope() const {
 	return this->firstEnvelope_;
   }
 
-  void SetFirstEnvelope(const task::second::Envelope &envelope) {
+  void SetFirstEnvelope(const Envelope &envelope) {
 	this->firstEnvelope_ = std::make_unique<Envelope>(envelope);
   }
 
-  task::second::Envelope GetSecondEnvelope() const {
+  Envelope GetSecondEnvelope() const {
 	return this->secondEnvelope_;
   }
 
-  void SetSecondEnvelope(const task::second::Envelope &envelope) {
+  void SetSecondEnvelope(const Envelope &envelope) {
 	this->secondEnvelope_ = std::make_unique<Envelope>(envelope);
   }
 
   void OutMemoryError() {
-	this->outError(task::helpers::ErrorCode::MEMORY_OUT);
+	this->outError(helpers::ErrorCode::MEMORY_OUT);
   }
 
   void OutPutInResult() {
@@ -89,7 +88,7 @@ class View {
   ~View() = default;
 
  private:
-  void outError(task::helpers::ErrorCode errorCode) {
+  void outError(const helpers::ErrorCode errorCode) {
 	this->errorHandler_.SetErrorCode(errorCode);
 	this->errorHandler_.OutError();
   }
@@ -97,7 +96,7 @@ class View {
   std::unique_ptr<Envelope> firstEnvelope_;
   std::unique_ptr<Envelope> secondEnvelope_;
   Ostream &out_;
-  task::helpers::ErrorHandler errorHandler_;
+  helpers::ErrorHandler errorHandler_;
 };
 
 }

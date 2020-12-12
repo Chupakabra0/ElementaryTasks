@@ -10,14 +10,13 @@
 namespace task::second {
 class Application {
  public:
+  Application(const Application &) = delete;
 
-  Application(const Application &) = default;
+  Application(Application &&) = delete;
 
-  Application(Application &&) = default;
+  Application &operator=(const Application &) = delete;
 
-  Application &operator=(const Application &) = default;
-
-  Application &operator=(Application &&) noexcept = default;
+  Application &operator=(Application &&) noexcept = delete;
 
   static Application& GetInstance();
 

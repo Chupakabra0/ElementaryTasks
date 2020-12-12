@@ -1,6 +1,5 @@
 #include "Application/Application.hpp"
 
-int main()
-{
+int main() {
 	return task::second::Application::GetInstance()();
 }

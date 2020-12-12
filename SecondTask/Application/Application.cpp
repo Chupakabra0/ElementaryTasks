@@ -20,20 +20,19 @@ task::second::Application &task::second::Application::GetInstance() {
 
 int task::second::Application::operator()() const {
   std::string flag;
-  task::helpers::ErrorHandler errorHandler(task::helpers::ErrorCode::NO_ERROR);
+  helpers::ErrorHandler errorHandler(helpers::ErrorCode::NO_ERROR);
 
-  std::unique_ptr<task::second::View<std::ostream>> view
-	  (new(std::nothrow) task::second::View(std::cout, errorHandler));
+  std::unique_ptr<View<std::ostream>> view
+	  (new(std::nothrow) View(std::cout, errorHandler));
   if (nullptr == view) {
-	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
+	errorHandler.SetErrorCode(helpers::ErrorCode::MEMORY_OUT);
 	errorHandler.OutError(std::string("\n"));
 
 	return EXIT_FAILURE;
   }
 
-  std::unique_ptr<
-	  task::helpers::ConsoleInputValidator> consoleValidator
-	  (new(std::nothrow) task::helpers::ConsoleInputValidator());
+  std::unique_ptr<helpers::ConsoleInputValidator> consoleValidator
+	  (new(std::nothrow) helpers::ConsoleInputValidator());
   if (nullptr == consoleValidator) {
 	view->OutMemoryError();
 
@@ -72,7 +71,12 @@ int task::second::Application::operator()() const {
 	std::cout << "Continue? [y/Yes]:";
 	std::cin >> flag;
 	std::cin.ignore();
-	std::transform(flag.begin(), flag.end(), flag.begin(), toupper);
+
+  	// C++11
+	//std::transform(flag.begin(), flag.end(), flag.begin(), toupper);
+
+  	// C++20
+	std::ranges::transform(flag, flag.begin(), toupper);
   } while ("Y" == flag || "YES" == flag);
 
   return EXIT_SUCCESS;

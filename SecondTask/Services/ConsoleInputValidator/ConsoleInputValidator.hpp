@@ -23,6 +23,10 @@ class ConsoleInputValidator {
 
   ConsoleInputValidator(ConsoleInputValidator &&) = default;
 
+  ConsoleInputValidator& operator=(const ConsoleInputValidator&) = default;
+
+  ConsoleInputValidator& operator=(ConsoleInputValidator&&) = default;
+	
   template<class Type>
   std::unique_ptr<Type> LoopInput(bool predicate(const char[]) = nullptr) {
 	std::string temp;
