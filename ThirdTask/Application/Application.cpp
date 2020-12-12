@@ -25,7 +25,7 @@ int task::third::Application::operator()() const {
   helpers::ErrorHandler errorHandler(helpers::ErrorCode::NO_ERROR);
 
   std::unique_ptr<View<std::ostream>>
-	  view(new(std::nothrow) View(std::cout, errorHandler));
+	  view(new(std::nothrow) View<std::ostream>(std::cout, errorHandler));
   if (nullptr == view) {
 	errorHandler.SetErrorCode(helpers::ErrorCode::MEMORY_OUT);
 	errorHandler.OutError(std::string("\n"));
