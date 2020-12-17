@@ -35,15 +35,18 @@ include_directories(${CMAKE_SOURCE_DIR}/View)
 #-------------------------- TESTS --------------------------------------------
 include_directories("${CMAKE_BINARY_DIR}/googletest-src/googlemock/include")
 include_directories("${CMAKE_BINARY_DIR}/googletest-src/googletest/include")
+#-----------------------------------------------------------------------------
 
 #-------------------------- PROGRAM ------------------------------------------
-add_executable(FirstTask Main.cpp Application/Application.cpp
-Services/Converter/Converter.hpp)
+add_executable(FirstTask Main.cpp Application/Application.cpp)
+#-----------------------------------------------------------------------------
 
 #---------------------------- TESTS ------------------------------------------
 add_executable(Tests Tests/TestsMain.cpp Tests/ModelsTests/BoardCreatorTests.cpp
         Tests/ModelsTests/BoardTests.cpp Tests/ServicesTests/ErrorTests.cpp
         Tests/ServicesTests/ConverterTests.cpp "Tests/ServicesTests/ConsoleArgsValidatorTests.cpp")
+#-----------------------------------------------------------------------------
 
 #----------------------------- LIBS ------------------------------------------
 target_link_libraries(Tests gtest gtest_main)
+#-----------------------------------------------------------------------------
