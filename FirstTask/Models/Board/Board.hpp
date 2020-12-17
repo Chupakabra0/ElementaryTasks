@@ -27,7 +27,7 @@ class Board {
   Board &operator=(Board &&) = default;
 
   explicit Board(
-	  unsigned short rows, unsigned short columns,
+	  const unsigned short rows, const unsigned short columns,
 	  value_type blackSymbol, value_type whiteSymbol)
 	  : whiteSymbol_(whiteSymbol), blackSymbol_(blackSymbol),
 		rowsCount_(rows), columnsCount_(columns),
@@ -37,22 +37,8 @@ class Board {
 	return this->rowsCount_;
   }
 
-  void SetRowsCount(unsigned short rows) {
-	if (this->rowsCount_ == rows) {
-	  return;
-	}
-	this->rowsCount_ = rows;
-  }
-
   [[nodiscard]] unsigned short GetColumnsCount() const {
 	return this->columnsCount_;
-  }
-
-  void SetColumnsCount(unsigned short columns) {
-	if (this->columnsCount_ == columns) {
-	  return;
-	}
-	this->columnsCount_ = columns;
   }
 
   [[nodiscard]] value_type GetWhiteSymbol() const {
@@ -63,6 +49,19 @@ class Board {
 	if (this->whiteSymbol_ == whiteSymbol) {
 	  return;
 	}
+
+	for (auto i = 0u; i < this->board_.size(); ++i) {
+		const std::string letter(1u,
+			static_cast<char>('A' + i / this->columnsCount_));
+
+		const std::string number(1u, static_cast<char>
+			('0' + 1 + i % this->columnsCount_));
+
+		if (this->board_[letter + number] == this->whiteSymbol_) {
+			this->board_[letter + number] = whiteSymbol;
+		}
+	}
+
 	this->whiteSymbol_ = whiteSymbol;
   }
 
@@ -74,18 +73,46 @@ class Board {
 	if (this->blackSymbol_ == blackSymbol) {
 	  return;
 	}
+  	
+  	for (auto i = 0u; i < this->board_.size(); ++i) {
+		const std::string letter(1u,
+			static_cast<char>('A' + i / this->columnsCount_));
+
+		const std::string number(1u, static_cast<char>
+			('0' + 1 + i % this->columnsCount_));
+  		
+  		if (this->board_[letter + number] == this->blackSymbol_) {
+			this->board_[letter + number] = blackSymbol;
+  		}
+  	}
+
 	this->blackSymbol_ = blackSymbol;
   }
 
-  void Insert
-	  (const typename std::map<std::string, value_type>::value_type &element) {
-	// TODO: Maybe I have to create some checks
-	try {
+  [[nodiscard]] std::map<std::string, value_type> GetMap() const {
+	return this->board_;
+  }
+
+  void Insert(value_type symbol) {
+	const std::string letter(1u,
+		static_cast<char>('A' + this->board_.size() /this->columnsCount_));
+
+	const std::string number(1u, static_cast<char>
+		('0' + 1 + this->board_.size() % this->columnsCount_));
+
+	typename std::map<std::string, value_type>::value_type element(letter + number, symbol);
+	if (this->board_.size() >= this->columnsCount_ * this->rowsCount_ ||
+		symbol != this->blackSymbol_ && symbol != this->whiteSymbol_) {
+	  return;
+	}
+
+    try {
 	  this->board_.insert(element);
 	}
 	catch (const std::exception &) {
 	  std::cerr << "Memory error" << std::endl;
 	}
+
   }
 
   template<class OstreamType>
@@ -136,7 +163,7 @@ class Board {
 
   ~Board() = default;
 
- protected:
+ private:
   value_type whiteSymbol_;
   value_type blackSymbol_;
   unsigned short rowsCount_;

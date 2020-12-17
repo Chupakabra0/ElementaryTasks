@@ -7,7 +7,7 @@
 #ifndef FIRSTTASK_VIEW_HPP
 #define FIRSTTASK_VIEW_HPP
 
-#include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
+#include <Errors/ErrorHandler/ErrorHandler.hpp>
 
 namespace task::first {
 template<class Board, class Ostream>
@@ -23,7 +23,7 @@ class View {
 
   View &operator=(View &&) = delete;
 
-  explicit View(Ostream &out, helpers::ErrorHandler errorHandler)
+  explicit View(Ostream &out, const helpers::ErrorHandler errorHandler)
 	  : chessBoard_(nullptr), out_(out), errorHandler_(errorHandler) {}
 
   explicit View(Ostream &out, Board chessBoard, const helpers::ErrorHandler

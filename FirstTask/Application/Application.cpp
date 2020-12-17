@@ -7,16 +7,15 @@
 
 #include "Application.hpp"
 
-#include "../Models/Board/BoardCreator.hpp"
-#include "../View/View.hpp"
-#include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
-#include "../Services/ConsoleArgsValidator/ConsoleArgsValidator.hpp"
+#include <Board/BoardCreator.hpp>
+#include <View.hpp>
+#include <ConsoleArgsValidator/ConsoleArgsValidator.hpp>
 
-task::first::Application::Application(const unsigned int argc, char **argv)
+task::first::Application::Application(const unsigned int argc, const char **argv)
 	: argc_(argc), argv_(argv) {}
 
 task::first::Application &
-task::first::Application::GetInstance(const unsigned int argc, char **argv) {
+task::first::Application::GetInstance(const unsigned int argc, const char **argv) {
   static Application instance(argc, argv);
   return instance;
 }
@@ -43,14 +42,9 @@ int task::first::Application::operator()() const {
 	return EXIT_FAILURE;
   }
 
-  const auto checkLetters = [](const char string[]) -> bool {
-	const std::regex lettersCheck(R"((\d+?))");
-	return std::regex_match(string, lettersCheck);
-  };
-
   if (consoleArgsValidator->CheckEnoughArgc(3)) {
 	rowsCount = consoleArgsValidator->ValidateByIndex<unsigned
-													  short>(1, checkLetters);
+													  short>(1u);
 	if (nullptr == rowsCount) {
 	  view->OutParseError();
 
@@ -58,8 +52,7 @@ int task::first::Application::operator()() const {
 	}
 
 	columnsCount = consoleArgsValidator->ValidateByIndex<unsigned
-														 short>(2,
-																checkLetters);
+														 short>(2u);
 	if (nullptr == columnsCount) {
 	  view->OutParseError();
 
@@ -71,15 +64,15 @@ int task::first::Application::operator()() const {
 	return EXIT_SUCCESS;
   }
 
-  std::unique_ptr<BoardCreator<char>> boardCreator
-	  (new(std::nothrow) BoardCreator('*', ' '));
+  const std::unique_ptr<BoardCreator<char>> boardCreator
+	  (new(std::nothrow) BoardCreator<char>('*', ' '));
   if (nullptr == boardCreator) {
 	view->OutParseError();
 
 	return EXIT_FAILURE;
   }
 
-  std::unique_ptr<Board<char>> board
+  const std::unique_ptr<Board<char>> board
 	  = boardCreator->CreateBoard(*rowsCount, *columnsCount);
   if (nullptr == board) {
 	view->OutMemoryError();

@@ -21,15 +21,15 @@ class BoardCreator {
 
   BoardCreator(BoardCreator &&) noexcept = default;
 
-  BoardCreator &operator=(const BoardCreator &) = delete;
+  BoardCreator &operator=(const BoardCreator &) = default;
 
-  BoardCreator &operator=(BoardCreator &&) = delete;
+  BoardCreator &operator=(BoardCreator &&) = default;
 
   BoardCreator(value_type blackSymbol, value_type whiteSymbol)
 	  : whiteSymbol_(whiteSymbol), blackSymbol_(blackSymbol) {}
 
   std::unique_ptr<Board<value_type>> CreateBoard
-	  (unsigned short rowsCount, unsigned short columnsCount) {
+	  (unsigned short rowsCount, unsigned short columnsCount) const {
 	if (0 == rowsCount || 0 == columnsCount) {
 	  return nullptr;
 	}
@@ -53,29 +53,40 @@ class BoardCreator {
 		  symbol = this->outStarOrBlink(j % 2, 0u,
 										std::not_equal_to<>());
 		}
-		result->Insert(std::map<std::string, value_type>::value_type
-						   (getKey(std::string(1u, 'A' + i),
-								   std::string(1u,
-											   j + 1 + '0')),
-							symbol));
+		result->Insert(symbol);
 	  }
 	}
 
 	return result;
   }
 
+  value_type GetWhiteSymbol() const {
+	return this->whiteSymbol_;
+  }
+  void SetWhiteSymbol(const value_type value) {
+	if (this->whiteSymbol_ == value) {
+	  return;
+	}
+	this->whiteSymbol_ = value;
+  }
+
+  value_type GetBlackSymbol() const {
+	return this->blackSymbol_;
+  }
+  void SetBlackSymbol(const value_type value) {
+    if (this->blackSymbol_ == value) {
+	  return;
+    }
+	this->blackSymbol_ = value;
+  }
+
   ~BoardCreator() = default;
 
  protected:
-  static std::string getKey
-	  (const std::string &letter, const std::string &number) {
-	return letter + number;
-  }
-
   template<class Predicate>
   value_type outStarOrBlink(
 	  unsigned short first, unsigned short second,
-	  Predicate predicate) {
+	  Predicate predicate) const {
 	if (predicate(first, second)) {
 	  return this->blackSymbol_;
 	}
