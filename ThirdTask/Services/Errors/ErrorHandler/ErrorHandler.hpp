@@ -7,7 +7,7 @@
 #ifndef FIRSTTASK_ERRORHANDLER_HPP
 #define FIRSTTASK_ERRORHANDLER_HPP
 
-#include "../ErrorCode/ErrorCode.hpp"
+#include <Errors/ErrorCode/ErrorCode.hpp>
 
 namespace task::helpers {
 class ErrorHandler {

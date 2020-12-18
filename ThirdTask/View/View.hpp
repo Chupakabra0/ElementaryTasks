@@ -7,7 +7,7 @@
 #ifndef THIRDTASK_VIEW_HPP
 #define THIRDTASK_VIEW_HPP
 
-#include "../Models/Triangle/Triangle.hpp"
+#include <Triangle/Triangle.hpp>
 
 namespace task::third {
 template<class Ostream>
@@ -23,10 +23,10 @@ class View {
 
   View &operator=(View &&) = delete;
 
-  explicit View(Ostream &out, task::helpers::ErrorHandler errorHandler)
+  explicit View(Ostream &out, const helpers::ErrorHandler errorHandler)
   : View(out, errorHandler, {}) {};
 
-  explicit View(Ostream &out, task::helpers::ErrorHandler errorHandler, const
+  explicit View(Ostream &out, const helpers::ErrorHandler errorHandler, const
   std::multiset<Triangle, std::greater<>>
   &multiset)
 	  : out_(out), triangleMultiset_(multiset), errorHandler_(errorHandler) {}

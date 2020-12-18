@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-#include "../Base/Shape.hpp"
+#include <Base/Shape.hpp>
 
 namespace task::third {
 class Triangle : public Shape {
@@ -29,11 +29,16 @@ class Triangle : public Shape {
 	  thirdSide);
 
   [[nodiscard]] double GetPerimeter() const override;
-
+	
   [[nodiscard]] double GetSquare() const override;
+	
+  [[nodiscard]] double GetFirstSide() const;
+	
+  [[nodiscard]] double GetSecondSide() const;
 
-  friend bool operator<(
-	  const Triangle &first, const Triangle &second);
+  [[nodiscard]] double GetThirdSide() const;
+	
+  friend bool operator<(const Triangle &first, const Triangle &second);
 
   friend bool operator>(const Triangle &first, const Triangle &second);
 
@@ -70,8 +75,8 @@ class Triangle : public Shape {
 
  protected:
 
-  explicit Triangle(const std::string &name, double firstSide, double
-  secondSide, double thirdDouble);
+  explicit Triangle(const std::string &name, double firstSide,
+	  double secondSide, double thirdDouble);
 
   double firstSide_;
   double secondSide_;

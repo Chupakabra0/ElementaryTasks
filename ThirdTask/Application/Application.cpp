@@ -5,13 +5,13 @@
 #include <regex>
 #include <set>
 
-#include "../Services/ConsoleInputValidator/ConsoleInputValidator.hpp"
-#include "../Services/StringCleaner/StringCleaner.hpp"
-#include "../Services/StringSpliter/StringSplitter.hpp"
-#include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
+#include <ConsoleInputValidator/ConsoleInputValidator.hpp>
+#include <StringCleaner/StringCleaner.hpp>
+#include <StringSpliter/StringSpliter.hpp>
+#include <Errors/ErrorHandler/ErrorHandler.hpp>
 
-#include "../Models/Triangle/Triangle.hpp"
-#include "../View/View.hpp"
+#include <Triangle/Triangle.hpp>
+#include <View.hpp>
 
 #include "Application.hpp"
 
@@ -33,9 +33,9 @@ int task::third::Application::operator()() const {
 	return EXIT_FAILURE;
   }
 
-  std::unique_ptr<helpers::ConsoleInputValidator>
+  std::unique_ptr<helpers::ConsoleInputValidator<std::istream>>
 	  consoleInputValidator(new(std::nothrow)
-								helpers::ConsoleInputValidator());
+								helpers::ConsoleInputValidator(std::cin));
   if (nullptr == consoleInputValidator) {
 	view->OutMemoryError();
 
@@ -50,8 +50,8 @@ int task::third::Application::operator()() const {
 	return EXIT_FAILURE;
   }
 
-  const std::unique_ptr<helpers::StringSplitter> stringSplitter
-	(new(std::nothrow) helpers::StringSplitter(','));
+  const std::unique_ptr<helpers::StringSpliter> stringSplitter
+	(new(std::nothrow) helpers::StringSpliter(','));
   if (nullptr == stringSplitter) {
 	view->OutMemoryError();
 
