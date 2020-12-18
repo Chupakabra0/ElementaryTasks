@@ -7,17 +7,18 @@
 #ifndef SECONDTASK_CONSOLEINPUTVALIDATOR_HPP
 #define SECONDTASK_CONSOLEINPUTVALIDATOR_HPP
 
-#include <iostream>
-#include <memory>
-#include <string>
 #include <algorithm>
+#include <iostream>
+#include <string>
 
-#include "../Converter/Converter.hpp"
+#include <Converter/Converter.hpp>
 
+// TODO Move this to the all branches
 namespace task::helpers {
+template<class IStream>
 class ConsoleInputValidator {
  public:
-  ConsoleInputValidator() = default;
+  ConsoleInputValidator() = delete;
 
   ConsoleInputValidator(const ConsoleInputValidator &) = default;
 
@@ -26,15 +27,17 @@ class ConsoleInputValidator {
   ConsoleInputValidator& operator=(const ConsoleInputValidator&) = default;
 
   ConsoleInputValidator& operator=(ConsoleInputValidator&&) = default;
+
+  explicit ConsoleInputValidator(IStream &in) : in_(in) {}
 	
   template<class Type>
   std::unique_ptr<Type> LoopInput(bool predicate(const char[]) = nullptr) {
 	std::string temp;
 	do {
-	  getline(std::cin, temp);
-	  if (std::cin) {
+	  getline(this->in_, temp);
+	  if (this->in_) {
 		std::unique_ptr<Type> data = std::move
-			(task::helpers::Converter<Type>::ConvertString(temp, predicate));
+			(Converter<Type>::ConvertString(temp, predicate));
 		if (nullptr == data) {
 		  std::cerr << "Input data error" << std::endl;
 		} else {
@@ -43,7 +46,7 @@ class ConsoleInputValidator {
 	  }
 
 	  std::cerr << std::endl << "Try again." << std::endl;
-	  std::cin.clear();
+	  this->in_.clear();
 	} while (true);
   }
 
@@ -51,15 +54,15 @@ class ConsoleInputValidator {
   std::unique_ptr<std::string> LoopInput(bool predicate(const char[])) {
 	std::string temp;
 	do {
-	  getline(std::cin, temp);
-	  if (!std::cin || (nullptr != predicate && !predicate(temp.c_str()))) {
+	  getline(this->in_, temp);
+	  if (!std::cin || nullptr != predicate && !predicate(temp.c_str())) {
 		std::cerr << "Input data error" << std::endl;
 	  } else {
 		return std::make_unique<std::string>(temp);
 	  }
 
 	  std::cerr << std::endl << "Try again." << std::endl;
-	  std::cin.clear();
+	  this->in_.clear();
 	} while (true);
   }
 
@@ -67,29 +70,38 @@ class ConsoleInputValidator {
   std::unique_ptr<Type> Input(bool predicate(const char[]) = nullptr) {
 	std::unique_ptr<Type> data;
 	std::string temp;
-	getline(std::cin, temp);
-	if (std::cin) {
-	  data = task::helpers::Converter<Type>::ConvertString
+	getline(this->in_, temp);
+	if (this->in_) {
+	  data = Converter<Type>::ConvertString
 		  (temp, predicate);
 	}
-	if (!data) {
+	if (nullptr == data) {
 	  std::cerr << "Input data error" << std::endl;
 	}
+  	
 	return data;
   }
 
   template<>
   std::unique_ptr<std::string> Input(bool predicate(const char[])) {
 	std::string temp;
-	getline(std::cin, temp);
-	if (!std::cin || (nullptr != predicate && !predicate(temp.c_str()))) {
+	getline(this->in_, temp);
+	if (!this->in_ || nullptr != predicate && !predicate(temp.c_str())) {
 	  std::cerr << "Input data error" << std::endl;
 	}
-	return std::move(std::make_unique<std::string>(temp));
+  	
+	return std::make_unique<std::string>(temp);
   }
 
- private:
+  [[nodiscard]] const IStream& GetStream() const {
+	  return this->in_;
+  }
 
+  [[nodiscard]] IStream& GetStream() {
+	  return this->in_;
+  }
+ private:
+  IStream &in_;
 };
 }
 

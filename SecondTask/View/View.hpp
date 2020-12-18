@@ -6,7 +6,8 @@
 
 #include <sstream>
 
-#include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
+#include <Errors/ErrorHandler/ErrorHandler.hpp>
+#include <Envelope/EnvelopePlacer/EnvelopePlacer.hpp>
 
 #ifndef SECONDTASK_VIEW_HPP
 #define SECONDTASK_VIEW_HPP
@@ -60,12 +61,12 @@ class View {
 	ss << "First envelope " << this->firstEnvelope_->GetHeight()
 	   << " x " << this->firstEnvelope_->GetWidth() << " ";
 
-	if (CanPutIn(*this->firstEnvelope_,
+	if (EnvelopePlacer::CanPlace(*this->firstEnvelope_,
 				 *this->secondEnvelope_)) {
 	  ss << "can be put in second envelope";
 	} else {
-	  ss << "can NOT be put in second envelope";
 	}
+	  ss << "can NOT be put in second envelope";
 
 	ss << " " << this->secondEnvelope_->GetHeight() << " x "
 	   << this->secondEnvelope_->GetWidth() << std::endl;
@@ -73,7 +74,7 @@ class View {
 	ss << "Second envelope "
 	   << this->secondEnvelope_->GetHeight() << " x "
 	   << this->secondEnvelope_->GetWidth() << " ";
-	if (CanPutIn(*this->secondEnvelope_,
+	if (EnvelopePlacer::CanPlace(*this->secondEnvelope_,
 				 *this->firstEnvelope_)) {
 	  ss << "can be put in first envelope";
 	} else {

@@ -9,9 +9,9 @@
 
 #include "Application.hpp"
 
-#include "../Models/Envelope/Envelope.hpp"
-#include "../View/View.hpp"
-#include "../Services/ConsoleInputValidator/ConsoleInputValidator.hpp"
+#include <Envelope/Envelope/Envelope.hpp>
+#include <View.hpp>
+#include <ConsoleInputValidator/ConsoleInputValidator.hpp>
 
 task::second::Application &task::second::Application::GetInstance() {
   static Application instance;
@@ -31,8 +31,8 @@ int task::second::Application::operator()() const {
 	return EXIT_FAILURE;
   }
 
-  std::unique_ptr<helpers::ConsoleInputValidator> consoleValidator
-	  (new(std::nothrow) helpers::ConsoleInputValidator());
+  std::unique_ptr<helpers::ConsoleInputValidator<std::istream>> consoleValidator
+	  (new(std::nothrow) helpers::ConsoleInputValidator<std::istream>(std::cin));
   if (nullptr == consoleValidator) {
 	view->OutMemoryError();
 
@@ -68,7 +68,7 @@ int task::second::Application::operator()() const {
 
 	view->OutPutInResult();
 
-	std::cout << "Continue? [y/Yes]:";
+	std::cout << "Continue? [y/Yes]: ";
 	std::cin >> flag;
 	std::cin.ignore();
 

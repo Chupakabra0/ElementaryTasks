@@ -39,12 +39,14 @@ include_directories("${CMAKE_BINARY_DIR}/googletest-src/googletest/include")
 
 #-------------------------- PROGRAM ------------------------------------------
 add_executable(SecondTask Main.cpp Application/Application.cpp
-Models/Envelope/Envelope.cpp)
+Models/Envelope/Envelope/Envelope.cpp)
 #-----------------------------------------------------------------------------
 
 #---------------------------- TESTS ------------------------------------------
 add_executable(Tests Tests/TestsMain.cpp Tests/ServicesTests/ErrorTests.cpp
-        Tests/ServicesTests/ConverterTests.cpp)
+        Tests/ServicesTests/ConverterTests.cpp Tests/ModelsTests/EnvelopeTests.cpp
+        Models/Envelope/Envelope/Envelope.cpp
+        Tests/ServicesTests/ConsoleInputValidatorTests.cpp)
 #-----------------------------------------------------------------------------
 
 #----------------------------- LIBS ------------------------------------------

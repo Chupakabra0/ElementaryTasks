@@ -15,7 +15,7 @@ public:
 		errorHandler(new(std::nothrow) task::helpers::ErrorHandler(this->errorCode))
 	{}
 
-	~ErrorHandlerFixture() = default;
+	~ErrorHandlerFixture() override = default;
 
 	task::helpers::ErrorCode errorCode;
 	
@@ -57,7 +57,9 @@ TEST_F(ErrorHandlerFixture, ErrorHandlerSetterTest) {
 		const auto temp = *this->errorHandler;
 		this->errorHandler->SetErrorCode(i);
 
+		// TODO FIX IT AT THE FIRST BRANCH
 		ASSERT_EQ(i, this->errorHandler->GetErrorCode());
+		ASSERT_NE(temp.GetErrorCode(), this->errorHandler->GetErrorCode());
 	}
 }
 
@@ -74,5 +76,4 @@ TEST_F(ErrorHandlerFixture, AssignmentTest) {
 	this->errorHandler->SetErrorCode(task::helpers::ErrorCode::NO_ERROR);
 
 	ASSERT_NE(copy.GetErrorCode(), this->errorHandler->GetErrorCode());
-
 }

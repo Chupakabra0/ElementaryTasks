@@ -11,20 +11,20 @@ task::second::Envelope::Envelope(const double heightAndWidth)
 task::second::Envelope::Envelope(const double height, const double width)
 	: height_(height), width_(width) {}
 
-double task::second::Envelope::GetHeight() const {
+[[nodiscard]] double task::second::Envelope::GetHeight() const {
   return this->height_;
 }
-void task::second::Envelope::SetHeight(const unsigned int height) {
+void task::second::Envelope::SetHeight(const double height) {
   if (std::abs(this->height_ - height) <
 	  std::numeric_limits<double>::epsilon()) {
 	return;
   }
   this->height_ = height;
 }
-double task::second::Envelope::GetWidth() const {
+[[nodiscard]] double task::second::Envelope::GetWidth() const {
   return this->width_;
 }
-void task::second::Envelope::SetWidth(const unsigned int width) {
+void task::second::Envelope::SetWidth(const double width) {
   if (std::abs(this->width_ - width) <
 	  std::numeric_limits<double>::epsilon()) {
 	return;
