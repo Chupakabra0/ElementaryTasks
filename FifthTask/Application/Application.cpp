@@ -7,13 +7,16 @@
 
 #include "Application.hpp"
 
-#include "../Models/Prescription/English/EnglishPrescription.hpp"
-#include "../Services/ConsoleArgsValidator/ConsoleArgsValidator.hpp"
-#include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
-#include "../View/View.hpp"
+#include <Prescription/English/EnglishPrescription.hpp>
+#include <ConsoleArgsValidator/ConsoleArgsValidator.hpp>
+#include <Errors/ErrorHandler/ErrorHandler.hpp>
+#include <View.hpp>
+
+task::fifth::Application::Application(const unsigned argc, const char** argv)
+	: argc_(argc), argv_(argv) {}
 
 task::fifth::Application &task::fifth::Application::GetInstance(const unsigned int argc,
-																char **argv) {
+                                                                const char **argv) {
   static Application application(argc, argv);
   return application;
 }

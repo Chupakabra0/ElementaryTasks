@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-#include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
+#include <Errors/ErrorHandler/ErrorHandler.hpp>
 
 namespace task::fifth {
 template<class Ostream>

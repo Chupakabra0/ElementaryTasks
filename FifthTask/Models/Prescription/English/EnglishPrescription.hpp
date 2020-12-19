@@ -9,7 +9,7 @@
 
 #include <map>
 
-#include "../Base/Prescription.hpp"
+#include <Prescription/Base/Prescription.hpp>
 
 namespace task::fifth {
 class EnglishPrescription : public Prescription {
