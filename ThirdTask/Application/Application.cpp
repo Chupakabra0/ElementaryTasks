@@ -2,7 +2,6 @@
 // Created by Александр Сафиюлин on 09.12.2020.
 //
 
-#include <regex>
 #include <set>
 
 #include <ConsoleInputValidator/ConsoleInputValidator.hpp>
@@ -76,20 +75,15 @@ int task::third::Application::operator()() const {
 	if (triangleParams.size() < 4) {
 	  view->OutParseError();
 	} else {
-	  auto isPositiveDouble = [](const char string[]) -> bool {
-		const std::regex number(R"((^\d+?(\.\d+?$|$)))");
-		return std::regex_match(string, number)
-			&& std::string(string).find('-') == std::string::npos;
-	  };
 
 	  std::unique_ptr<std::string> triangleName =
-	  	helpers::Converter<std::string>::ConvertString(triangleParams[0]);
+	  	std::make_unique<std::string>(triangleParams[0]);
 	  std::unique_ptr<double> firstSide =
-		  helpers::Converter<double>::ConvertString(triangleParams[1], isPositiveDouble);
+		  helpers::Converter<double>::ConvertString(triangleParams[1]);
 	  std::unique_ptr<double> secondSide =
-		  helpers::Converter<double>::ConvertString(triangleParams[2], isPositiveDouble);
+		  helpers::Converter<double>::ConvertString(triangleParams[2]);
 	  std::unique_ptr<double> thirdSide =
-		  helpers::Converter<double>::ConvertString(triangleParams[3], isPositiveDouble);
+		  helpers::Converter<double>::ConvertString(triangleParams[3]);
 
 	  if (nullptr == triangleName || nullptr == firstSide ||
 		  nullptr == secondSide || nullptr == thirdSide) {
