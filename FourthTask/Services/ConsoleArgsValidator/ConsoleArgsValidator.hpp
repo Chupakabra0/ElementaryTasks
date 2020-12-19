@@ -7,23 +7,27 @@
 #ifndef FIRSTTASK_CONSOLEARGSVALIDATOR_HPP
 #define FIRSTTASK_CONSOLEARGSVALIDATOR_HPP
 
-#include "../Converter/Converter.hpp"
+#include <array>
+
+#include <Converter/Converter.hpp>
 
 namespace task::helpers {
 class ConsoleArgsValidator {
  public:
   ConsoleArgsValidator() = delete;
 
-  ConsoleArgsValidator(const ConsoleArgsValidator&) = default;
+  ConsoleArgsValidator(const ConsoleArgsValidator&) = delete;
 
   ConsoleArgsValidator(ConsoleArgsValidator &&) = default;
 
-  ConsoleArgsValidator& operator=(const ConsoleArgsValidator&) = default;
+  ConsoleArgsValidator& operator=(const ConsoleArgsValidator&) = delete;
 
   ConsoleArgsValidator& operator=(ConsoleArgsValidator&&) = default;
 
-  ConsoleArgsValidator(const unsigned argc, char **argv)
-	  : argc_(argc), argv_(argv) {}
+  ConsoleArgsValidator(const unsigned argc, const char **argv)
+	  : argc_(argc), argv_(argv) {
+	  
+  }
 
   template<class Type>
   std::unique_ptr<Type> ValidateByIndex(
@@ -59,7 +63,7 @@ class ConsoleArgsValidator {
 	return this->argc_;
   }
 
-  [[nodiscard]] char **GetArgv() const {
+  [[nodiscard]] const char **GetArgv() const {
 	return this->argv_;
   }
 
@@ -67,7 +71,7 @@ class ConsoleArgsValidator {
 
  private:
   unsigned argc_;
-  char **argv_;
+  const char **argv_;
 };
 }
 

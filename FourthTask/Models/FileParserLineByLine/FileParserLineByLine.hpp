@@ -36,31 +36,34 @@ class FileParserLineByLine {
 	this->fileStream_.open(path);
   }
 
-  [[nodiscard]] std::string GetPath() const {
+  [[nodiscard]] std::filesystem::path GetPath() const {
 	return this->path_;
   }
 
-  auto begin() {
+  [[nodiscard]] auto begin() {
 	return iterator(&this->fileStream_);
   }
 
-  auto end() {
+  [[nodiscard]] auto end() {
 	return iterator();
   }
 
-  auto cbegin() const {
+  [[nodiscard]] auto cbegin() const {
 	return const_iterator(&this->fileStream_);
   }
 
-  auto cend() const {
+  [[nodiscard]] auto cend() const {
 	return const_iterator();
   }
 
-  bool IsFileOpen() const {
+  [[nodiscard]] bool IsFileOpen() const {
 	return this->fileStream_.is_open();
   }
 
   void CloseFile() {
+  	if (!this->fileStream_.is_open()) {
+  		return;
+  	}
 	this->fileStream_.close();
   }
 
@@ -69,19 +72,25 @@ class FileParserLineByLine {
 	this->fileStream_.seekg(0u);
   }
 
-  ~FileParserLineByLine() = default;
+  ~FileParserLineByLine() {
+  	if (!this->IsFileOpen()) {
+  		return;
+  	}
+	this->CloseFile();
+  }
 
  private:
   std::fstream fileStream_;
   std::filesystem::path path_;
 };
 
-using CharFileParserLineByLine = FileParserLineByLine<char>;
-using Char8tFileParserLineByLine = FileParserLineByLine<char8_t>;
+using CharFileParserLineByLine    = FileParserLineByLine<char>;
+using Char8tFileParserLineByLine  = FileParserLineByLine<char8_t>;
 using Char16tFileParserLineByLine = FileParserLineByLine<char16_t>;
 using Char32tFileParserLineByLine = FileParserLineByLine<char32_t>;
-using WCharFileParserLineByLine = FileParserLineByLine<wchar_t>;
-using IntFileParserLineByLine = FileParserLineByLine<unsigned char>;
+using WCharFileParserLineByLine   = FileParserLineByLine<wchar_t>;
+using UCharFileParserLineByLine   = FileParserLineByLine<unsigned char>;
+using SCharFileParserLineByLine   = FileParserLineByLine<signed char>;
 
 }
 

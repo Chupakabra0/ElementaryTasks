@@ -8,36 +8,36 @@
 
 #include "Application.hpp"
 
-#include "../Services/ConsoleArgsValidator/ConsoleArgsValidator.hpp"
-#include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
-#include "../Models/FileParserLineByLine/FileParserLineByLine.hpp"
-#include "../View/View.hpp"
+#include <ConsoleArgsValidator/ConsoleArgsValidator.hpp>
+#include <Errors/ErrorHandler/ErrorHandler.hpp>
+#include <FileParserLineByLine/FileParserLineByLine.hpp>
+#include <View.hpp>
 
-task::fourth::Application::Application(const unsigned int argc, char **argv)
+task::fourth::Application::Application(const unsigned int argc, const char **argv)
 	: argc_(argc), argv_(argv) {}
 
 task::fourth::Application &task::fourth::Application::GetInstance(const
 																  unsigned argc,
-																  char **argv) {
+																  const char **argv) {
   static Application instance(argc, argv);
   return instance;
 }
 
 int task::fourth::Application::operator()() const {
-  task::helpers::ErrorHandler errorHandler(task::helpers::ErrorCode::NO_ERROR);
+  helpers::ErrorHandler errorHandler(helpers::ErrorCode::NO_ERROR);
   const std::string tempPath("temp.tmp");
 
-  std::unique_ptr<task::fourth::View<std::ostream>> view(new(std::nothrow)
-  task::fourth::View<std::ostream>(std::cout, errorHandler));
+  std::unique_ptr<View<std::ostream>> view(new(std::nothrow)
+  View<std::ostream>(std::cout, errorHandler));
   if (nullptr == view) {
-	errorHandler.SetErrorCode(task::helpers::ErrorCode::MEMORY_OUT);
+	errorHandler.SetErrorCode(helpers::ErrorCode::MEMORY_OUT);
 	errorHandler.OutError();
 
 	return EXIT_FAILURE;
   }
 
-  std::unique_ptr<task::helpers::ConsoleArgsValidator> consoleArgsValidator
-	  (new(std::nothrow) task::helpers::ConsoleArgsValidator(this->argc_,
+  std::unique_ptr<helpers::ConsoleArgsValidator> consoleArgsValidator
+	  (new(std::nothrow) helpers::ConsoleArgsValidator(this->argc_,
 															 this->argv_));
   if (nullptr == consoleArgsValidator) {
 	view->OutMemoryError();
@@ -47,12 +47,12 @@ int task::fourth::Application::operator()() const {
 
   std::unique_ptr<std::string> filePath;
   std::unique_ptr<std::string> stringToFind;
-  std::unique_ptr<std::string> stringToReplace;
 
   if (consoleArgsValidator->CheckEnoughArgc(4)) {
 	filePath = consoleArgsValidator->ValidateByIndex<std::string>(1u);
 	stringToFind = consoleArgsValidator->ValidateByIndex<std::string>(2u);
-	stringToReplace = consoleArgsValidator->ValidateByIndex<std::string>(3u);
+	std::unique_ptr<std::string> stringToReplace =
+		consoleArgsValidator->ValidateByIndex<std::string>(3u);
 
 	if (nullptr == filePath || nullptr == stringToFind ||
 		nullptr == stringToReplace) {
@@ -61,15 +61,15 @@ int task::fourth::Application::operator()() const {
 	  return EXIT_FAILURE;
 	}
 
-	std::unique_ptr<task::fourth::CharFileParserLineByLine> parser
-		(new(std::nothrow) task::fourth::CharFileParserLineByLine(*filePath));
+	std::unique_ptr<CharFileParserLineByLine> parser
+		(new(std::nothrow) CharFileParserLineByLine(*filePath));
 	if (nullptr == parser) {
 	  view->OutMemoryError();
 
 	  return EXIT_FAILURE;
 	}
 
-	if (std::filesystem::space(std::filesystem::current_path()).free >
+	if (space(std::filesystem::current_path()).free >
 		std::filesystem::file_size(filePath->c_str())) {
 
 	  std::fstream ofs(tempPath.c_str(), std::ios_base::trunc |
@@ -106,8 +106,8 @@ int task::fourth::Application::operator()() const {
 	  return EXIT_FAILURE;
 	}
 
-	std::unique_ptr<task::fourth::CharFileParserLineByLine> parser
-		(new(std::nothrow) task::fourth::CharFileParserLineByLine
+	std::unique_ptr<CharFileParserLineByLine> parser
+		(new(std::nothrow) CharFileParserLineByLine
 			 (*filePath));
 	if (nullptr == parser) {
 	  view->OutMemoryError();
