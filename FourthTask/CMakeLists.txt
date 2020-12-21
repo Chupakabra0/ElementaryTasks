@@ -42,8 +42,9 @@ add_executable(FourthTask Main.cpp Application/Application.cpp)
 
 #---------------------------- TESTS ------------------------------------------
 add_executable(Tests Tests/TestsMain.cpp Tests/ServicesTests/ErrorTests.cpp
-        Tests/ServicesTests/ConverterTests.cpp Tests/ModelsTests/FileParserLineByLineTests.cpp
-        Tests/ServicesTests/ConsoleArgsValidatorTests.cpp )
+        Tests/ServicesTests/ConverterTests.cpp
+        Tests/ServicesTests/ConsoleArgsValidatorTests.cpp
+        Tests/ModelsTests/DataFunctionsTests.cpp)
 #-----------------------------------------------------------------------------
 
 #----------------------------- LIBS ------------------------------------------
