@@ -6,68 +6,63 @@
 #define SIXTHTASK_INTEGRAL_HPP
 
 namespace task::helpers {
-	class Integral {
-	public:
-		Integral() = delete;
+class Integral {
+ public:
+  Integral(const Integral &) = delete;
 
-		Integral(const Integral&) = delete;
+  Integral(Integral &&) = delete;
 
-		Integral(Integral&&) = delete;
+  Integral& operator=(const Integral&) = delete;
 
-		template<class Function>
-		static double TrapezoidCount(
-				Function function, const double a,
-				const double b, const unsigned n)
-		{
-			auto result = 0.0;
-			const auto h = (b - a) / n;
+  Integral& operator=(Integral&&) = delete;
 
-			for (auto i = a; i < b; i += h)
-			{
-				auto temp = function(i) + function(i + h);
-				if (temp != temp) {
-					temp = std::numeric_limits<double>::epsilon();
-				}
-				result += temp;
-			}
+  explicit Integral(const unsigned n = 1000u) : n_(n) {}
 
-			return h / 2.0 * result;
-		}
+  template<class Function>
+  [[nodiscard]] double SimpsonCount(Function function, const double a,
+							 const double b) {
+	const auto h = (b - a) / this->n_;
+	auto temp = h * (function(a) + function(b)) / 6.0;
 
-		template<class Function>
-		static double SimpsonCount(Function function, const double a,
-							 const double b, const unsigned n) {
-			const auto h = (b - a) / n;
-			auto temp = h * (function(a) + function(b)) / 6.0;
+	if (temp != temp) {
+	  temp = std::numeric_limits<double>::epsilon();
+	}
+	auto result = temp;
 
-			if (temp != temp) {
-				temp = std::numeric_limits<double>::epsilon();
-			}
-			auto result = temp;
+	for (auto i = 1u; i <= this->n_; ++i) {
+	  auto temp = (4.0 / 6.0) * h * function(a + h * i - h / 2.0);
+	  if (temp != temp) {
+		temp = std::numeric_limits<double>::epsilon();
+	  }
+	  result += temp;
+	}
 
-			for (auto i = 1u; i <= n; ++i) {
-				auto temp = (4.0 / 6.0) * h * function(a + h * i - h / 2.0);
-				if (temp != temp) {
-					temp = std::numeric_limits<double>::epsilon();
-				}
-				result += temp;
-			}
+	for (auto i = 1u; i <= this->n_ - 1; ++i) {
+	  auto temp = (2.0 / 6.0) * h * function(a + h * i);
+	  if (temp != temp) {
+		temp = std::numeric_limits<double>::epsilon();
+	  }
+	  result += temp;
+	}
 
-			for (auto i = 1u; i <= n - 1; ++i) {
-				auto temp = (2.0 / 6.0) * h * function(a + h * i);
-				if (temp != temp) {
-					temp = std::numeric_limits<double>::epsilon();
-				}
-				result += temp;
-			}
+	return result;
+  }
 
-			return result;
-		}
+  [[nodiscard]] unsigned GetN() const {
+	return this->n_;
+  }
 
-		~Integral() = delete;
-	private:
+  void SetN(const unsigned n) {
+    if (this->n_ == n) {
+	  return;
+    }
+	this->n_ = n;
+  }
 
-	};
+  ~Integral() = default;
+ private:
+  unsigned n_;
+};
 }
 
 #endif //SIXTHTASK_INTEGRAL_HPP

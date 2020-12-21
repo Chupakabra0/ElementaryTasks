@@ -7,16 +7,17 @@
 
 #include "Application.hpp"
 
-#include "../Services/ConsoleArgsValidator/ConsoleArgsValidator.hpp"
-#include "../Services/FileInputValidator/FileInputValidator.hpp"
-#include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
+#include <ConsoleArgsValidator/ConsoleArgsValidator.hpp>
+#include <FileInputValidator/FileInputValidator.hpp>
+#include <Errors/ErrorHandler/ErrorHandler.hpp>
+#include <LuckyTicketCounter/LuckyTicketCounter.hpp>
+#include <View.hpp>
 
-#include "../Models/LuckyTicketCounter/LuckyTicketCounter.hpp"
+task::sixth::Application::Application(const unsigned argc, const char **argv)
+	: argc_(argc), argv_(argv) {}
 
-#include "../View/View.hpp"
-
-task::sixth::Application &task::sixth::Application::GetInstance(unsigned int argc,
-																char **argv) {
+task::sixth::Application &task::sixth::Application::GetInstance(const unsigned argc,
+																const char **argv) {
   static Application instance(argc, argv);
   return instance;
 }
@@ -25,18 +26,17 @@ int task::sixth::Application::operator()() const {
   helpers::ErrorHandler errorHandler(helpers::ErrorCode::NO_ERROR);
 
   std::unique_ptr<View<std::ostream>> view
-  (new(std::nothrow) View<std::ostream>(std::cout, errorHandler));
-  if(nullptr == view) {
+	  (new(std::nothrow) View<std::ostream>(std::cout, errorHandler));
+  if (nullptr == view) {
 	errorHandler.SetErrorCode(helpers::ErrorCode::MEMORY_OUT);
 	errorHandler.OutError("\n");
 
 	return EXIT_FAILURE;
   }
 
-
   std::unique_ptr<helpers::ConsoleArgsValidator> consoleArgsValidator
 	  (new(std::nothrow) helpers::ConsoleArgsValidator(this->argc_,
-															 this->argv_));
+													   this->argv_));
   if (nullptr == consoleArgsValidator) {
 	view->OutParseError();
 
@@ -58,8 +58,8 @@ int task::sixth::Application::operator()() const {
   }
 
   std::unique_ptr<helpers::FileInputValidator> fileInputValidator
- 	 (new(std::nothrow) helpers::FileInputValidator
- 	 	(std::filesystem::path(*filePath)));
+	  (new(std::nothrow) helpers::FileInputValidator
+		   (std::filesystem::path(*filePath)));
   if (nullptr == fileInputValidator) {
 	view->OutParseError();
 
@@ -102,7 +102,7 @@ int task::sixth::Application::operator()() const {
 	std::unique_ptr<unsigned> temp = std::move(
 		consoleArgsValidator->ValidateByIndex
 			<unsigned>(2u, [](const char string[]) {
-			const std::regex checkLetters(R"((\d+?))");
+		  const std::regex checkLetters(R"((\d+?))");
 		  return std::regex_match(string, checkLetters);
 		}));
 
@@ -112,7 +112,7 @@ int task::sixth::Application::operator()() const {
   }
 
   const std::unique_ptr<LuckyTicketCounter> ltc
-  	(new(std::nothrow) LuckyTicketCounter(*countDigits));
+	  (new(std::nothrow) LuckyTicketCounter(*countDigits));
   if (nullptr == ltc) {
 	view->OutMemoryError();
 

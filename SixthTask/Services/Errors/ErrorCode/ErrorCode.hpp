@@ -21,7 +21,7 @@ enum class ErrorCode : unsigned short {
   ETERNAL_SERVER_ERROR
 };
 
-inline static std::string ToString(ErrorCode errorCode) {
+static std::string ToString(ErrorCode errorCode) {
   std::stringstream ss;
   ss << "Code " << static_cast<unsigned short>(errorCode) << ": ";
   switch (errorCode) {
@@ -31,6 +31,7 @@ inline static std::string ToString(ErrorCode errorCode) {
 	}
 	case ErrorCode::PARSE_FAILED: {
 	  ss << "Parse failed...";
+	  break;
 	}
 	case ErrorCode::VALIDATION_FAILED: {
 	  ss << "Validation failed...";

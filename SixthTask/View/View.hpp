@@ -2,8 +2,8 @@
 // Created by Александр Сафиюлин on 11.12.2020.
 //
 
-#include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
-#include "../Models/LuckyTicketType/LuckyTicketType.hpp"
+#include <Errors/ErrorHandler/ErrorHandler.hpp>
+#include <LuckyTicketCounter/LuckyTicketCounter.hpp>
 
 #pragma once
 
@@ -33,7 +33,7 @@ class View {
   explicit View(Ostream &out, task::helpers::ErrorHandler errorHandler,
 				std::unique_ptr<unsigned long long> &counter,
 				task::sixth::LuckyTicketType luckyTicketType =
-					task::sixth::LuckyTicketType::NONE)
+				task::sixth::LuckyTicketType::NONE)
 	  : out_(out), errorHandler_(errorHandler),
 		counter_(std::move(counter)), luckyTicketType_(luckyTicketType) {}
 
@@ -43,7 +43,7 @@ class View {
 	  return;
 	}
 	this->out_ << "There are " << *this->counter_ << " lucky " <<
-	ToString(this->luckyTicketType_) << " tickets" << std::endl;
+			   ToString(this->luckyTicketType_) << " tickets" << std::endl;
   }
 
   void OutNotEnoughArgumentsMessage() {

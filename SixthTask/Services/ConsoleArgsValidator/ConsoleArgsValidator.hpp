@@ -2,76 +2,77 @@
 // Created by Александр Сафиюлин on 27.11.2020.
 //
 
+#pragma once
+
 #ifndef FIRSTTASK_CONSOLEARGSVALIDATOR_HPP
 #define FIRSTTASK_CONSOLEARGSVALIDATOR_HPP
 
-#include "../Converter/Converter.hpp"
+#include <array>
 
-namespace task::helpers
-{
-	class ConsoleArgsValidator
-	{
-	public:
-		ConsoleArgsValidator() = delete;
+#include <Converter/Converter.hpp>
 
-		ConsoleArgsValidator(const ConsoleArgsValidator&) = default;
+namespace task::helpers {
+class ConsoleArgsValidator {
+ public:
+  ConsoleArgsValidator() = delete;
 
-		ConsoleArgsValidator(ConsoleArgsValidator&&) = default;
+  ConsoleArgsValidator(const ConsoleArgsValidator&) = delete;
 
-		ConsoleArgsValidator(unsigned argc, char** argv)
-				: argc_(argc), argv_(argv)
-		{}
+  ConsoleArgsValidator(ConsoleArgsValidator &&) = default;
 
-		template<class Type>
-		std::unique_ptr<Type> ValidateByIndex(
-				const unsigned index, bool
-		predicate(const char[]) = nullptr) const
-		{
-			auto result = std::move(
-					task::helpers::Converter<Type>::ConvertString
-							(this->argv_[index], predicate));
+  ConsoleArgsValidator& operator=(const ConsoleArgsValidator&) = delete;
 
-			return result;
-		}
+  ConsoleArgsValidator& operator=(ConsoleArgsValidator&&) = default;
 
-		template<>
-		std::unique_ptr<std::string> ValidateByIndex(
-				const unsigned index, bool
-		predicate(const char[])) const
-		{
-			if (nullptr != predicate && !predicate(this->argv_[index])) {
-				return nullptr;
-			}
+  ConsoleArgsValidator(const unsigned argc, const char **argv)
+	  : argc_(argc), argv_(argv) {
+	  
+  }
 
-			return std::make_unique<std::string>(std::string(this->argv_[index]));
-		}
+  template<class Type>
+  std::unique_ptr<Type> ValidateByIndex(
+	  const unsigned index, bool
+  predicate(const char[]) = nullptr) const {
+	auto result = std::move(
+		Converter<Type>::ConvertString
+			(this->argv_[index], predicate));
 
-		[[nodiscard]] bool CheckEnoughArgc(unsigned argc) const
-		{
-			return this->argc_ >= argc;
-		}
+	return result;
+  }
 
-		[[nodiscard]] const char* GetPath() const
-		{
-			return this->argv_[0];
-		}
+  template<>
+  std::unique_ptr<std::string> ValidateByIndex(
+	  const unsigned index, bool
+  predicate(const char[])) const {
+	if (nullptr != predicate && !predicate(this->argv_[index])) {
+	  return nullptr;
+	}
 
-		[[nodiscard]] unsigned GetArgc() const
-		{
-			return this->argc_;
-		}
+	return std::make_unique<std::string>(std::string(this->argv_[index]));
+  }
 
-		[[nodiscard]] char** GetArgv() const
-		{
-			return this->argv_;
-		}
+  [[nodiscard]] bool CheckEnoughArgc(const unsigned argc) const {
+	return this->argc_ >= argc;
+  }
 
-		~ConsoleArgsValidator() = default;
+  [[nodiscard]] const char *GetPath() const {
+	return this->argv_[0];
+  }
 
-	private:
-		unsigned argc_;
-		char** argv_;
-	};
+  [[nodiscard]] unsigned GetArgc() const {
+	return this->argc_;
+  }
+
+  [[nodiscard]] const char **GetArgv() const {
+	return this->argv_;
+  }
+
+  ~ConsoleArgsValidator() = default;
+
+ private:
+  unsigned argc_;
+  const char **argv_;
+};
 }
 
 #endif //FIRSTTASK_CONSOLEARGSVALIDATOR_HPP
