@@ -38,7 +38,7 @@ include_directories("${CMAKE_BINARY_DIR}/googletest-src/googletest/include")
 #-----------------------------------------------------------------------------
 
 #-------------------------- PROGRAM ------------------------------------------
-add_executable(SeventhTask Main.cpp Application/Application.cpp Models/SequenceRules/SequenceRules.hpp)
+add_executable(SeventhTask Main.cpp Application/Application.cpp)
 #-----------------------------------------------------------------------------
 
 #---------------------------- TESTS ------------------------------------------

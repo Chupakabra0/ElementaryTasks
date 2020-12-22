@@ -9,7 +9,7 @@
 
 #include <View.hpp>
 #include <ConsoleArgsValidator/ConsoleArgsValidator.hpp>
-#include <SequenceBuilder/SequenceBuilder.hpp>
+#include <Sequence/SequenceBuilder/SequenceBuilder.hpp>
 
 task::seventh::Application &task::seventh::Application::GetInstance
 	(const unsigned int argc, const char **argv) {

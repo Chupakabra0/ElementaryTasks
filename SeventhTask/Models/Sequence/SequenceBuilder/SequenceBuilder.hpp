@@ -8,7 +8,7 @@
 #define SEVENTHTASK_MODELS_SEQUENCEBUILDER_SEQUENCEBUILDER_HPP_
 
 #include <vector>
-#include <SequenceRules/SequenceRules.hpp>
+#include <Sequence/SequenceRules/SequenceRules.hpp>
 
 namespace task::seventh {
 
