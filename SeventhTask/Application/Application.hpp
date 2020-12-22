@@ -20,17 +20,17 @@ class Application {
 
   Application &operator=(Application &&) noexcept = delete;
 
-  static Application &GetInstance(unsigned argc, char **argv);
+  static Application &GetInstance(unsigned argc, const char **argv);
 
   int operator()() const;
 
   ~Application() = default;
  private:
-  explicit Application(const unsigned argc, char **argv)
+  explicit Application(const unsigned argc, const char **argv)
 	  : argc_(argc), argv_(argv) {}
 
   unsigned argc_;
-  char **argv_;
+  const char **argv_;
 };
 }
 

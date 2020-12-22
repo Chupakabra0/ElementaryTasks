@@ -8,41 +8,75 @@
 #define SEVENTHTASK_MODELS_SEQUENCEBUILDER_SEQUENCEBUILDER_HPP_
 
 #include <vector>
+#include <SequenceRules/SequenceRules.hpp>
 
 namespace task::seventh {
 
-template<class Type1, class Type2 = Type1>
+template<class Type, class RuleGenType = AfterOne,
+	class RuleValidType = AlwaysTrue, class RuleBreakType = AlwaysFalse>
 class SequenceBuilder {
  public:
-  SequenceBuilder() = delete;
+  explicit SequenceBuilder(Type begin, Type end,
+	GenRule<Type, RuleGenType> genRule = GenRule<Type, RuleGenType>(),
+	ValidRule<Type, RuleValidType> validRule = ValidRule<Type, RuleValidType>(),
+	ValidRule<Type, RuleBreakType> breakRule = ValidRule<Type, RuleBreakType>())
+	  : begin_(begin), end_(end), genRule_(genRule), validRule_(validRule),
+		breakRule_(breakRule) {}
 
-  SequenceBuilder(const SequenceBuilder &) = default;
+  std::vector<Type> Build() const {
+	std::vector<Type> result;
 
-  SequenceBuilder(SequenceBuilder &&) noexcept = default;
+	auto data = this->begin_;
+	for (auto i = this->begin_; i < this->end_; ++i) {
+	  if (this->breakRule_(i)) {
+		break;
+	  }
 
-  SequenceBuilder &operator=(const SequenceBuilder &) = default;
+	  data = this->genRule_(i);
 
-  SequenceBuilder &operator=(SequenceBuilder &&) noexcept = default;
-
-  explicit SequenceBuilder(Type1 begin, Type2 end)
-	  : begin_(begin), end_(end) {}
-
-  std::vector<Type1> Build() const {
-	Type1 number{};
-	std::vector<Type1> vector;
-
-	for (auto i = this->begin_; i < static_cast<Type1>(this->end_); ++i) {
-	  vector.push_back(i);
+	  if (this->validRule_(data)) {
+	    try {
+			result.push_back(data);
+	  	}
+	    catch (std::exception&) {
+		  return result;
+	    }
+	  }
 	}
 
-	return vector;
+	return result;
   }
 
-  ~SequenceBuilder() = default;
+  [[nodiscard]] auto GetBegin() const {
+	return this->begin_;
+  }
+
+  void SetBegin(Type value) {
+	if (this->begin_ == value || value > this->end_) {
+	  return;
+	}
+	this->begin_ = value;
+  }
+
+  [[nodiscard]] auto GetEnd() const {
+	return this->end_;
+  }
+
+  void SetEnd(Type value) {
+	if (this->end_ == value || value < this->begin_) {
+	  return;
+	}
+	this->end_ = value;
+  }
+
  private:
-  Type1 begin_;
-  Type2 end_;
+  Type begin_;
+  Type end_;
+  GenRule<Type, RuleGenType> genRule_;
+  ValidRule<Type, RuleValidType> validRule_;
+  ValidRule<Type, RuleBreakType> breakRule_;
 };
+
 }
 
 #endif //SEVENTHTASK_MODELS_SEQUENCEBUILDER_SEQUENCEBUILDER_HPP_

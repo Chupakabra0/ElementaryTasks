@@ -3,17 +3,16 @@
 //
 
 #include <iostream>
-#include <regex>
 #include <cmath>
 
 #include "Application.hpp"
 
-#include "../View/View.hpp"
-#include "../Services/ConsoleArgsValidator/ConsoleArgsValidator.hpp"
-#include "../Models/SequenceBuilder/SequenceBuilder.hpp"
+#include <View.hpp>
+#include <ConsoleArgsValidator/ConsoleArgsValidator.hpp>
+#include <SequenceBuilder/SequenceBuilder.hpp>
 
 task::seventh::Application &task::seventh::Application::GetInstance
-	(const unsigned int argc, char **argv) {
+	(const unsigned int argc, const char **argv) {
   static Application instance(argc, argv);
   return instance;
 }
@@ -31,7 +30,8 @@ int task::seventh::Application::operator()() const {
   }
 
   const std::unique_ptr<helpers::ConsoleArgsValidator> consoleArgsValidator
-	  (new(std::nothrow) helpers::ConsoleArgsValidator(this->argc_, this->argv_));
+	  (new(std::nothrow) helpers::ConsoleArgsValidator(this->argc_,
+													   this->argv_));
   if (nullptr == consoleArgsValidator) {
 	view->OutMemoryError();
 
@@ -45,29 +45,22 @@ int task::seventh::Application::operator()() const {
   }
 
   std::unique_ptr<unsigned long long> number =
-  	consoleArgsValidator->ValidateByIndex<unsigned long long>(1u,
-	[](const char string[]) -> bool {
-		const std::regex regex(R"(^(\d+?)$)");
-	  return std::regex_match(string, regex);
-    });
-  if (nullptr == number) {
-    view->OutParseError();
-
-	return EXIT_FAILURE;
-  }
-
-  *number = static_cast<unsigned long long>(ceil(std::sqrt(*number)));
-
-  const std::unique_ptr<SequenceBuilder<unsigned long long>>
-  sequenceBuilder(new(std::nothrow) SequenceBuilder<unsigned long long>
-	  (0ull, *number));
-  if (nullptr == sequenceBuilder) {
+	  consoleArgsValidator->ValidateByIndex<unsigned long long>(1u);
+  if (nullptr == number || *number > 7899786854775807ull) {
 	view->OutParseError();
 
 	return EXIT_FAILURE;
   }
 
-  view->SetNumbers(sequenceBuilder->Build());
+  std::vector<unsigned long long> l;
+  std::cout << std::endl << l.max_size() << std::endl;
+
+  *number = static_cast<unsigned long long>(ceil(std::sqrt(*number)));
+
+  seventh::SequenceBuilder<unsigned long long> sb
+	  (0ull, *number, GenRule<unsigned long long, AfterOne>());
+
+  view->SetNumbers(sb.Build());
   view->OutNumbers();
 
   return EXIT_SUCCESS;

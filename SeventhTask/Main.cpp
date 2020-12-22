@@ -1,5 +1,5 @@
 #include "Application/Application.hpp"
 
-int main(int argc, char **argv) {
+int main(int argc, const char **argv) {
   return task::seventh::Application::GetInstance(argc, argv)();
 }

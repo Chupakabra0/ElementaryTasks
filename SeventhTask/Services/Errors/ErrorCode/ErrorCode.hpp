@@ -31,6 +31,7 @@ static std::string ToString(ErrorCode errorCode) {
 	}
 	case ErrorCode::PARSE_FAILED: {
 	  ss << "Parse failed...";
+	  break;
 	}
 	case ErrorCode::VALIDATION_FAILED: {
 	  ss << "Validation failed...";
