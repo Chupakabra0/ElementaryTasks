@@ -43,7 +43,7 @@ add_executable(SixthTask Main.cpp Application/Application.cpp)
 
 #---------------------------- TESTS ------------------------------------------
 add_executable(Tests Tests/TestsMain.cpp Tests/ServicesTests/ErrorTests.cpp
-        Tests/ServicesTests/ConverterTests.cpp Tests/ServicesTests/ConsoleArgsValidatorTests.cpp "Tests/ModelsTests/LuckyTicketCounterTests.cpp" Tests/ServicesTests/IntegralTests.cpp)
+        Tests/ServicesTests/ConverterTests.cpp Tests/ServicesTests/ConsoleArgsValidatorTests.cpp "Tests/ModelsTests/LuckyTicketCounterTests.cpp" Tests/ModelsTests/IntegralTests.cpp)
 #-----------------------------------------------------------------------------
 
 #----------------------------- LIBS ------------------------------------------

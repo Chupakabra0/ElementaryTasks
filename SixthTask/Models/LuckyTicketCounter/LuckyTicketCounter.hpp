@@ -26,7 +26,8 @@ class LuckyTicketCounter {
   LuckyTicketCounter& operator=(LuckyTicketCounter&&) noexcept = delete;
 
   explicit LuckyTicketCounter(const unsigned countNumbers = 3u) :
-	  countNumbers_(countNumbers), rank_(RANK), integral_(IntegralN) {}
+	  countNumbers_(countNumbers), integralN_(this->countNumbers_ * 1800u),
+	  rank_(RANK), integral_(this->integralN_) {}
 
 //---------------------- PUBLIC METHODS ----------------------------------------
 
@@ -71,13 +72,14 @@ class LuckyTicketCounter {
 					2.0 * this->countNumbers_) / std::numbers::pi;
   }
 
-  [[nodiscard]] unsigned long long getSumOfAllDigits(const unsigned long long num)
+  [[nodiscard]] unsigned getSumOfAllDigits(const unsigned num)
   const {
 	if (0ull == num) {
 	  return num;
 	}
 
-	return num % this->rank_ + getSumOfAllDigits(num / this->rank_);
+	return static_cast<unsigned>
+		(num % this->rank_ + getSumOfAllDigits(num / this->rank_));
   }
 
 //------------------------- GET MOSCOW COUNT -----------------------------------
@@ -88,8 +90,8 @@ class LuckyTicketCounter {
 	};
 
 	return static_cast<unsigned long long>
-		(this->integral_.SimpsonCount
-		(temp, std::numeric_limits<double>::epsilon(), std::numbers::pi));
+		(std::round(this->integral_.SimpsonCount
+		(temp, std::numeric_limits<double>::epsilon(), std::numbers::pi)));
   }
 
 //----------------------- GET PITER COUNT --------------------------------------
@@ -97,10 +99,11 @@ class LuckyTicketCounter {
   [[nodiscard]] unsigned long long getLuckyTicketPiterCount() const {
 	std::vector<unsigned long long> sums((this->rank_ - 1) *
 		this->countNumbers_ + 1);
-	auto limit = std::pow(this->rank_, this->countNumbers_);
+	auto limit = static_cast<unsigned>
+		(std::pow(this->rank_, this->countNumbers_));
 	auto result = 0ull;
 
-	for (auto i = 0ull; i < limit; ++i) {
+	for (auto i = 0u; i < limit; ++i) {
 	  ++sums[this->getSumOfAllDigits(i)];
 	}
 
@@ -114,13 +117,13 @@ class LuckyTicketCounter {
 //----------------------- PRIVATE FIELDS ---------------------------------------
 
   unsigned countNumbers_;
+  const unsigned integralN_;
   unsigned rank_;
   helpers::Integral integral_;
 
 //---------------------- STATIC FIELDS -----------------------------------------
 
   static const unsigned RANK      = 10u;
-  static const unsigned IntegralN = 2905u;
 };
 }
 

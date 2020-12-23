@@ -79,6 +79,12 @@ TEST_F(LuckyTicketCounterFixture, CountMoscowType5) {
   ASSERT_EQ(39581170420ull, this->ltc->GetLuckyTicketsCount(ticketType));
 }
 
+TEST_F(LuckyTicketCounterFixture, CountMoscowType6) {
+  const auto ticketType = task::sixth::LuckyTicketType::MOSCOW;
+  this->ltc->SetCountNumbers(7u);
+  ASSERT_EQ(3671331273480ull, this->ltc->GetLuckyTicketsCount(ticketType));
+}
+
 //------------------------ COUNT PITER TESTS -----------------------------------
 
 TEST_F(LuckyTicketCounterFixture, CountPiterType1) {
@@ -97,4 +103,22 @@ TEST_F(LuckyTicketCounterFixture, CountPiterType3) {
   const auto ticketType = task::sixth::LuckyTicketType::PITER;
   this->ltc->SetCountNumbers(4u);
   ASSERT_EQ(4816030ull, this->ltc->GetLuckyTicketsCount(ticketType));
+}
+
+TEST_F(LuckyTicketCounterFixture, CountPiterType4) {
+  const auto ticketType = task::sixth::LuckyTicketType::PITER;
+  this->ltc->SetCountNumbers(5u);
+  ASSERT_EQ(432457640ull, this->ltc->GetLuckyTicketsCount(ticketType));
+}
+
+TEST_F(LuckyTicketCounterFixture, CountPiterType5) {
+  const auto ticketType = task::sixth::LuckyTicketType::PITER;
+  this->ltc->SetCountNumbers(6u);
+  ASSERT_EQ(39581170420ull, this->ltc->GetLuckyTicketsCount(ticketType));
+}
+
+TEST_F(LuckyTicketCounterFixture, CountPiterType6) {
+  const auto ticketType = task::sixth::LuckyTicketType::PITER;
+  this->ltc->SetCountNumbers(7u);
+  ASSERT_EQ(3671331273480ull, this->ltc->GetLuckyTicketsCount(ticketType));
 }

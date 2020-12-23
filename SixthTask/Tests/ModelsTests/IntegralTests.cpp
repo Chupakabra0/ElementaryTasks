@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include <Integral/Integral.hpp>
 #include <numbers>
 #include <cmath>
+#include <Integral/Integral.hpp>
 
 //--------------------------- SIMPSON TESTS ------------------------------------
 
