@@ -7,12 +7,13 @@
 
 #include "Application.hpp"
 
-#include "../View/View.hpp"
-#include "../Services/ConsoleArgsValidator/ConsoleArgsValidator.hpp"
-#include "../Models/FibonacciBuilder/FibonacciBuilder.hpp"
+#include <View.hpp>
+#include <ConsoleArgsValidator/ConsoleArgsValidator.hpp>
+#include <Sequence/SequenceBuilder/SequenceBuilder.hpp>
 
 task::eighth::Application &task::eighth::Application::GetInstance(const unsigned int argc,
-																  char **argv) {
+																  const char
+																  **argv) {
   static Application instance(argc, argv);
   return instance;
 }
@@ -30,7 +31,8 @@ int task::eighth::Application::operator()() const {
   }
 
   const std::unique_ptr<helpers::ConsoleArgsValidator> consoleArgsValidator
-	  (new(std::nothrow) helpers::ConsoleArgsValidator(this->argc_, this->argv_));
+	  (new(std::nothrow) helpers::ConsoleArgsValidator(this->argc_,
+													   this->argv_));
   if (nullptr == consoleArgsValidator) {
 	view->OutMemoryError();
 
@@ -60,16 +62,21 @@ int task::eighth::Application::operator()() const {
 	return EXIT_FAILURE;
   }
 
-  const std::unique_ptr<FibonacciBuilder<unsigned long long>>
-	  fibonacciBuilder(new(std::nothrow) FibonacciBuilder<unsigned long long>
-						   (*lowLimit, *highLimit));
-  if (nullptr == fibonacciBuilder) {
+  std::vector<unsigned long long> numbers;
+
+  std::unique_ptr<SequenceBuilder<unsigned long long, Fibo>>
+	  sb(new(std::nothrow) SequenceBuilder<unsigned long long, Fibo>
+			 (0ull, numbers.max_size(), *lowLimit, *highLimit,
+			  GenRule<unsigned long long, Fibo>()));
+  if (nullptr == sb) {
 	view->OutMemoryError();
 
 	return EXIT_FAILURE;
   }
 
-  view->SetNumbers(fibonacciBuilder->Build());
+  numbers = sb->Build();
+
+  view->SetNumbers(numbers);
   view->OutNumbers();
 
   return EXIT_SUCCESS;
