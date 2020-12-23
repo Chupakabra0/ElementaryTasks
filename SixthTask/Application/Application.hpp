@@ -1,13 +1,10 @@
-//
-// Created by Александр Сафиюлин on 11.12.2020.
-//
-
 #pragma once
 
 #ifndef SIXTHTASK_APPLICATION_APPLICATION_HPP_
 #define SIXTHTASK_APPLICATION_APPLICATION_HPP_
 
 namespace task::sixth {
+// Applications class, that refactors main
 class Application {
  public:
   Application() = delete;

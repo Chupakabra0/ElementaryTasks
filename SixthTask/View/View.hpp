@@ -1,19 +1,17 @@
-//
-// Created by Александр Сафиюлин on 11.12.2020.
-//
-
-#include <Errors/ErrorHandler/ErrorHandler.hpp>
-#include <LuckyTicketCounter/LuckyTicketCounter.hpp>
-
 #pragma once
 
 #ifndef SIXTHTASK_VIEW_VIEW_HPP_
 #define SIXTHTASK_VIEW_VIEW_HPP_
 
+#include <LuckyTicketCounter/LuckyTicketCounter.hpp>
+#include <Errors/ErrorHandler/ErrorHandler.hpp>
+
 namespace task::sixth {
 template<class Ostream>
 class View {
  public:
+//------------------------- CTORS ----------------------------------------------
+
   View() = delete;
 
   View(const View &) = delete;
@@ -36,6 +34,8 @@ class View {
 				task::sixth::LuckyTicketType::NONE)
 	  : out_(out), errorHandler_(errorHandler),
 		counter_(std::move(counter)), luckyTicketType_(luckyTicketType) {}
+
+//--------------------------- OUTPUT -------------------------------------------
 
   void OutCounter() {
 	if (nullptr == this->counter_) {
@@ -67,6 +67,8 @@ class View {
 	this->counter_ = std::make_unique<unsigned long long>(counter);
   }
 
+//----------------------- GETTERS/SETTERS --------------------------------------
+
   [[nodiscard]] unsigned long long GetCounter() const {
 	return *this->counter_;
   }
@@ -82,12 +84,19 @@ class View {
 	return this->luckyTicketType_;
   }
 
+//----------------------------- DTOR -------------------------------------------
+
   ~View() = default;
+
  private:
+//------------------------- PRIVATE OUTPUT ERROR HELPER ------------------------
+
   void outError(task::helpers::ErrorCode errorCode) {
 	this->errorHandler_.SetErrorCode(errorCode);
 	this->errorHandler_.OutError("\n");
   }
+
+//---------------------- PRIVATE MEMBERS ---------------------------------------
 
   std::unique_ptr<unsigned long long> counter_;
   task::sixth::LuckyTicketType luckyTicketType_;

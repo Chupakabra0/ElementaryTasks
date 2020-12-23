@@ -1,7 +1,3 @@
-//
-// Created by Александр Сафиюлин on 17.12.2020.
-//
-
 #include <gtest/gtest.h>
 #include <Errors/ErrorHandler/ErrorHandler.hpp>
 

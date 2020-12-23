@@ -1,7 +1,3 @@
-//
-// Created by ��������� �������� on 17.12.2020.
-//
-
 #include <gtest/gtest.h>
 #include <ConsoleArgsValidator/ConsoleArgsValidator.hpp>
 

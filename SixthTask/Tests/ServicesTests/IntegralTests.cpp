@@ -1,7 +1,3 @@
-//
-// Created by Александр Сафиюлин on 21.12.2020.
-//
-
 #include <gtest/gtest.h>
 #include <Integral/Integral.hpp>
 #include <numbers>

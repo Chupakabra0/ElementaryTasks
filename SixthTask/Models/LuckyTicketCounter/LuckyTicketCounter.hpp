@@ -12,34 +12,27 @@
 #include <LuckyTicketType/LuckyTicketType.hpp>
 
 namespace task::sixth {
+// Class, that count amount of lucky ticket of special chosen type
 class LuckyTicketCounter {
  public:
-  LuckyTicketCounter(const LuckyTicketCounter &) = default;
+//------------------------- CTORS ----------------------------------------------
 
-  LuckyTicketCounter(LuckyTicketCounter &&) = default;
+  LuckyTicketCounter(const LuckyTicketCounter &) = delete;
+
+  LuckyTicketCounter(LuckyTicketCounter &&) noexcept = delete;
+
+  LuckyTicketCounter& operator=(const LuckyTicketCounter&) = delete;
+
+  LuckyTicketCounter& operator=(LuckyTicketCounter&&) noexcept = delete;
 
   explicit LuckyTicketCounter(const unsigned countNumbers = 3u) :
-	  countNumbers_(countNumbers), rank_(10u) {}
+	  countNumbers_(countNumbers), rank_(RANK), integral_(IntegralN) {}
 
-//		[[nodiscard]] unsigned long long GetLuckyTicketsForceCount() const {
-//			std::vector<unsigned long long> sums((this->rank_ - 1) *
-//			this->countNumbers_ + 1);
-//			auto limit = std::pow(10ull, this->countNumbers_);
-//			auto result = 0ull;
-//
-//			for (auto i = 0ull; i < limit; ++i) {
-//				++sums[this->getSumOfAllDigits(i)];
-//			}
-//
-//			for (const auto& i : sums) {
-//				result += i * i;
-//			}
-//
-//			return result;
-//		}
+//---------------------- PUBLIC METHODS ----------------------------------------
 
   [[nodiscard]] unsigned long long GetLuckyTicketsCount
 	  (const LuckyTicketType luckyTicketType) const {
+    // Choose lucky type
 	switch (luckyTicketType) {
 	  case LuckyTicketType::MOSCOW: {
 		return this->getLuckyTicketsMoscowCount();
@@ -53,6 +46,8 @@ class LuckyTicketCounter {
 	}
   }
 
+//-------------------------- GETTERS/SETTERS -----------------------------------
+
   [[nodiscard]] unsigned GetCountNumbers() const {
 	return this->countNumbers_;
   }
@@ -64,9 +59,13 @@ class LuckyTicketCounter {
 	this->countNumbers_ = counterNumber;
   }
 
+//----------------------------- DTOR -------------------------------------------
+
   ~LuckyTicketCounter() = default;
 
  private:
+//-------------------------- PRIVATE METHODS -----------------------------------
+
   [[nodiscard]] double functionToCount(const double x) const {
 	return std::pow(std::sin(this->rank_ * x) / sin(x),
 					2.0 * this->countNumbers_) / std::numbers::pi;
@@ -81,52 +80,48 @@ class LuckyTicketCounter {
 	return num % this->rank_ + getSumOfAllDigits(num / this->rank_);
   }
 
-  [[nodiscard]] unsigned long long getSumOfEvenDigits(const unsigned long
-													  long num) const {
-	if (0ull == num) {
-	  return num;
-	}
-
-	return num % this->rank_ + getSumOfEvenDigits
-		(num / static_cast<unsigned>(std::pow(this->rank_, 2u)));
-  }
-
-  [[nodiscard]] unsigned long long getSumOfOddDigits(const unsigned long
-													 long num) const {
-	if (0ull == num) {
-	  return num;
-	}
-
-	return (num % (this->rank_ * this->rank_) / this->rank_) +
-		getSumOfOddDigits(num / (this->rank_ * this->rank_));
-  }
+//------------------------- GET MOSCOW COUNT -----------------------------------
 
   [[nodiscard]] unsigned long long getLuckyTicketsMoscowCount() const {
 	auto temp = [this](const double x) -> double {
 	  return this->functionToCount(x);
 	};
-	task::helpers::Integral integral;
+
 	return static_cast<unsigned long long>
-	(integral.SimpsonCount(temp, std::numeric_limits<double>::epsilon(),
-						   std::numbers::pi));
+	(std::round(this->integral_.SimpsonCount(temp,
+								 std::numeric_limits<double>::epsilon(),
+						   std::numbers::pi)));
   }
 
-  [[nodiscard]] unsigned long long getLuckyTicketPiterCount() const {
-	auto result = 0u;
-	const auto limit = static_cast<unsigned long long>
-	(std::pow(this->rank_, this->countNumbers_ * 2ull));
+//----------------------- GET PITER COUNT --------------------------------------
 
-	for (auto i = 0u; i < limit; ++i) {
-	  if (this->getSumOfEvenDigits(i) == this->getSumOfOddDigits(i)) {
-		++result;
-	  }
+  [[nodiscard]] unsigned long long getLuckyTicketPiterCount() const {
+	std::vector<unsigned long long> sums((this->rank_ - 1) *
+		this->countNumbers_ + 1);
+	auto limit = std::pow(this->rank_, this->countNumbers_);
+	auto result = 0ull;
+
+	for (auto i = 0ull; i < limit; ++i) {
+	  ++sums[this->getSumOfAllDigits(i)];
+	}
+
+	for (const auto &i : sums) {
+	  result += i * i;
 	}
 
 	return result;
   }
 
+//----------------------- PRIVATE FIELDS ---------------------------------------
+
   unsigned countNumbers_;
   unsigned rank_;
+  helpers::Integral integral_;
+
+//---------------------- STATIC FIELDS -----------------------------------------
+
+  static const unsigned RANK      = 10u;
+  static const unsigned IntegralN = 2905u;
 };
 }
 

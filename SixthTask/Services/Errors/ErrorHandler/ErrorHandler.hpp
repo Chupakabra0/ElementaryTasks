@@ -1,7 +1,3 @@
-//
-// Created by Александр Сафиюлин on 09.12.2020.
-//
-
 #pragma once
 
 #ifndef FIRSTTASK_ERRORHANDLER_HPP
@@ -10,8 +6,10 @@
 #include <Errors/ErrorCode/ErrorCode.hpp>
 
 namespace task::helpers {
+// Error handler class
 class ErrorHandler {
  public:
+//-------------------------------- CTOR ----------------------------------------
   ErrorHandler() = delete;
 
   ErrorHandler(const ErrorHandler &) = default;
@@ -24,6 +22,8 @@ class ErrorHandler {
 
   ErrorHandler &operator=(ErrorHandler &&) noexcept = default;
 
+//--------------------------- GETTERS/SETTERS ----------------------------------
+
   [[nodiscard]] ErrorCode GetErrorCode() const {
 	return this->error_;
   }
@@ -35,13 +35,18 @@ class ErrorHandler {
 	this->error_ = error;
   }
 
+//---------------------- OUT ERROR ---------------------------------------------
+
   void OutError(const std::string &delimiter = "") const {
 	std::cerr << ToString(error_) << delimiter;
   }
 
+//---------------------------------- DTOR --------------------------------------
+
   ~ErrorHandler() = default;
 
  private:
+//------------------------- PRIVATE FIELDS -------------------------------------
   ErrorCode error_;
 };
 }

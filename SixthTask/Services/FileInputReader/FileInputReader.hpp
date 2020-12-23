@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef SIXTHTASK_FILEINPUTVALIDATOR_HPP
 #define SIXTHTASK_FILEINPUTVALIDATOR_HPP
 
@@ -5,8 +7,11 @@
 #include <filesystem>
 
 namespace task::helpers {
+// Class, that reads data from file line by line
 class FileInputReader {
  public:
+//------------------------------ CTOR ------------------------------------------
+
   FileInputReader() = delete;
 
   FileInputReader(const FileInputReader &) = delete;
@@ -20,6 +25,8 @@ class FileInputReader {
   explicit FileInputReader(const std::filesystem::path &path)
 	  : path_(path), fileStream_(this->path_, std::ios_base::in) {}
 
+//-------------------------- GETTERS/SETTERS -----------------------------------
+
   [[nodiscard]] std::filesystem::path GetPath() const {
 	return this->path_;
   }
@@ -31,9 +38,13 @@ class FileInputReader {
 	this->path_ = path;
   }
 
+//----------------------- BOOLEAN CHECKS ---------------------------------------
+
   [[nodiscard]] bool IsFileValid() const {
 	return this->fileStream_.is_open();
   }
+
+//--------------------------- VALIDATE -----------------------------------------
 
   std::unique_ptr<std::string> ValidLine(bool predicate(const char[]) =
   	nullptr) {
@@ -47,9 +58,13 @@ class FileInputReader {
 	return std::make_unique<std::string>(result);
   }
 
+//-------------------------------- DTOR ----------------------------------------
+
   ~FileInputReader() = default;
 
  private:
+//------------------------------ PRIVATE FIELDS --------------------------------
+
   std::filesystem::path path_;
   std::fstream fileStream_;
 };

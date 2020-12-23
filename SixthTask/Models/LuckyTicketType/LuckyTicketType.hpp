@@ -1,6 +1,4 @@
-//
-// Created by Александр Сафиюлин on 09.12.2020.
-//
+#pragma once
 
 #ifndef SIXTHTASK_LUCKYTICKETTYPE_HPP
 #define SIXTHTASK_LUCKYTICKETTYPE_HPP
@@ -8,10 +6,12 @@
 #include <string>
 
 namespace task::sixth {
+// Type of lucky ticket
 enum class LuckyTicketType : unsigned short {
   NONE, MOSCOW, PITER
 };
 
+// Convert to string type of lucky ticket
 inline std::string ToString(const LuckyTicketType luckyTicketType) {
   switch (luckyTicketType) {
 	case LuckyTicketType::MOSCOW: {
@@ -26,6 +26,7 @@ inline std::string ToString(const LuckyTicketType luckyTicketType) {
   }
 }
 
+// Convert from string type of lucky ticket
 inline LuckyTicketType FromString(const std::string &string) {
   if (ToString(LuckyTicketType::MOSCOW) == string) {
 	return LuckyTicketType::MOSCOW;
