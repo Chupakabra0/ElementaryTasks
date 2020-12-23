@@ -8,7 +8,7 @@
 #include "Application.hpp"
 
 #include <ConsoleArgsValidator/ConsoleArgsValidator.hpp>
-#include <FileInputValidator/FileInputReader.hpp>
+#include <FileInputReader/FileInputReader.hpp>
 #include <Errors/ErrorHandler/ErrorHandler.hpp>
 #include <LuckyTicketCounter/LuckyTicketCounter.hpp>
 #include <View.hpp>
