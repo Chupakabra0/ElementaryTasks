@@ -1,7 +1,3 @@
-//
-// Created by Александр Сафиюлин on 09.12.2020.
-//
-
 #ifndef SIXTHTASK_FILEINPUTVALIDATOR_HPP
 #define SIXTHTASK_FILEINPUTVALIDATOR_HPP
 
@@ -9,15 +5,19 @@
 #include <filesystem>
 
 namespace task::helpers {
-class FileInputValidator {
+class FileInputReader {
  public:
-  FileInputValidator() = delete;
+  FileInputReader() = delete;
 
-  FileInputValidator(const FileInputValidator &) = default;
+  FileInputReader(const FileInputReader &) = delete;
 
-  FileInputValidator(FileInputValidator &&) = default;
+  FileInputReader(FileInputReader &&) noexcept = default;
 
-  explicit FileInputValidator(const std::filesystem::path &path)
+  FileInputReader& operator=(const FileInputReader&) = delete;
+
+  FileInputReader& operator=(FileInputReader&&) noexcept = default;
+
+  explicit FileInputReader(const std::filesystem::path &path)
 	  : path_(path), fileStream_(this->path_, std::ios_base::in) {}
 
   [[nodiscard]] std::filesystem::path GetPath() const {
@@ -47,7 +47,7 @@ class FileInputValidator {
 	return std::make_unique<std::string>(result);
   }
 
-  ~FileInputValidator() = default;
+  ~FileInputReader() = default;
 
  private:
   std::filesystem::path path_;

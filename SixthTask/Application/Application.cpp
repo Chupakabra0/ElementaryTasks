@@ -8,7 +8,7 @@
 #include "Application.hpp"
 
 #include <ConsoleArgsValidator/ConsoleArgsValidator.hpp>
-#include <FileInputValidator/FileInputValidator.hpp>
+#include <FileInputValidator/FileInputReader.hpp>
 #include <Errors/ErrorHandler/ErrorHandler.hpp>
 #include <LuckyTicketCounter/LuckyTicketCounter.hpp>
 #include <View.hpp>
@@ -57,8 +57,8 @@ int task::sixth::Application::operator()() const {
 	return EXIT_FAILURE;
   }
 
-  std::unique_ptr<helpers::FileInputValidator> fileInputValidator
-	  (new(std::nothrow) helpers::FileInputValidator
+  std::unique_ptr<helpers::FileInputReader> fileInputValidator
+	  (new(std::nothrow) helpers::FileInputReader
 		   (std::filesystem::path(*filePath)));
   if (nullptr == fileInputValidator) {
 	view->OutParseError();
