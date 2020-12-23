@@ -8,52 +8,66 @@
 #define SEVENTHTASK_MODELS_SEQUENCEBUILDER_SEQUENCEBUILDER_HPP_
 
 #include <vector>
+
 #include <Sequence/SequenceRules/SequenceRules.hpp>
 
 namespace task::eighth {
 
-template<class Type, class RuleGenType = AfterOne,
+template<Number Type, class RuleGenType = AfterOne,
 	class RuleValidType = AlwaysTrue>
 class SequenceBuilder {
  public:
+//-------------------------------- CTORS ---------------------------------------
 
-  explicit SequenceBuilder(Type begin, Type end,
+  SequenceBuilder(Type begin, Type end,
 	GenRule<Type, RuleGenType> genRule = GenRule<Type, RuleGenType>(),
 	ValidRule<Type, RuleValidType> validRule = ValidRule<Type, RuleValidType>())
 	    : begin_(begin), end_(end), lowLimit_(nullptr),
 		  highLimit_(nullptr), genRule_(genRule), validRule_(validRule) {}
 
-  explicit SequenceBuilder(Type begin, Type end, Type lowLimit, Type highLimit,
+  SequenceBuilder(Type begin, Type end, Type lowLimit, Type highLimit,
 	GenRule<Type, RuleGenType> genRule = GenRule<Type, RuleGenType>(),
 	ValidRule<Type, RuleValidType> validRule = ValidRule<Type, RuleValidType>())
 	  : begin_(begin), end_(end), lowLimit_(std::make_unique<Type>(lowLimit)),
 	  highLimit_(std::make_unique<Type>(highLimit)), genRule_(genRule),
 	  validRule_(validRule) {}
 
+//----------------------------- BUILD SEQUENCE ---------------------------------
+
   std::vector<Type> Build() const {
+    // Create vector, that will be returned
 	std::vector<Type> result;
-	auto data = this->begin_;
 
+	// Iteration continues from begin to end
 	for (auto i = this->begin_; i < this->end_; ++i) {
-	  data = this->genRule_(i);
+	  // Generate next element of sequence
+	  auto data = this->genRule_(i);
 
+	  // If highLimit is set and data higher than it
 	  if (nullptr != this->highLimit_ && data > *this->highLimit_) {
+	    // Break the loop
 		break;
 	  }
 
+	  // If valid rule is true and lowLimit is set and data higher than it
 	  if (this->validRule_(data) &&
 	  (nullptr == this->lowLimit_  || data >= *this->lowLimit_)) {
+	    // Try to push data to result vector
 	    try {
 			result.push_back(data);
 	  	}
 	    catch (std::exception&) {
-		  return result;
+	      // If smth goes wrong, break loop
+		  break;
 	    }
 	  }
 	}
 
+	// Return result
 	return result;
   }
+
+//-------------------------------- GETTERS/SETTERS -----------------------------
 
   [[nodiscard]] auto GetBegin() const {
 	return this->begin_;
@@ -100,6 +114,8 @@ class SequenceBuilder {
   }
 
  private:
+//---------------------------- PRIVATE FIELDS ----------------------------------
+
   Type begin_;
   Type end_;
 

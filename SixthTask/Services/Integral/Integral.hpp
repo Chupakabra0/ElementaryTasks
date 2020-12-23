@@ -23,8 +23,8 @@ class Integral {
 
   // Simpson's (parabola's) method
   template<class Function>
-  [[nodiscard]] double SimpsonCount(Function function, const double a,
-							 const double b) const {
+  [[nodiscard]] double SimpsonCount
+  	(Function function, const double a, const double b) const {
     // Count step
 	const auto h = (b - a) / this->n_;
 	// From this we start our find of solution

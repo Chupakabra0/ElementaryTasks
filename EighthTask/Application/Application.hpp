@@ -8,6 +8,7 @@
 #define EIGHTHTASK_APPLICATION_APPLICATION_HPP_
 
 namespace task::eighth {
+// Applications class, that refactors main
 class Application {
  public:
   Application() = delete;
@@ -26,8 +27,7 @@ class Application {
 
   ~Application() = default;
  private:
-  explicit Application(const unsigned argc, const char **argv)
-	  : argc_(argc), argv_(argv) {}
+  explicit Application(unsigned argc, const char **argv);
 
   unsigned argc_;
   const char **argv_;

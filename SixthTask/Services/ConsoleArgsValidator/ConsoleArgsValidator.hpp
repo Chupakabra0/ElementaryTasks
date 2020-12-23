@@ -38,6 +38,7 @@ class ConsoleArgsValidator {
 	return result;
   }
 
+  template<>
   std::unique_ptr<std::string> ValidateByIndex(const unsigned index,
 	bool predicate(const char[])) const {
 	if (nullptr != predicate && !predicate(this->argv_[index])) {

@@ -9,12 +9,14 @@
 
 #include <vector>
 
-#include "../Services/Errors/ErrorHandler/ErrorHandler.hpp"
+#include <Errors/ErrorHandler/ErrorHandler.hpp>
 
 namespace task::eighth {
 template<class Ostream>
 class View {
  public:
+//------------------------- CTORS ----------------------------------------------
+
   View() = delete;
 
   View(const View &) = delete;
@@ -31,6 +33,8 @@ class View {
   explicit View(Ostream &out, const helpers::ErrorHandler errorHandler,
 				const std::vector<unsigned long long> &numbers)
 	  : numbers_(numbers), out_(out), errorHandler_(errorHandler) {}
+
+//--------------------------- OUTPUT -------------------------------------------
 
   void OutMemoryError() {
 	this->outError(helpers::ErrorCode::MEMORY_OUT);
@@ -51,6 +55,8 @@ class View {
 	}
   }
 
+//------------------------- GETTERS/SETTERS ------------------------------------
+
   [[nodiscard]] std::vector<unsigned long long> GetNumbers() const {
 	return this->numbers_;
   }
@@ -62,9 +68,13 @@ class View {
 	this->numbers_ = numbers;
   }
 
+//------------------------ CALL PUSH BACK --------------------------------------
+
   void PushToNumbers(const unsigned long long number) {
 	this->numbers_.push_back(number);
   }
+
+//------------------------ DTOR ------------------------------------------------
 
   ~View() = default;
  private:

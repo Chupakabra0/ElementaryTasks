@@ -1,7 +1,3 @@
-//
-// Created by Александр Сафиюлин on 09.12.2020.
-//
-
 #pragma once
 
 #ifndef FIRSTTASK_SERVICES_ERRORS_ERRORCODE_ERRORTYPE_HPP_
@@ -11,6 +7,7 @@
 #include <string>
 
 namespace task::helpers {
+// Error codes
 enum class ErrorCode : unsigned short {
   NO_ERROR,
   MEMORY_OUT,
@@ -21,7 +18,8 @@ enum class ErrorCode : unsigned short {
   ETERNAL_SERVER_ERROR
 };
 
-static std::string ToString(ErrorCode errorCode) {
+// To out error code we have to convert it to string
+inline std::string ToString(ErrorCode errorCode) {
   std::stringstream ss;
   ss << "Code " << static_cast<unsigned short>(errorCode) << ": ";
   switch (errorCode) {

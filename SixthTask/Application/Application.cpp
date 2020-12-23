@@ -15,9 +15,9 @@ task::sixth::Application::Application(const unsigned argc, const char **argv)
 
 //----------------------- PUBLIC METHODS ---------------------------------------
 
-// Get instance for singleton in Meiers style
-task::sixth::Application &task::sixth::Application::GetInstance(const unsigned argc,
-																const char **argv) {
+// Get instance for singleton in Scott style
+task::sixth::Application &task::sixth::Application::GetInstance
+	(const unsigned argc, const char **argv) {
   static Application instance(argc, argv);
   return instance;
 }
