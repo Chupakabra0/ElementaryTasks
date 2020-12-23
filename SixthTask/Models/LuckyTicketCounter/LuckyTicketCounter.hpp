@@ -88,8 +88,8 @@ class LuckyTicketCounter {
 	};
 
 	return static_cast<unsigned long long>
-		(std::round(this->integral_.SimpsonCount
-		(temp, std::numeric_limits<double>::epsilon(), std::numbers::pi)));
+		(this->integral_.SimpsonCount
+		(temp, std::numeric_limits<double>::epsilon(), std::numbers::pi));
   }
 
 //----------------------- GET PITER COUNT --------------------------------------
